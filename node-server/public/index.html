@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="view">
+        
+    </div>
+    <form id="myForm" action="http://localhost:8080/test" method="POST">
+        <input type="text" name="name">
+        <button type="submit" id="postSubmit">보내기</button>
+    </form>
+    
+</body>
+<script>
+
+
+    document.getElementById('myForm').addEventListener('submit', async function (event) {
+        event.preventDefault(); // 폼의 기본 동작을 막음 (페이지 새로고침 등)
+
+        
+        // 폼 데이터를 서버로 전송
+        await fetch('http://localhost:8080/test', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: document.querySelector('input[name="name"]').value
+            })
+        });
+        
+        // 데이터를 다시 불러와서 화면에 렌더링
+        fetchData();
+        this.reset();
+    });
+
+    // 서버에서 GET 요청을 보내고 결과를 받아와서 출력하는 함수
+    function fetchData() {
+        fetch('http://localhost:8080/cols')
+            .then(response => response.json())
+            .then(data => {
+                // 가져온 데이터를 view 요소에 출력
+                const view = document.querySelector('.view');
+                view.textContent = '';
+                data.forEach(e => {
+                    const viewChild = document.createElement('div');
+                    viewChild.textContent = `${e.id} ${e.name}`;
+                    view.appendChild(viewChild);
+                });
+                
+            })
+            .catch(error => console.error(error));
+    }
+
+            
+
+
+    // 페이지 로드 시 데이터를 가져오도록 설정
+    window.addEventListener('load', fetchData);
+    // 일정 간격마다 데이터를 자동으로 갱신
+
+</script>
+</html>
