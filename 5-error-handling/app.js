@@ -35,13 +35,14 @@ app.get('/file1', (req,res)=>{
 //   }
 // });
 
-app.get('/file2', (req, res) => {
+app.get('/file', (req, res) => {
   fsAsync
-    .readFile('/file2.txt') //
+    .readFile('/file.txt') //
     .catch((error) => {
       res.sendStatus(404);
     });
 });
+
 
 app.get('/file3', async (req, res) => {
   try {

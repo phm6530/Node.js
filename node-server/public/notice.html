@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notice</title>
+</head>
+<body>
+    <button onclick="goBack()">목록</button>
+    <div class="title"></div>
+    <div class="info"></div>
+
+    <script>
+        const load = () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const idx = urlParams.get('idx');
+            return idx;
+        }
+
+        function noticeData(idx) {
+            fetch(`http://localhost:8080/noticeData?idx=${idx}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    const title = document.querySelector('.title');
+                    const info = document.querySelector('.info');
+                    title.textContent = data[0].name;
+                    info.textContent = data[0].id;
+                })
+                .catch(error => {
+                    const info = document.querySelector('.info');
+                    info.textContent = '에러';
+                    console.error(error)}    
+                );
+        }
+
+        function goBack() {
+            history.back();
+        }
+
+        window.addEventListener('load', () => {
+            noticeData(load());
+        });
+    </script>
+</body>
+</html>

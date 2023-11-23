@@ -8,28 +8,60 @@
 </head>
 
 <body>
-    <span id="total"></span>
-    <div class="view">
-
-    </div>
-    <div id="pagenation" class="pagenation"></div>
-    <form id="myForm" action="http://localhost:8080/test" method="POST">
-        <input type="text" name="name">
-        <button type="submit" id="postSubmit">보내기</button>
-    </form>
-    .
+    <div id="app"></div>
 </body>
 <script>
 
-const load =()=>{
-    const urlParams = new URLSearchParams(window.location.search);
-    const page = urlParams.get('page') || 1;
-    return page;
-}
+    const load =()=>{
+        const urlParams = new URLSearchParams(window.location.search);
+        const page = urlParams.get('page') || 1;
+        return page;
+    }
+    function fetchData(page) {
+    const app = document.getElementById('app');
+    app.innerHTML = `
+        <span id="total"></span>
+        <div class="view"></div>
+        <div id="pagenation" class="pagenation"></div>
+        <form id="myForm" action="http://localhost:8080/test" method="POST">
+            <input type="text" name="name">
+            <button type="submit" id="postSubmit">보내기</button>
+        </form>
+    `;
+    fetch(`http://localhost:8080/cols/${page}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            // 가져온 데이터를 view 요소에 출력
+            const view = document.querySelector('.view');
+            view.textContent = '';
+            data.data.forEach(e => {
+                console.log(e);
+                const viewChild = document.createElement('div');
+                viewChild.setAttribute('onClick', `notice(${e.id})`)
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = '삭제';
+                deleteBtn.setAttribute('onclick', `deleteFunc(event,${e.id})`);
+                viewChild.textContent = `${e.id} ${e.name}`;
+                viewChild.appendChild(deleteBtn);
+                view.appendChild(viewChild);
+            });
 
-    document.getElementById('myForm').addEventListener('submit', async function (event) {
-        event.preventDefault(); // 폼의 기본 동작을 막음 (페이지 새로고침 등)
+            const pageNation = document.getElementById('pagenation');
+            pageNation.innerHTML = ''; // 기존 페이지 네이션 제거
 
+            for (let i = 0; i < data.total; i += 10) {
+                const pageNav = document.createElement('a');
+                let num = i / 10 + 1;
+                pageNav.setAttribute('href', `http://localhost:8080/cols/${num}`);
+                pageNav.textContent = num;
+
+                // 클릭 이벤트 추가
+                // pageNav.addEventListener('click', () => handlePageClick(i / 10 + 1));
+
+                pageNation.appendChild(pageNav);
+                document.getElementById('myForm').addEventListener('submit', async function (event) {
+                event.preventDefault(); // 폼의 기본 동작을 막음 (페이지 새로고침 등)
 
         // 폼 데이터를 서버로 전송
         await fetch('http://localhost:8080/test', {
@@ -47,48 +79,22 @@ const load =()=>{
         this.reset();
     });
 
-    // 서버에서 GET 요청을 보내고 결과를 받아와서 출력하는 함수
-    function fetchData(page) {
-    fetch(`http://localhost:8080/cols?page=${page}`)
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            // 가져온 데이터를 view 요소에 출력
-            const view = document.querySelector('.view');
-            view.textContent = '';
-            data.data.forEach(e => {
-                console.log(e);
-                const viewChild = document.createElement('div');
-                const deleteBtn = document.createElement('button');
-                deleteBtn.textContent = '삭제';
-                deleteBtn.setAttribute('onclick', `deleteFunc(${e.id})`);
-                viewChild.textContent = `${e.id} ${e.name}`;
-                viewChild.appendChild(deleteBtn);
-                view.appendChild(viewChild);
-            });
-
-            const pageNation = document.getElementById('pagenation');
-            pageNation.innerHTML = ''; // 기존 페이지 네이션 제거
-
-            for (let i = 0; i < data.total; i += 10) {
-                const pageNav = document.createElement('a');
-                let num = i / 10 + 1;
-                pageNav.setAttribute('href',`http://localhost:8080?page=${num}`);
-                pageNav.textContent = num;
-
-                // 클릭 이벤트 추가
-                // pageNav.addEventListener('click', () => handlePageClick(i / 10 + 1));
-
-                pageNation.appendChild(pageNav);
             }
 
             // 페이지 로드 시 URL 변경
-            history.pushState({ page: page }, `Page ${page}`, `?page=${page}`);
+            history.pushState({ page: page }, `Page ${page}`, `/page/${page}`);
             
         })
         .catch(error => console.error(error));
 }
 
+
+    // 서버에서 GET 요청을 보내고 결과를 받아와서 출력하는 함수
+    
+
+function notice(idx) {
+    location.href = `http://localhost:8080/notice.html?idx=${idx}`
+}
 
 function loadPage(page) {
     fetchData(page);
@@ -109,24 +115,12 @@ const deleteFunc = async (id) => {
     } else {
         return;
     }
-
-    // 선택적으로 삭제 후 데이터를 새로고침하려면 fetchData를 호출할 수 있습니다.
-  
 }
-
-
-
-// function handlePageClick(page) {
-//     fetchData(page);
-// }
-
-
 window.addEventListener('load', () => {
     fetchData(load());
 });
 
 
-    // 일정 간격마다 데이터를 자동으로 갱신
 </script>
 
 </html>

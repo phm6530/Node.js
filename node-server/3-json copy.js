@@ -24,14 +24,14 @@ db.connect((err) => {
 });
 
 // GET 요청 처리
-app.get('/cols/:page', async (req, res) => {
+app.get('/cols', async (req, res) => {
   let sql = `SELECT count(*) as total FROM TEST`;
   db.query(sql,  async (err, results, fields) => {
     if (err) {
       console.error(err.message);
       return res.status(500).json({ error: 'Internal Server Error' });
     }
-    const page = req.params.page; // 페이지 번호
+    const page = req.query.page; // 페이지 번호
     const pageSize = 10; // 한 페이지에 표시될 아이템 수
 
     const offset = (page - 1) * pageSize;
@@ -63,13 +63,11 @@ app.get('/noticeData',(req, res) =>{
     if (err) {
       console.error(err.message);
       return res.status(500).json({error : '서버에러'});
-      //서버가 클라이언트한테 mysql.ejs를 렌더링해서 보낼 것이다. jSON 형태의 데이터도
-      // console.error(err.message);
-      // return res.status(500).json({ error: 'Internal Server Error' });
     }
     else{
       res.json(results);
     }
+      
   });
 });
 
