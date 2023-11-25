@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+</body>
+<style>
+    .noticeTable {
+        display: table;
+        width: 500px;
+    }
+    .table-row {
+        display: table-row;
+    }
+    .table-row span {
+        display: table-cell;
+    }
+</style>
+<script>
+
+const app = document.getElementById('app');
+
+class DataModule {
+    constructor() {
+        this.allData = null;
+    }
+
+    setAllData(data) {
+        this.allData = data;
+    }
+
+    getAllData() {
+        return this.allData;
+    }
+}
+const dataModule = new DataModule(); // 모듈 생성
+
+// 랜더링
+const renderData = (data) => {
+    const target = document.querySelector('.tableWrap');
+
+
+    const tableBody = document.createElement('tbody');
+    // 데이터생성
+        
+    if(!data){
+        '데이터가없습니다';
+        target.appendChild(tableBody);
+    }
+
+    data.forEach(e => {
+        const row = document.createElement('tr');
+        const cell1 = document.createElement('td');
+        const cell2 = document.createElement('td');
+
+        cell1.textContent = e.id;
+        cell2.textContent = e.name;
+
+        row.appendChild(cell1);
+        row.appendChild(cell2);
+
+        tableBody.appendChild(row);
+    });
+    target.appendChild(tableBody);
+};
+
+
+const searchArea = () => {
+    const div = document.createElement('div');
+    const btn = document.createElement('button');
+    const searchInput = document.createElement('input');
+    searchInput.setAttribute('id', 'searchInput');
+    searchInput.placeholder = '검색할 항목을 적어주세요';
+    btn.addEventListener('click', searchHandler);
+    btn.textContent = '검색';
+    div.appendChild(searchInput);
+    div.appendChild(btn);
+    app.appendChild(div);
+    return div;
+}
+
+
+const searchHandler = () => {
+    const searchInput = document.getElementById('searchInput');
+    const keyword = searchInput.value;
+    
+    const dataArray = dataModule.getAllData()?.arr || [];
+
+    // 필터링된 데이터를 화면에 표시
+    const filteredData = dataArray.filter(item => {
+          return item.name ? item.name.includes(keyword) : [];
+        }
+    );
+    renderData(filteredData);
+    searchInput.value = ''; // input 초기화
+};
+
+const createDiv = (parent , element , classname = '' , text = '') =>{
+    const div = document.createElement(element);
+    div.classList.add(classname);
+    div.textContent = text;
+    parent.appendChild(div);
+}
+
+const initialRender = () => {
+    // fetch Promise 반환
+    return fetch('http://localhost:8080/notice', { method: 'GET' })
+        .then(res => {
+            if (!res.ok) {
+                console.error(error);
+                return;
+            }
+            return res.json();
+        })
+        .then(data => {
+
+            dataModule.setAllData(data); // 데이터 저장
+            const table = createDiv(app, 'table', 'tableWrap'); // 테이블 영역
+            renderData(data.arr); // 랜더링
+            app.appendChild(searchArea()); // 검색창
+        })
+        .catch(err => console.log(err));
+};
+
+// 초기 렌더링 함수 호출
+initialRender();
+
+</script>
+</html>
