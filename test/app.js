@@ -1,7 +1,7 @@
 import express from 'express';
 import mysql from 'mysql2';
 const app = express();
-// app.use(express.static('public'));
+app.use(express.static('public'));
 
 const db = mysql.createConnection({
     host: 'localhost',
@@ -17,15 +17,29 @@ db.connect((err) => {
     }
     console.log('연결 완료');
 });
-app.get('/', async (req, res) => {
-    let sql = `SELECT * FROM TEST ORDER BY id DESC LIMIT 1, 10`;
-    db.query(sql, async (err, results, fields) => {
+
+app.get('/notice', async (req, res) => {
+    let TotalSql = `SELECT count(*) as total FROM TEST`;
+    db.query(TotalSql, async (err, results, fields) => {
         if (err) {
             console.error(err.message);
             return res.status(500).json({ error: 'Internal Server Error' });
         }
-        console.log(results);
-        res.json(results);
+        // console.log(results);
+        let pageSql = `SELECT * FROM TEST ORDER BY id DESC`;
+        // let pageSql = `SELECT * FROM TEST ORDER BY id DESC LIMIT 1, 10`;
+        db.query(pageSql, (errPage, resultPage )=>{
+            if(errPage) {
+                console.error(errPage);
+                return res.status(500).json({erro: 'DB Connect error'});
+            }
+            console.log(resultPage);
+            const noticeData = {
+                total: results,
+                arr : resultPage
+            }
+            return res.status(200).json(noticeData);
+        });
     });
 });
 

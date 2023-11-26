@@ -48,10 +48,10 @@ const renderData = (data) => {
     // 데이터생성
         
     if(!data){
-        '데이터가없습니다';
+        // '데이터가없습니다';
         target.appendChild(tableBody);
     }
-
+    console.log(data);
     data.forEach(e => {
         const row = document.createElement('tr');
         const cell1 = document.createElement('td');
@@ -117,7 +117,7 @@ const initialRender = () => {
             return res.json();
         })
         .then(data => {
-
+            console.log(data);
             dataModule.setAllData(data); // 데이터 저장
             const table = createDiv(app, 'table', 'tableWrap'); // 테이블 영역
             renderData(data.arr); // 랜더링
