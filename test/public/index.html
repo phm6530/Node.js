@@ -19,6 +19,20 @@
     .table-row span {
         display: table-cell;
     }
+    .fade-in-out {
+        opacity: 1;
+        transition: opacity 0.5s ease-in-out; /* 트랜지션 속성을 사용하여 부드러운 페이드 효과를 추가 */
+    }
+    .tableWrap{
+        height: 252px;
+    }
+    .tableWrap tr{
+        height: 20px;
+    }
+    .hidden {
+        opacity: 0; /* 초기에는 숨겨진 상태 */
+    }
+
 </style>
 <script>
 
@@ -39,52 +53,149 @@ class DataModule {
 }
 const dataModule = new DataModule(); // 모듈 생성
 
+// 페이지 네이션
+const CalpageNation = (data)=>{
+    return Math.ceil(data.total / data.arr.length);
+}
+
 // 랜더링
-const renderData = (data) => {
+const renderData = async (data) => {
+
+    
     const target = document.querySelector('.tableWrap');
-
-
     const tableBody = document.createElement('tbody');
-    // 데이터생성
-        
-    if(!data){
-        // '데이터가없습니다';
-        target.appendChild(tableBody);
+    // 데이터 생성
+    
+  
+    if (!data || data.length === 0) {
+        target.innerHTML = '일치하는 게시물이 없습니다';
     }
     console.log(data);
-    data.forEach(e => {
+
+    for (let i = 0; i < 10; i++) {
         const row = document.createElement('tr');
         const cell1 = document.createElement('td');
         const cell2 = document.createElement('td');
 
-        cell1.textContent = e.id;
-        cell2.textContent = e.name;
+        cell1.textContent = data[i]?.id || ''; // data[i]가 존재하면 data[i].id, 그렇지 않으면 빈 문자열('')
+        cell2.textContent = data[i]?.name || ''; // data[i]가 존재하면 data[i].name, 그렇지 않으면 빈 문자열('')
 
         row.appendChild(cell1);
         row.appendChild(cell2);
 
         tableBody.appendChild(row);
-    });
+    }
+
+    const pageNation = document.createElement('div');
+    pageNation.classList.add('pageNation');
+    
     target.appendChild(tableBody);
+    app.appendChild(pageNation);
+    target.classList.add('hidden');
+    target.classList.add('fade-in-out');
+    await wait(500);
+    target.classList.remove('hidden');
 };
 
 
 const searchArea = () => {
-    const div = document.createElement('div');
+    const form = document.createElement('form');
     const btn = document.createElement('button');
+    const write = document.createElement('button');
+
+    form.addEventListener('submit' ,(e)=>{
+        e.preventDefault();
+    });
+
     const searchInput = document.createElement('input');
     searchInput.setAttribute('id', 'searchInput');
     searchInput.placeholder = '검색할 항목을 적어주세요';
     btn.addEventListener('click', searchHandler);
+
     btn.textContent = '검색';
-    div.appendChild(searchInput);
-    div.appendChild(btn);
-    app.appendChild(div);
-    return div;
+    write.textContent = '글쓰기';
+    write.addEventListener('click',()=> boardWirte());
+
+    form.appendChild(searchInput);
+    form.appendChild(btn);
+    app.appendChild(form);
+    app.appendChild(write);
+    return form;
 }
 
+const addNewPostToDOM = (newPostData) => {
+    const tableBody = document.querySelector('.tableWrap tbody');
+    const row = document.createElement('tr');
+    const cell1 = document.createElement('td');
+    const cell2 = document.createElement('td');
 
-const searchHandler = () => {
+    cell1.textContent = newPostData.id;
+    cell2.textContent = newPostData.name;
+
+    row.appendChild(cell1);
+    row.appendChild(cell2);
+
+    tableBody.appendChild(row);
+};
+
+
+
+
+const boardWirte = async()=>{
+
+    let html = '';
+    html += '<form id="wirteForm">';
+    html += '<input class="name" id="nameInput">';
+    html += '<button type="submit">완료</button>'
+    html += '</form>';
+    app.innerHTML = html;
+    
+
+    const wirteForm = document.getElementById('wirteForm');
+    const nameInput = document.getElementById('nameInput');
+
+    nameInput.focus();
+
+    wirteForm.addEventListener('submit', async(e)=>{
+        e.preventDefault();
+        const nameValue = nameInput.value;
+        console.log(nameValue);
+        try{
+            const res = await fetch('http://localhost:8080/write', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: nameValue })
+            })
+            if (!res.ok) {
+                console.error(error.message);
+                return;
+            }
+            await wait(500);
+            app.innerHTML = '';
+            initialRender();
+        }
+        catch(err){
+            console.error(err);
+        }
+    });
+    
+}
+
+function wait(ms){
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+ const searchHandler = async() => {
+    const target = document.querySelector('.tableWrap');
+        // 페이드아웃 효과 추가
+    target.classList.add('fade-in-out');
+    target.classList.add('hidden');
+
+    await wait(500);
+
+    target.innerHTML = '';
     const searchInput = document.getElementById('searchInput');
     const keyword = searchInput.value;
     
@@ -92,11 +203,13 @@ const searchHandler = () => {
 
     // 필터링된 데이터를 화면에 표시
     const filteredData = dataArray.filter(item => {
-          return item.name ? item.name.includes(keyword) : [];
+        return item.name ? item.name.includes(keyword) : [];
         }
     );
     renderData(filteredData);
     searchInput.value = ''; // input 초기화
+    target.classList.remove('hidden');
+
 };
 
 const createDiv = (parent , element , classname = '' , text = '') =>{
@@ -105,10 +218,56 @@ const createDiv = (parent , element , classname = '' , text = '') =>{
     div.textContent = text;
     parent.appendChild(div);
 }
+const handlePageClick = (page) => {
+    const target = document.querySelector('.tableWrap');
+    
+    // 페이드아웃 효과 추가
+    target.classList.add('fade-in-out');
+    target.classList.add('hidden');
+
+    // 일정 시간이 지난 후에 페이지 전환 로직 실행
+    setTimeout(() => {
+        // 페이지 전환 로직 시작
+        target.innerHTML = '';
+
+        // History API를 사용하여 URL 변경
+        const newUrl = new URL(window.location.href);
+        newUrl.searchParams.set('page', page);
+
+        // pushState 대신 replaceState를 사용하여 URL을 변경
+        history.replaceState({ page: page }, null, newUrl.pathname);
+
+        // 데이터 로드 후 페이드인 효과 추가
+        fetch(`http://localhost:8080/notice/${page}`, { method: 'GET' })
+            .then(res => {
+                if (!res.ok) {
+                    console.error(error);
+                    return;
+                } else {
+                    return res.json();
+                }
+            })
+            .then(data => {
+                renderData(data.arr);
+
+                target.classList.remove('hidden');
+            })
+            .catch(err => {
+                console.log(err);
+                return;
+            });
+        // 페이지 전환 로직 끝
+    }, 500); // 여기서 500은 페이드아웃 효과가 완료되는데 걸리는 시간입니다. 필요에 따라 조절하세요.
+};
 
 const initialRender = () => {
     // fetch Promise 반환
-    return fetch('http://localhost:8080/notice', { method: 'GET' })
+
+
+    const page = 1;
+
+    
+    fetch(`http://localhost:8080/notice/${page}`, { method: 'GET' })
         .then(res => {
             if (!res.ok) {
                 console.error(error);
@@ -121,6 +280,17 @@ const initialRender = () => {
             dataModule.setAllData(data); // 데이터 저장
             const table = createDiv(app, 'table', 'tableWrap'); // 테이블 영역
             renderData(data.arr); // 랜더링
+
+            const totalPages = CalpageNation(data);
+            const pageNation = document.querySelector('.pageNation');
+
+            //페이지 네이션 생성
+            for(let i = 1; i <=  totalPages; i ++){
+                const pageButton = document.createElement('button');
+                pageButton.textContent += i;
+                pageButton.addEventListener('click', () => handlePageClick(i));
+                pageNation.appendChild(pageButton);
+            }
             app.appendChild(searchArea()); // 검색창
         })
         .catch(err => console.log(err));
