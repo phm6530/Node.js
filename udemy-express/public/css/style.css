@@ -1,0 +1,28 @@
+header, body , ul , li {
+    margin: 0;
+    padding: 0;
+}
+header{
+    padding: 20px;
+    background-color: rgb(27, 27, 27);
+}
+header ul{
+    display: flex;
+}
+
+header ul li{
+    list-style: none;
+    margin-right: 10px;
+}
+header a{
+    color: #fff;
+    list-style: none;
+    text-decoration: none;
+}
+
+header a:hover{
+    color: Red;
+}
+main{
+    margin: 20px 20px;
+}
