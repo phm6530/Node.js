@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>page Not Found!!!</title>
+    <title><%= pageTitle %></title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -11,12 +11,22 @@
         <nav>
             <ul>
                 <li><a href="/">SHOP</a></li>
-                <li><a href="/add-product">ADD PRODUCT</a></li>
+                <li><a href="/admin/add-product">ADD PRODUCT</a></li>
             </ul>
         </nav>
     </header>
+
     <main>
-        <h1>404 Page Not Found !!! </h1>
+        <% if(prods.length > 0) { %>
+            <h1><% for(let item of prods){ %></h1>
+
+                <p><%= item.title %></p>
+
+            <% } %>
+        <% } else { %>
+            <h1>No products</h1>
+        <% } %>
+        
     </main>
 </body>
 </html>

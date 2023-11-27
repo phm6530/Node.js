@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>{{pageTitle}}</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -17,8 +17,15 @@
     </header>
 
     <main>
-        <h1>My products</h1>
-        <p>List of all the products....</p>
+        {{#if hasProducts }}
+        <div class="gird">
+            {{#each prods}}
+                <h1>{{this.title}}</h1>
+            {{/each}}
+        </div>
+        {{ else}} 
+        <h1>No Products Found!!!!</h1>
+        {{/if}}
     </main>
 </body>
 </html>

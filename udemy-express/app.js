@@ -1,5 +1,6 @@
 const express = require('express');
 
+
 // body parser 
 const bodyParser = require('body-parser');
 
@@ -10,21 +11,26 @@ const path = require('path');
 const rootPath =require('./util/path')
 
 // 라우터 로드
-const adminRouter = require('./routes/admin');
-const userRouter = require('./routes/shop');
+const adminRouter = require( './routes/admin' );
+const userRouter = require( './routes/shop' );
 
-app.use(express.static(path.join(__dirname , 'public') ));//정적 파일 로드
+app.set('view engine' , 'ejs');
+app.set('views', 'views'); 
 
+app.use(express.static(path.join( __dirname , 'public' )));//정적 파일 로드
 
 // 본문 분석기 모듈 사용
 app.use(bodyParser.urlencoded({extended:false}));
-app.use('/admin',adminRouter);
-app.use(userRouter);
 
-app.use((req,res)=>{
+app.use( '/admin' , adminRouter.routes );
+app.use( userRouter );
+
+app.use(( req , res )=>{
     // res.send('404 Not Found');
     // res.sendStatus(404);\
-    res.status(404).sendFile(path.join(rootPath, 'views' , '404.html'));
+
+    // res.status(404).sendFile(path.join( rootPath, 'views' , '404.html'));
+    res.status(404).render('404' , {pageTitle : 'Page Not Found'});
 });
 
 // const server = http.createServer(app);
