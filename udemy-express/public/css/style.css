@@ -26,3 +26,7 @@ header a:hover{
 main{
     margin: 20px 20px;
 }
+
+a.active{
+    color: red !important;
+}

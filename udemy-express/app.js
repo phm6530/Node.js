@@ -13,6 +13,7 @@ const rootPath =require('./util/path')
 // 라우터 로드
 const adminRouter = require( './routes/admin' );
 const userRouter = require( './routes/shop' );
+const authRouter = require( './routes/auth' );
 
 app.set('view engine' , 'ejs');
 app.set('views', 'views'); 
@@ -22,16 +23,15 @@ app.use(express.static(path.join( __dirname , 'public' )));//정적 파일 로�
 // 본문 분석기 모듈 사용
 app.use(bodyParser.urlencoded({extended:false}));
 
-app.use( '/admin' , adminRouter.routes );
+app.use( '/admin' , adminRouter );
 app.use( userRouter );
+app.use( authRouter );
 
-app.use(( req , res )=>{
-    // res.send('404 Not Found');
-    // res.sendStatus(404);\
+const errorController = require('./controllers/error');
 
-    // res.status(404).sendFile(path.join( rootPath, 'views' , '404.html'));
-    res.status(404).render('404' , {pageTitle : 'Page Not Found'});
-});
+
+app.use(errorController.get404page);
+
 
 // const server = http.createServer(app);
 app.listen(3000);

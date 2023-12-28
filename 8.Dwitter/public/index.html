@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    
+    <div id="twieet_wrap" class="twieet_wrap">
+        <div id="twtter_header">
+            <ul>
+                <li onclick="initialData()">All tweets</li>
+                <li onclick="myData()">My tweets</li>
+                <li onclick="notYet()">logOut</li>
+            </ul>
+            <div class="twtter_header___post">
+
+                    <input id="form_post___content" type="text" placeholder="Edit Your tweet!">
+                    <div onclick="tweetContent()">Post</div>
+            
+            </div>
+        </div>
+        <div id="twteer_list"></div>
+        <div id="twtter_footer"></div>
+    </div>
+
+</body>
+
+<script>
+
+const func = (e) =>{
+    e.preventDefault();
+}
+
+const tweetContent = () =>{
+    const postInput = document.getElementById('form_post___content');
+    const postData = postInput.value;
+    
+    fetch(`http://localhost:8080/tweets/add` , {
+        method : 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body : JSON.stringify({
+            name : 'hyunmin',
+            contents : postData
+        })
+    })
+    postInput.value = '';
+    initialData();
+    event.preventDefault();
+}
+
+const notYet = ()=>{
+        alert('아직 미구현');
+        return;
+}
+
+const myData = (who) => {
+        const list = document.getElementById('twteer_list');
+        list.textContent = '';
+        const My = 'hyunmin';
+        let data = who ? who : My;
+
+        fetch(`http://localhost:8080/tweets/${data}`, { method: 'GET' })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! Status: ${res.status}`);
+                }
+                return res.json();
+            })
+            .then(data => {
+                const list_item = document.createElement('div');
+                list_item.classList.add('list_item');
+                if ( data.length === 0 ) {
+                    list.textContent = '데이터가 없습니다';
+                    return;
+                } else {
+                    data.forEach(e => {
+                        const { name, date, contents } = e;
+
+                        let html = '';
+                        html += `<div class="list_item__picture">none</div>`;
+                        html += `<div class="list_item__name">${name}</div>`;
+                        html += `<div class="list_item__contents">${contents}</div>`;
+                        html += `<div class="list_item__date">${date}</div>`;
+
+                        list_item.innerHTML = html;
+                        list.appendChild(list_item);
+                    })
+                }
+            })
+            .catch(error => {
+                console.error(error.message); // 에러 메시지 출력
+                list.textContent = error.message;
+            });
+ }
+
+ const deleteData = (id) =>{
+    fetch(`http://localhost:8080/tweets/${id}` , {method : 'DELETE'})
+    .then(res => {
+            if (!res.ok) {
+                console.error(error);
+                return;
+            }
+            return res.json();
+    }).then(data => {
+        console.log(data)
+        initialData();
+    });
+ }
+
+ const initialData = () =>{
+        const list = document.getElementById('twteer_list');
+        list.textContent = '';
+        // 초기랜더링
+        fetch('http://localhost:8080/tweets/' , {method : 'GET'})
+        .then(res => {
+            if (!res.ok) {
+                console.error(error);
+                return;
+            }
+            return res.json();
+        })
+        .then(data => {
+            
+            data.forEach(e => {
+                
+                const list_item = document.createElement('div');
+                list_item.classList.add('list_item');
+
+
+                const { id, name, date, contents } = e;
+
+                let html = '';
+                html += `<div class="list_item__picture"></div>`;
+                html += `<div class="list_item__name">${name} <span onclick="myData('${name}')">@${name}</span> <span onclick="deleteData('${id}')">x</span></div>`;
+                html += `<div class="list_item__contents">${contents}</div>`;
+                html += `<div class="list_item__date">${date}</div>`;
+                
+                
+                
+                list_item.innerHTML = html; // 수정된 부분
+                list.appendChild(list_item);
+            });
+        });
+    }
+    initialData();//초기랜더링
+</script>
+</html>

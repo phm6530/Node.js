@@ -1,0 +1,20 @@
+#API Design
+
+초기 BODY 
+ㄴ METHOD : GET
+ㄴ url : /twitter
+res : { idx / user_id / content} 
+
+수정
+ㄴ METHOD : PUT / POST
+ㄴ url : /twitter/:user_id
+res : { idx / user_id / content} 
+
+
+삭제
+ㄴ METHOD : DELETE / POST
+ㄴ url : /twitter/:user_id
+res : { idx / user_id / content} 
+
+
+

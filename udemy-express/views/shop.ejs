@@ -1,21 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= pageTitle %></title>
-    <link rel="stylesheet" href="/css/style.css">
+<%- include('includes/head') %>
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="/">SHOP</a></li>
-                <li><a href="/admin/add-product">ADD PRODUCT</a></li>
-            </ul>
-        </nav>
-    </header>
-
+    <%- include('includes/nav')%>
     <main>
         <% if(prods.length > 0) { %>
             <h1><% for(let item of prods){ %></h1>
