@@ -7,18 +7,51 @@
 </head>
 <body>
 
-    <input type="text" id="target">
-
-    <button onclick="fetching()">Click</button>
+    id: <input type="id" id="userId"><br>
+    password : <input type="password" id="userPassword"><br>
+    <button onclick="submit()">Check</button>
 </body>
 
 <script>
 
-    async function fetching(){
-        const target = document.getElementById('target').value;
-        const response = await fetch(`http://localhost:8080/test/${target}`);
-        const data = await response.json();
-        console.log(data);
+const submit =  async () =>{
+    const params = new URL(window.location).searchParams;
+
+    const UserId = document.getElementById('userId').value;
+    const userPassword = document.getElementById('userPassword').value;
+
+    //페이지 login인지 sign up인지 확인
+    const Page = params.get('page');
+    
+    const formData = {
+        user_id : UserId,
+        user_password : userPassword
     }
+    
+    try{
+        const response = await fetch(`http://localhost:8080/${Page}`, {
+                method : "POST",
+                headers :{
+                    'ConTent-Type' : 'application/json'
+                },
+                body : JSON.stringify(formData)
+            }
+        );
+        
+        if(!response.ok){
+            throw new Error('http Error');
+        }
+        const resultData = await response.json();
+        console.log(resultData.token);
+        
+    }
+    catch(error){
+        console.error(error.message);
+    }
+
+
+}
+
+
 </script>
 </html>
