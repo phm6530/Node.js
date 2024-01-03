@@ -3,6 +3,12 @@ const cors = require('cors'); // cors 검토
 const jwt = require('jsonwebtoken');
 const { verify , createToken }  = require('./util/auth'); // 검증
 const jwtSecret = process.env.JWT_SECRET;
+console.log('jwtSecret :', jwtSecret);
+
+// DB 연결
+const dbConnect = require('./util/config');
+
+
 
 const winston = require('winston');
 
