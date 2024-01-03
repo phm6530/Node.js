@@ -6,7 +6,6 @@
     <title>Document</title>
 </head>
 <body>
-
     id: <input type="id" id="userId"><br>
     password : <input type="password" id="userPassword"><br>
     <button onclick="submit()">Check</button>
@@ -14,20 +13,35 @@
 
 <script>
 
+
+const token = localStorage.getItem('token');
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    const token = localStorage.getItem('token');
+    // 로그인 상태이고 현재 페이지가 로그인 페이지가 아니라면 메인 페이지로 리다이렉트
+    if (token && window.location.pathname === '/login.html') {
+        window.location.href = '/main.html';
+    }
+
+});
+
 const submit =  async () =>{
     const params = new URL(window.location).searchParams;
 
     const UserId = document.getElementById('userId').value;
     const userPassword = document.getElementById('userPassword').value;
 
+
     //페이지 login인지 sign up인지 확인
-    const Page = params.get('page');
+    const Page = params.get('page') || 'login';
     
+    // Form Data    
     const formData = {
         user_id : UserId,
         user_password : userPassword
     }
-    
+    console.log(Page);
     try{
         const response = await fetch(`http://localhost:8080/${Page}`, {
                 method : "POST",
@@ -39,11 +53,15 @@ const submit =  async () =>{
         );
         
         if(!response.ok){
-            throw new Error('http Error');
+            const errorData = await response.json();
+            alert(errorData.message);
+            return;
         }
         const resultData = await response.json();
-        console.log(resultData.token);
-        
+
+        // Localstorage
+        localStorage.setItem('token' , resultData.token);
+        window.location.href = '/main.html';
     }
     catch(error){
         console.error(error.message);

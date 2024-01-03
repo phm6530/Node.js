@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    로그인 완료
+    <button onclick="logout()">로그아웃</button>
+</body>
+
+<script>
+
+    const token = localStorage.getItem('token');
+    if(!token){
+        alert('로그인 해주세요');
+        window.location.href = '/login.html';
+    }
+
+    const logout = async () => {
+    const token = localStorage.getItem('token'); // 로그아웃 함수 내에서 토큰을 다시 가져옵니다.
+    localStorage.removeItem('token'); // 토큰을 로컬 스토리지에서 제거합니다.
+
+    if (token) {
+        try {
+            await fetch('http://localhost:8080/logout', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    window.location.href = '/login.html'; // 로그아웃 요청 후 페이지 리다이렉트
+};
+</script>
+</html>

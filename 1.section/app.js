@@ -4,6 +4,19 @@ const jwt = require('jsonwebtoken');
 const { verify , createToken }  = require('./util/auth'); // 검증
 const jwtSecret = process.env.JWT_SECRET;
 
+const winston = require('winston');
+
+const logger = winston.createLogger({
+    level : 'info',
+    format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.json()
+    ),
+    transports:[
+        new winston.transports.File({filename: '/log/logfile.log'})
+    ]
+})
+
 
 // Notice
 const noticeRouter = require('./page/notcie');
@@ -16,26 +29,34 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 
-
+// 게시판 로직
 app.use('/notice' , noticeRouter);
 
+
 // Login Token 생성
-app.post('/login', (req, res, next) => {
-    const id = req.body.user_id;
-    const password = req.body.user_password;
-    
+app.post('/login', (req, res) => {
+    const { user_id, user_password } = req.body;
 
-    if(!id || !password){
-        return res.status(400).json({message:'Password or id Missing'});
+    if (!user_id) {
+        return res.status(400).json({ message: 'ID is missing' });
     }
-    // JWT 토큰 생성로직
-    const token = createToken(id);
 
-    //성공시
-    return res.json({
-        message: 'Token is Created',
-        token: token
-    });
+    if (!user_password) {
+        return res.status(400).json({ message: 'Password is missing' });
+    }
+
+    // ID와 비밀번호가 모두 제공된 경우
+    // JWT 토큰 생성 및 응답 로직
+    const token = createToken(user_id);
+    return res.json({ message: 'Token is Created', token: token });
+});
+
+app.post('/logout', verify , (req, res) => {
+
+    // 파일에 로그 기록
+    logger.info(`User ${req.user.id} logged out`);
+    
+    return res.status(200).send('Logged out');
 });
 
 
