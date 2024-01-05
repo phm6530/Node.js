@@ -23,11 +23,14 @@ export default function Notice(){
     return(
         <>
             {
-                DUMMY_DATA.map((Notice_name)=>{
+                DUMMY_DATA.map((Notice_name , idx)=>{
                     return (
-                        
-                        <Link to={`${Notice_name.idx}`}>
+                        <Link 
+                            key={idx}
+                            to={`${Notice_name.idx}`}>
+
                             {Notice_name.idx}
+
                         </Link>
                     )
                 })

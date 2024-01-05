@@ -1,10 +1,23 @@
 import { NavLink } from 'react-router-dom';
+import { useState } from 'react';
+
+// Style Moduel
 import classes from './RootLayout.module.css';
 
-export default function RootNav(){
+// Component
+import Popup from '../popup/Popup';
 
+export default function RootNav(){
+    const [ viewPopup , setVIewPopup ] = useState(false);
+
+    const closePopup = () =>{
+        setVIewPopup(false);
+    }
+    
     return(
-        <>
+        <>  
+            {/* 로그인 팝업 */}
+            { viewPopup &&  <Popup popupClose={closePopup}/>}
             <nav>
                 <ul>
                     
@@ -27,7 +40,7 @@ export default function RootNav(){
                             className={({isActive}) => 
                             isActive ? classes.active : undefined
                         }>
-                        Nav_1
+                        PORTPOLIO
                     </NavLink>
                     </li>
 
@@ -40,6 +53,10 @@ export default function RootNav(){
                         }>
                         Notice
                     </NavLink>
+                    </li>
+
+                    <li onClick={()=>setVIewPopup(prev => !prev)}>
+                        로그인
                     </li>
 
                 </ul>
