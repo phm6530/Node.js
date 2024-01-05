@@ -12,8 +12,12 @@ import MyProject from './page/MyProject/MyProject';
 // Notice
 import Notice from './page/Notice/Notice';
 
+// 다크모드
+import { Mode } from './context/Context';
+
 import './App.css';
 import NoticeDetail from './page/Notice/component/NoticeDetail';
+
 
 const router = createBrowserRouter([
   {
@@ -48,7 +52,9 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <RouterProvider router={router}/>
+    <Mode>
+        <RouterProvider router={router}/>
+    </Mode>
   );
 }
 

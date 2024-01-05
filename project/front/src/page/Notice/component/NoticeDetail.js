@@ -6,8 +6,7 @@ export default function NoticeDetail(){
 
     return(
         <>
-            {param.num}
-            NoticeDetail
+            {param.num} -  NoticeDetail
             <button>
                 <Link to='/notice'>목록</Link>
             </button>
