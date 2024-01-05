@@ -9,7 +9,11 @@ import HomeComponent from './page/Home/HomeComponent';
 // MyProject
 import MyProject from './page/MyProject/MyProject';
 
+// Notice
+import Notice from './page/Notice/Notice';
+
 import './App.css';
+import NoticeDetail from './page/Notice/component/NoticeDetail';
 
 const router = createBrowserRouter([
   {
@@ -18,12 +22,23 @@ const router = createBrowserRouter([
     children : [
         { index : true , element : <HomeComponent/> },
 
+        // Project
         {
           path : '/project',
-          element : <MyProject/>
+          element : <MyProject/>,
+        },
 
+        // Notice
+        {
+          path : '/notice',
+          children : [
+              { index : true, element : <Notice/> },
+              {
+                path: ':num',
+                element : <NoticeDetail/>
+              }
+          ]
         }
-
 
     ]
   }

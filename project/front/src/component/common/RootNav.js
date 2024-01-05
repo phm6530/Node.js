@@ -30,6 +30,18 @@ export default function RootNav(){
                         Nav_1
                     </NavLink>
                     </li>
+
+                    {/* Nav 3 */}
+                    <li>
+                    <NavLink
+                            to='/notice'
+                            className={({isActive}) => 
+                            isActive ? classes.active : undefined
+                        }>
+                        Notice
+                    </NavLink>
+                    </li>
+
                 </ul>
             </nav>
         </>
