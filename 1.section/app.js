@@ -8,8 +8,6 @@ console.log('jwtSecret :', jwtSecret);
 // DB 연결
 const dbConnect = require('./util/config');
 
-
-
 const winston = require('winston');
 
 const logger = winston.createLogger({
