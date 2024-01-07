@@ -2,30 +2,30 @@ import { useState } from 'react';
 import classes from './Popup.module.css';
 import ReactDOM from 'react-dom';
 
+
+import { LoginUser , LoginPassword } from '../icon/Icon';
+
+// import { RiAdminFill } from "react-icons/ri";
+// import { IoPersonCircleSharp } from "react-icons/io5";
+// import { RiLockPasswordFill } from "react-icons/ri";
+
 // style 컴포넌트
 // import Boxstyle from '../ui/BoxStyle';
 
 export default function Popup(props){
-
     const { popupClose } = props;
 
+    // background
     const Backdrop = ({popupClose}) =>{
         return <div className={classes.backdrop} onClick={popupClose}></div>
     }
 
+    //로그인팝업
     const PopupContainer = ({popupClose}) =>{
         const [ loginData , setLoginData ] = useState(
             {   
-                id : 
-                { 
-                    value : '' , 
-                    touched : false
-                },
-                pw :
-                { 
-                    value : '' , 
-                    touched : false
-                }
+                id : { value : '' , touched : false },
+                pw : { value : '' ,  touched : false }
             }    
         );  
 
@@ -48,7 +48,6 @@ export default function Popup(props){
             }));
         }
 
-
         console.log(loginData);
         
         
@@ -59,7 +58,7 @@ export default function Popup(props){
 
                 
                 <label>
-                    아이콘
+                <LoginUser size={30}/>
                     <input 
                         type="text" 
                         placeholder='아이디'
@@ -69,7 +68,7 @@ export default function Popup(props){
                 </label>
 
                 <label>                    
-                    아이콘
+                    <LoginPassword size={30}/>
                     <input 
                         type="password" 
                         placeholder='password'
@@ -79,7 +78,7 @@ export default function Popup(props){
                 </label>
                 <button>로그인</button>
 
-                <button onClick={popupClose}>Close</button>
+                <button onClick={popupClose}>닫기</button>
             </div>
         )
     }
