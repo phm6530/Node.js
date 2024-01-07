@@ -42,5 +42,13 @@
 
 /* DarkMode */
 :root{
-  
+  --dark-bgcolor : #000;
+  --dark-textColor : #fff;
+}
+.darkMode{
+  background-color: var(--dark-bgcolor);
+}
+
+.darkMode li a{
+  color: var(--dark-textColor);
 }

@@ -8,7 +8,11 @@ export default function RootLayout(){
     const {darkMode} = useContext(DarkMode);
     console.log('darkMode', darkMode);
     useEffect(()=>{
-        console.log('동작');
+        if(darkMode === true){
+            document.body.classList.add('darkMode');
+        }else{
+            document.body.classList.remove('darkMode');
+        }
     },[darkMode]);
 
     return(

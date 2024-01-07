@@ -15,7 +15,7 @@ export default function RootNav(){
     //Dark Mode
     const ctx = useContext(DarkMode);
     console.log( ctx.darkMode);
-
+    
     const closePopup = () =>{
         setVIewPopup(false);
     }

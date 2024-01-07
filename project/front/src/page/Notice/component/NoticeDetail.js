@@ -1,9 +1,11 @@
-import { Link , useParams } from 'react-router-dom';
+import { Link , useParams , useLoaderData } from 'react-router-dom';
 
 
 export default function NoticeDetail(){
     const param = useParams();
-
+    const data = useLoaderData();
+    console.log(data);
+    
     return(
         <>
             {param.num} -  NoticeDetail
@@ -12,4 +14,9 @@ export default function NoticeDetail(){
             </button>
         </>
     )
+}
+
+export function loaderParam({params}){
+    const noticeId = params.num;
+    return noticeId;
 }

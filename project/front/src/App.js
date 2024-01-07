@@ -1,5 +1,8 @@
-// 라우터
-import { createBrowserRouter , RouterProvider } from 'react-router-dom';
+import './App.css';
+
+
+// Rounter
+import { createBrowserRouter , RouterProvider  } from 'react-router-dom';
 
 import RootLayout from './component/common/RootLayout';
 
@@ -11,12 +14,11 @@ import MyProject from './page/MyProject/MyProject';
 
 // Notice
 import Notice from './page/Notice/Notice';
+import NoticeDetail, { loaderParam } from './page/Notice/component/NoticeDetail';
+
 
 // 다크모드
-import { Mode } from './context/Context';
-
-import './App.css';
-import NoticeDetail from './page/Notice/component/NoticeDetail';
+import {  Mode } from './context/Context';
 
 
 const router = createBrowserRouter([
@@ -39,7 +41,8 @@ const router = createBrowserRouter([
               { index : true, element : <Notice/> },
               {
                 path: ':num',
-                element : <NoticeDetail/>
+                element : <NoticeDetail/>,
+                loader : loaderParam
               }
           ]
         }
