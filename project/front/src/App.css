@@ -49,6 +49,6 @@
   background-color: var(--dark-bgcolor);
 }
 
-.darkMode li a{
+.darkMode li a , .darkMode li{
   color: var(--dark-textColor);
 }

@@ -14,7 +14,7 @@ export default function RootNav(){
 
     //Dark Mode
     const ctx = useContext(DarkMode);
-    console.log( ctx.darkMode);
+    // console.log( ctx.darkMode);
     
     const closePopup = () =>{
         setVIewPopup(false);
@@ -65,7 +65,7 @@ export default function RootNav(){
                     </li>
 
                     <li onClick={()=>setVIewPopup(prev => !prev)}>
-                        로그인
+                        Admin
                     </li>
 
                 </ul>

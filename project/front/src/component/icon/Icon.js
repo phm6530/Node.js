@@ -5,10 +5,7 @@ import { IoPersonCircleSharp } from "react-icons/io5";
 import { RiLockPasswordFill } from "react-icons/ri";
 
 
-
-
 const LoginUser = ({size}) =>{
-    console.log(size);
     return <IoPersonCircleSharp size={size || 10}/>
 }
 
