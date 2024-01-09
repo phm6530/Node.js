@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState , useCallback} from 'react';
 
 export default function LoginInput(props){
     const [ value, setValue ] = useState('');
@@ -10,19 +10,19 @@ export default function LoginInput(props){
         setFormData,
     } = props;
 
-    const onChangehandler = (type , value ) =>{
+    const onChangehandler = useCallback((type , value ) =>{
         setValue(value);
         const isValid = value.trim !== '' && value.length >= 6;
         setFormData(prev => ({
             ...prev , [type] : {...prev[type] , isValid ,value }
         }));
-    }
+    },[setFormData])
 
-    const onblurHandelr = (type) =>{
+    const onblurHandelr = useCallback((type) =>{
         setFormData(prev => ({
             ...prev , [type] : {...prev[type] , touched : true }
         }));
-    }
+    },[setFormData])
 
     return(
         <>
@@ -32,6 +32,7 @@ export default function LoginInput(props){
                 onChange={(e)=>onChangehandler(dataType , e.target.value)}
                 onBlur={()=>onblurHandelr(dataType)}
                 value={value}
+                autoComplete={dataType && 'pw'}
             />
         </>
     )

@@ -15,7 +15,9 @@ export default function Popup(props){
     const PopupContainer = ({popupClose}) =>{
         return (
             <div className={classes.popupContainer}>
-                <LoginForm/>
+                <LoginForm
+                    popupClose={popupClose}
+                />
                 <button onClick={popupClose}>닫기</button>
             </div>
         )

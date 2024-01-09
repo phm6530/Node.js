@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { useState , useContext } from 'react';
-import { DarkMode } from '../../context/Context';
-
+import { DarkMode } from '../../context/DarkModeContext';
+import { UserAuth } from '../../context/AuthContext';
 
 // Style Moduel
 import classes from './RootLayout.module.css';
@@ -9,17 +9,23 @@ import classes from './RootLayout.module.css';
 // Component
 import Popup from '../popup/Popup';
 
-export default function RootNav(){
+export default function RootNav({login}){
     const [ viewPopup , setVIewPopup ] = useState(false);
 
     //Dark Mode
     const ctx = useContext(DarkMode);
+
+    // logOut 
+    const { logOut } = useContext(UserAuth);
+
     // console.log( ctx.darkMode);
     
     const closePopup = () =>{
         setVIewPopup(false);
     }
     
+    
+
     return(
         <>  
             {/* 로그인 팝업 */}
@@ -63,10 +69,16 @@ export default function RootNav(){
                         Notice
                     </NavLink>
                     </li>
-
-                    <li onClick={()=>setVIewPopup(prev => !prev)}>
-                        Admin
-                    </li>
+                    {!login && (
+                        <li onClick={()=>setVIewPopup(prev => !prev)}>
+                            Admin
+                        </li>
+                    )}
+                    {login && (
+                        <li onClick={logOut}>
+                            로그아웃
+                        </li>
+                    )}
 
                 </ul>
             </nav>

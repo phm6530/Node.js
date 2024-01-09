@@ -16,7 +16,3 @@ export default function NoticeDetail(){
     )
 }
 
-export function loaderParam({params}){
-    const noticeId = params.num;
-    return noticeId;
-}

@@ -1,10 +1,7 @@
 import { createContext, useState } from 'react';
 
 // 초기값은 value값이 없을때 리턴하는 거임
-const DarkMode = createContext({
-    darkMode : false,
-    toggleMode : () => {}
-})
+const DarkMode = createContext()
 
 const Mode = (props) =>{
 
