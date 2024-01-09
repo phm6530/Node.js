@@ -6,6 +6,11 @@ import { createBrowserRouter , RouterProvider  } from 'react-router-dom';
 
 import RootLayout from './component/common/RootLayout';
 
+// context
+import { Mode } from './context/DarkModeContext';
+import { Auth } from './context/AuthContext';
+import { Alert } from './context/AlertContext';
+
 // Home
 import HomeComponent from './page/Home/HomeComponent';
 
@@ -21,11 +26,6 @@ import NoticeDetail from './page/Notice/component/NoticeDetail';
 import { tokenCheck } from './util/auth';
 
 
-// 다크모드
-import { Mode } from './context/DarkModeContext';
-
-// Auth
-import { Auth } from './context/AuthContext';
 
 const router = createBrowserRouter([
   {
@@ -62,11 +62,13 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <Auth>
+    <Alert>
       <Mode>
+        <Auth>
           <RouterProvider router={router}/>
+        </Auth>
       </Mode>
-    </Auth>
+    </Alert>
   );
 }
 

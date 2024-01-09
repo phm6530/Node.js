@@ -1,12 +1,12 @@
 import { LoginUser , LoginPassword  } from '../../icon/Icon';
 import { useEffect, useState , useContext} from 'react';
+import { UserAuth } from '../../../context/AuthContext';
 import LoginInput from '../../ui/LoginInput';
-import  { UserAuth } from '../../../context/AuthContext';
-
+import useAlert from '../../common/UseAlert';
 
 export default function LoginForm({popupClose}){
     const { setUser } = useContext(UserAuth);
-    
+    const showAlert = useAlert();
     const [ fromValid , setFormValid ] = useState(false);
     const [ loginData , setLoginData ] = useState(
         {   
@@ -16,7 +16,6 @@ export default function LoginForm({popupClose}){
     );  
    
     const isIdValid =  !loginData.id.isValid && loginData.id.touched;
-
     const isPwValid =  !loginData.pw.isValid && loginData.pw.touched;
 
     // 디바운싱
@@ -56,6 +55,7 @@ export default function LoginForm({popupClose}){
         // 로그인 상태 업데이트 
         setUser(prev =>({...prev , login : !prev.login}));
 
+        showAlert('로그인 되었습니다');
         // 로그인 팝업 닫기
         popupClose();
     }

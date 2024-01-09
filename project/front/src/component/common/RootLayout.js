@@ -9,7 +9,6 @@ export default function RootLayout(){
     const { user } = useContext(UserAuth);
     const {darkMode} = useContext(DarkMode);
 
-    console.log('로그인 유무 : ', user.login);
 
 
     // console.log('darkMode', darkMode);
@@ -24,10 +23,8 @@ export default function RootLayout(){
 
     return(
         <>
-          
-                <RootNav login={user.login}/>
-                <Outlet/>
-              
+            <RootNav login={user.login}/>
+            <Outlet/>
         </>
     )
 
