@@ -1,10 +1,18 @@
-import { Link , useParams , useLoaderData } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link , useParams , useLoaderData , useNavigate} from 'react-router-dom';
 
 
 export default function NoticeDetail(){
     const param = useParams();
     const data = useLoaderData();
-    console.log(data);
+    const navigate = useNavigate();
+    
+    useEffect(()=>{
+        if(!data.auth){
+            console.log(data);
+            navigate('/notice', { state: { noAuth: true } });
+        }
+    },[data , navigate]);
     
     return(
         <>

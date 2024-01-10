@@ -1,7 +1,17 @@
-import { Link } from 'react-router-dom'
+import { useEffect } from 'react';
+import { Link , useLoaderData, useLocation} from 'react-router-dom'
 
 
 export default function Notice(){
+    const data = useLoaderData();
+    const location = useLocation();
+    console.log('location :' , location);
+
+    useEffect(()=>{
+        if(location.state?.noAuth){
+            alert('권한이 없거나 서버에 문제가 있습니다.');
+        }
+    },[location]);
     const DUMMY_DATA = [
         {  
             idx : 1 ,

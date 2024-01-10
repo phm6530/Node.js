@@ -8,18 +8,17 @@ console.log('jwtSecret :', jwtSecret);
 // DB 연결
 const dbConnect = require('./util/config');
 
-const winston = require('winston');
-
-const logger = winston.createLogger({
-    level : 'info',
-    format: winston.format.combine(
-        winston.format.timestamp(),
-        winston.format.json()
-    ),
-    transports:[
-        new winston.transports.File({filename: '/log/logfile.log'})
-    ]
-})
+// const winston = require('winston');
+// const logger = winston.createLogger({
+//     level : 'info',
+//     format: winston.format.combine(
+//         winston.format.timestamp(),
+//         winston.format.json()
+//     ),
+//     transports:[
+//         new winston.transports.File({filename: '/log/logfile.log'})
+//     ]
+// })
 
 
 // Notice
@@ -48,7 +47,7 @@ app.post('/login', (req, res) => {
     if (!user_password) {
         return res.status(400).json({ message: 'Password is missing' });
     }
-
+    
     // ID와 비밀번호가 모두 제공된 경우
     // JWT 토큰 생성 및 응답 로직
     const token = createToken(user_id);
@@ -56,15 +55,14 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/logout', verify , (req, res) => {
-
+    
     // 파일에 로그 기록
     logger.info(`User ${req.user.id} logged out`);
-    
     return res.status(200).send('Logged out');
 });
 
 
-app.get('/test/:item', verify, (req , res , next)=>{
+app.post('/test/:item', verify, (req , res , next)=>{
     const param = req.params.item;
     if(!/^\d+$/.test(param)){
         const err = new Error('사용 할 수 없는 PARAMETER 입니다.');

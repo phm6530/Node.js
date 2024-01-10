@@ -5,12 +5,12 @@ const AlertContext = createContext();
 const Alert = ({children}) =>{
     const [ view , setView ] = useState(false);
     const [ alertMessage , setAlertMessage ] = useState('없음');
-    console.log( 'view :', view);
+    console.log( 'view :', view );
 
     useEffect(()=>{
         const alert =  setTimeout(()=>{
             setView(false)
-        },2000);
+        },3000);
 
         return()=>{
             clearTimeout(alert);
