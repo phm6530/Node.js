@@ -12,8 +12,8 @@ const verify = (req,res,next)=>{
         next();
     }
     catch(error){
-        console.error(error);
-        res.status(400).json({message : 'Token error'});
+        console.error('token Error Message : ',error.message);
+        res.status(401).json({message : 'Token error'});
     }
 }
 
@@ -21,8 +21,7 @@ const createToken = (id)=>{
     return jwt.sign({ id: id }, 'jwtSecret', 
     {
         expiresIn: '1h' // 토큰 유효시간 설정
-    }
-);
+    });
 }
 
 exports.verify = verify;

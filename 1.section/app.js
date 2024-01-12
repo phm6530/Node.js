@@ -62,15 +62,8 @@ app.post('/logout', verify , (req, res) => {
 });
 
 
-app.post('/test/:item', verify, (req , res , next)=>{
-    const param = req.params.item;
-    if(!/^\d+$/.test(param)){
-        const err = new Error('사용 할 수 없는 PARAMETER 입니다.');
-        next(err);
-    }
-    else{
-        res.json({ item : param });
-    }
+app.post('/auth', verify, (req , res , next)=>{
+        res.json({ Auth : true });
 })
 
 app.get('/test', (req , res , next)=>{

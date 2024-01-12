@@ -8,7 +8,7 @@ export default function NoticeDetail(){
 
     const isAuth = useSelector(state => state.authSlice.login);
     const { Auth } = useLoaderData();
-    
+    console.log( 'server : ', Auth );
     
     useEffect(()=>{
         if(Auth === false || isAuth  === false){
@@ -18,7 +18,7 @@ export default function NoticeDetail(){
                 } 
             });
         }
-    },[navigate , Auth , isAuth ]);  //서버 , 클라이언트에서 모두 체킹
+    },[navigate ,isAuth , Auth]);  //서버 , 클라이언트에서 모두 체킹
     
     return(
         <>

@@ -11,7 +11,7 @@ export default function Popup(props){
         return <div className={classes.backdrop} onClick={popupClose}></div>
     }
 
-    //로그인팝업
+    //로그인 팝업
     const PopupContainer = ({popupClose}) =>{
         return (
             <div className={classes.popupContainer}>

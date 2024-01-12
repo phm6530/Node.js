@@ -37,7 +37,6 @@ const alertSlice = createSlice({
 })
 
 
-
 const store = configureStore({
     reducer : {
         alertSlice : alertSlice.reducer,

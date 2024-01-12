@@ -8,10 +8,9 @@ export default function Notice(){
     const navigate = useNavigate();
 
     // 권한 확인
-    // console.log('location :' , location);
     useEffect(()=>{
         if(location.state?.noAuth){
-            showAlert('권한이 없거나 서버에 문제가 있습니다.');
+            showAlert('관리자 권한이 없습니다.');
             navigate(location.pathname, { replace: true });
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps

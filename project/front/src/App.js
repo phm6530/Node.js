@@ -22,6 +22,8 @@ import MyProject from './page/MyProject/MyProject';
 import Notice from './page/Notice/Notice';
 import NoticeDetail from './page/Notice/component/NoticeDetail';
 
+// admin
+import Admin from './page/admin/Admin';
 
 //Auth Util
 import { tokenCheck } from './util/auth';
@@ -52,6 +54,12 @@ const router = createBrowserRouter([
                 loader : tokenCheck,
               }
           ]
+        }
+        // 관리자페이지
+        ,{
+          path : '/admin',
+          element : <Admin/>,
+          loader : tokenCheck,
         }
 
 

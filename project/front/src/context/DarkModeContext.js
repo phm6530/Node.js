@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useState , useEffect} from 'react';
 
 // 초기값은 value값이 없을때 리턴하는 거임
 const DarkMode = createContext()
@@ -10,6 +10,15 @@ const Mode = (props) =>{
         return store === 'true' ? true : false;
     });
 
+    useEffect(()=>{
+        if(modeState){
+            document.body.classList.add('darkMode');
+        }else{
+            document.body.classList.remove('darkMode');
+        }
+    },[modeState]);
+
+
     const toggleMode = () =>{
         setModeState(prev => {
             const modeChange = !prev;
@@ -17,6 +26,7 @@ const Mode = (props) =>{
             return modeChange;
         });   
     }
+
 
     const darkModeValue = {
         darkMode : modeState,

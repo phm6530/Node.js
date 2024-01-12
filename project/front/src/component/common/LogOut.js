@@ -5,12 +5,11 @@ import useAlert from './UseAlert';
 const LogOut =() =>{
     const dispatch = useDispatch();
     const showAlert = useAlert();
-
+    
     const logOutAction = () =>{
-        localStorage.removeItem('token'); //JWT 삭제
-
-        showAlert('로그아웃 되었습니다.');
+        localStorage.removeItem('token');
         dispatch(authAction.logOut());
+        showAlert('로그아웃 되었습니다.');
     }
     
     

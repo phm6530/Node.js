@@ -1,10 +1,7 @@
 import { NavLink } from 'react-router-dom';
-import { useState , useContext } from 'react';
+import {  useContext } from 'react';
 import { DarkMode } from '../../context/DarkModeContext';
-// import { AlertContext } from '../../context/AlertContext';
-
 import LogOut from './LogOut';
-
 
 // redux 
 import { useSelector } from 'react-redux';
@@ -13,34 +10,20 @@ import { useSelector } from 'react-redux';
 import classes from './RootLayout.module.css';
 
 // Component
-import Popup from '../popup/Popup';
+
 import Alert from '../popup/Alert';
 
-export default function RootNav({login}){
-    const [ viewPopup , setVIewPopup ] = useState(false);
+export default function RootNav({setViewPopup}){
     const { view } = useSelector(state => state.alertSlice);
+    const { login } = useSelector(state => state.authSlice);
+    
     const logOut =  LogOut();
-
-
 
     //Dark Mode
     const ctx = useContext(DarkMode);
 
-    // const alertView = useContext(AlertContext).view
-
-    // logOut 
-    // const { logOut } = useContext(UserAuth);
-    // console.log( ctx.darkMode);
-    
-    const closePopup = () =>{
-        setVIewPopup(false);
-    }
-
     return(
         <>  
-            {/* 로그인 팝업 */}
-            { viewPopup &&  <Popup popupClose={closePopup}/>}
-
             {/* Alert */}
             { view && <Alert/>}
             <nav>
@@ -79,12 +62,25 @@ export default function RootNav({login}){
                             className={({isActive}) => 
                             isActive ? classes.active : undefined
                         }>
-                        Notice
+                        Board
                     </NavLink>
                     </li>
+            
+                    {login && (
+                        <li>
+                            <NavLink
+                                to='/admin'
+                                className={({isActive}) => 
+                                isActive ? classes.active : undefined}>
+                                Admin
+                            </NavLink>
+                        </li>
+                    )}
+                    
+                    
                     {!login && (
-                        <li onClick={()=>setVIewPopup(prev => !prev)}>
-                            Admin
+                        <li onClick={()=>setViewPopup(true)}>
+                            로그인
                         </li>
                     )}
                     {login && (
