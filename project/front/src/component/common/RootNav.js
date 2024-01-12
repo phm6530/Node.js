@@ -2,7 +2,9 @@ import { NavLink } from 'react-router-dom';
 import { useState , useContext } from 'react';
 import { DarkMode } from '../../context/DarkModeContext';
 // import { AlertContext } from '../../context/AlertContext';
-import { UserAuth } from '../../context/AuthContext';
+
+import LogOut from './LogOut';
+
 
 // redux 
 import { useSelector } from 'react-redux';
@@ -16,26 +18,30 @@ import Alert from '../popup/Alert';
 
 export default function RootNav({login}){
     const [ viewPopup , setVIewPopup ] = useState(false);
-    const { view  } = useSelector(state => state.alertSlice);
+    const { view } = useSelector(state => state.alertSlice);
+    const logOut =  LogOut();
+
+
 
     //Dark Mode
     const ctx = useContext(DarkMode);
+
     // const alertView = useContext(AlertContext).view
 
     // logOut 
-    const { logOut } = useContext(UserAuth);
+    // const { logOut } = useContext(UserAuth);
     // console.log( ctx.darkMode);
     
     const closePopup = () =>{
         setVIewPopup(false);
     }
-    
-    
 
     return(
         <>  
             {/* 로그인 팝업 */}
             { viewPopup &&  <Popup popupClose={closePopup}/>}
+
+            {/* Alert */}
             { view && <Alert/>}
             <nav>
                 <button onClick={ctx.toggleMode}>

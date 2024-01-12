@@ -1,20 +1,22 @@
 import { LoginUser , LoginPassword  } from '../../icon/Icon';
-import { useEffect, useState , useContext } from 'react';
+import { useEffect, useState } from 'react';
 import useAlert from '../../common/UseAlert';
-import { useSelector } from 'react-redux';
+import { useSelector , useDispatch } from 'react-redux';
+import  { authAction } from '../../../store/appSlice';
 
 // 인증로직
-import { UserAuth } from '../../../context/AuthContext';
+
 
 import LoginInput from '../../ui/LoginInput';
 
 
 export default function LoginForm({popupClose}){
-    const { setUser } = useContext(UserAuth);
+    
 
     const test = useSelector(state => state.alertSlice);
     console.log(test);
 
+    const dispatch = useDispatch()
     const showAlert = useAlert();
 
 
@@ -31,7 +33,6 @@ export default function LoginForm({popupClose}){
 
     // 디바운싱
     useEffect(()=>{
-        
         const debounce = setTimeout(()=>{
             setFormValid(loginData.id.isValid && loginData.pw.isValid);
         },500);
@@ -60,12 +61,13 @@ export default function LoginForm({popupClose}){
                 throw new Error('서버 응답 오류: ' + response.status);
             }
             const resultData = await response.json();
+            
             // 토큰 저장
             localStorage.setItem('token', resultData.token);
     
             // 로그인 상태 업데이트 
-            setUser(prev =>({...prev , login : !prev.login}));
-    
+            dispatch(authAction.login());
+
             // 로그인 OK
             showAlert('로그인 되었습니다.');
 

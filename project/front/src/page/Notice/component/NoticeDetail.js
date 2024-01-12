@@ -1,23 +1,24 @@
-import { useContext, useEffect } from 'react';
-import { Link , useParams  , useNavigate, useLoaderData} from 'react-router-dom';
-import { UserAuth  } from '../../../context/AuthContext';
+import { useEffect } from 'react';
+import { Link , useParams  ,  useLoaderData , useNavigate} from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 export default function NoticeDetail(){
     const param = useParams();
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
+
+    const isAuth = useSelector(state => state.authSlice.login);
     const { Auth } = useLoaderData();
-    console.log(Auth);
-    // const { user } = useContext(UserAuth);
     
-    // useEffect(()=>{
-    //     if(user.login === false){
-    //         navigate('/notice', { 
-    //             state: { 
-    //                 noAuth: true 
-    //             } 
-    //         });
-    //     }
-    // },[user, navigate , Auth]);
+    
+    useEffect(()=>{
+        if(Auth === false || isAuth  === false){
+            navigate('/notice', { 
+                state: { 
+                    noAuth: true 
+                } 
+            });
+        }
+    },[navigate , Auth , isAuth ]);  //서버 , 클라이언트에서 모두 체킹
     
     return(
         <>

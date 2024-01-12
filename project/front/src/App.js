@@ -8,7 +8,6 @@ import RootLayout from './component/common/RootLayout';
 
 // context
 import { Mode } from './context/DarkModeContext';
-import { Auth } from './context/AuthContext';
 
 // redux
 import store from './store/appSlice';
@@ -68,9 +67,9 @@ function App() {
       <Mode>
           {/* redux */}
           <Provider store={store}>
-            <Auth>
+            
               <RouterProvider router={router}/>
-            </Auth>
+            
           </Provider>
       </Mode>
     

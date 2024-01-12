@@ -2,14 +2,11 @@ import RootNav from './RootNav'
 import { Outlet } from 'react-router-dom';
 import { DarkMode } from '../../context/DarkModeContext';
 import { useEffect , useContext } from 'react';
-
-import  { UserAuth } from '../../context/AuthContext';
+import { useSelector } from 'react-redux'; 
 
 export default function RootLayout(){
-    const { user } = useContext(UserAuth);
     const {darkMode} = useContext(DarkMode);
-
-
+    const login = useSelector(state => state.authSlice.login)
 
     // console.log('darkMode', darkMode);
     
@@ -23,7 +20,7 @@ export default function RootLayout(){
 
     return(
         <>
-            <RootNav login={user.login}/>
+            <RootNav login={login}/>
             <Outlet/>
         </>
     )

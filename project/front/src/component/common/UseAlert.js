@@ -9,7 +9,6 @@ const useAlert = () => {
         
         setTimeout(() => {
             dispatch(alertAction.alertViewOff());
-            
         }, 3000);
     };
 
