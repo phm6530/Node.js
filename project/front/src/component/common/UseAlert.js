@@ -1,13 +1,18 @@
-import { useContext } from 'react';
-import { AlertContext } from '../../context/AlertContext';
+import { useDispatch } from 'react-redux';
+import { alertAction } from '../../store/appSlice';
 
 const useAlert = () => {
-    const { setView, setAlertMessage } = useContext(AlertContext);
+    const dispatch = useDispatch();
 
     const showAlert = (message) => {
-        setAlertMessage(message);
-        setView(true);
+        dispatch(alertAction.alertViewOn(message));
+        
+        setTimeout(() => {
+            dispatch(alertAction.alertViewOff());
+            
+        }, 3000);
     };
+
     return showAlert;
 };
 

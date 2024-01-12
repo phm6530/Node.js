@@ -1,11 +1,10 @@
-import { json, redirect , useNavigate} from 'react-router-dom';
+import { json } from 'react-router-dom';
 
 
 export async function tokenCheck({params}){   
     
     try{
         const token = localStorage.getItem('token');
-
         const response = await fetch(`http://localhost:8080/test/${params.num}` ,
             {
                 method : 'POST',

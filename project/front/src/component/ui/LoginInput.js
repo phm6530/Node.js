@@ -1,17 +1,17 @@
-import { useState , useCallback} from 'react';
+import { useCallback} from 'react';
 
 export default function LoginInput(props){
-    const [ value, setValue ] = useState('');
 
     const { 
         type , 
         dataType , 
         holder , 
         setFormData,
+        FormData
     } = props;
 
+
     const onChangehandler = useCallback((type , value ) =>{
-        setValue(value);
         const isValid = value.trim !== '' && value.length >= 6;
         setFormData(prev => ({
             ...prev , [type] : {...prev[type] , isValid ,value }
@@ -31,7 +31,7 @@ export default function LoginInput(props){
                 placeholder={holder}
                 onChange={(e)=>onChangehandler(dataType , e.target.value)}
                 onBlur={()=>onblurHandelr(dataType)}
-                value={value}
+                value={FormData[dataType].value}
                 autoComplete={dataType && 'pw'}
             />
         </>

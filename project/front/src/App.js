@@ -1,5 +1,5 @@
 import './App.css';
-
+import { Provider } from 'react-redux';
 
 // Rounter
 import { createBrowserRouter , RouterProvider  } from 'react-router-dom';
@@ -9,7 +9,9 @@ import RootLayout from './component/common/RootLayout';
 // context
 import { Mode } from './context/DarkModeContext';
 import { Auth } from './context/AuthContext';
-import { Alert } from './context/AlertContext';
+
+// redux
+import store from './store/appSlice';
 
 // Home
 import HomeComponent from './page/Home/HomeComponent';
@@ -62,13 +64,16 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <Alert>
+    
       <Mode>
-        <Auth>
-          <RouterProvider router={router}/>
-        </Auth>
+          {/* redux */}
+          <Provider store={store}>
+            <Auth>
+              <RouterProvider router={router}/>
+            </Auth>
+          </Provider>
       </Mode>
-    </Alert>
+    
   );
 }
 

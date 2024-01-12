@@ -1,12 +1,22 @@
 import { LoginUser , LoginPassword  } from '../../icon/Icon';
-import { useEffect, useState , useContext} from 'react';
-import { UserAuth } from '../../../context/AuthContext';
-import LoginInput from '../../ui/LoginInput';
+import { useEffect, useState , useContext } from 'react';
 import useAlert from '../../common/UseAlert';
+import { useSelector } from 'react-redux';
+
+// 인증로직
+import { UserAuth } from '../../../context/AuthContext';
+
+import LoginInput from '../../ui/LoginInput';
+
 
 export default function LoginForm({popupClose}){
     const { setUser } = useContext(UserAuth);
+
+    const test = useSelector(state => state.alertSlice);
+    console.log(test);
+
     const showAlert = useAlert();
+
 
     const [ fromValid , setFormValid ] = useState(false);
     const [ loginData , setLoginData ] = useState(
@@ -15,7 +25,7 @@ export default function LoginForm({popupClose}){
             pw : { value : '' , isValid : false , touched : false }
         }    
     );  
-   
+    
     const isIdValid =  !loginData.id.isValid && loginData.id.touched;
     const isPwValid =  !loginData.pw.isValid && loginData.pw.touched;
 
@@ -27,11 +37,10 @@ export default function LoginForm({popupClose}){
         },500);
 
         return()=>{
-            clearInterval(debounce);
+            clearTimeout(debounce);
         }
     },[loginData]);
         
-
     // 로그인 로직
     const onSubmitHandler = async (e) =>{
         e.preventDefault();
@@ -57,14 +66,15 @@ export default function LoginForm({popupClose}){
             // 로그인 상태 업데이트 
             setUser(prev =>({...prev , login : !prev.login}));
     
-            showAlert('로그인 되었습니다');
+            // 로그인 OK
+            showAlert('로그인 되었습니다.');
 
             // 로그인 팝업 닫기
             popupClose();
         }
         catch(error){
             console.error(error);
-            showAlert('로그인이 실패하였습니다. 서버 상태를 확인하세요.');
+            showAlert('로그인이 실패하였습니다. 서버상태를 확인하세요');
             popupClose();
         }
     
@@ -80,6 +90,7 @@ export default function LoginForm({popupClose}){
                         dataType = 'id'
                         holder = '아이디'
                         setFormData = {setLoginData}
+                        FormData = {loginData}
                     />
                     {isIdValid && 'error'}
                 </label>
@@ -91,6 +102,7 @@ export default function LoginForm({popupClose}){
                          dataType = 'pw'
                          holder = 'password'
                          setFormData = {setLoginData}
+                         FormData = {loginData}
                     />
                     {isPwValid && 'error'}
                 </label>

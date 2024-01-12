@@ -1,8 +1,11 @@
 import { NavLink } from 'react-router-dom';
 import { useState , useContext } from 'react';
 import { DarkMode } from '../../context/DarkModeContext';
-import { AlertContext } from '../../context/AlertContext';
+// import { AlertContext } from '../../context/AlertContext';
 import { UserAuth } from '../../context/AuthContext';
+
+// redux 
+import { useSelector } from 'react-redux';
 
 // Style Moduel
 import classes from './RootLayout.module.css';
@@ -13,10 +16,11 @@ import Alert from '../popup/Alert';
 
 export default function RootNav({login}){
     const [ viewPopup , setVIewPopup ] = useState(false);
+    const { view  } = useSelector(state => state.alertSlice);
 
     //Dark Mode
     const ctx = useContext(DarkMode);
-    const alertView = useContext(AlertContext).view
+    // const alertView = useContext(AlertContext).view
 
     // logOut 
     const { logOut } = useContext(UserAuth);
@@ -32,7 +36,7 @@ export default function RootNav({login}){
         <>  
             {/* 로그인 팝업 */}
             { viewPopup &&  <Popup popupClose={closePopup}/>}
-            { alertView && <Alert/>}
+            { view && <Alert/>}
             <nav>
                 <button onClick={ctx.toggleMode}>
                     {ctx.darkMode ? '다크모드 on' : '다크모드 off'}

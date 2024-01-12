@@ -1,17 +1,22 @@
 import { useEffect } from 'react';
-import { Link , useLoaderData, useLocation} from 'react-router-dom'
-
+import { Link , useLocation , useNavigate} from 'react-router-dom'
+import useAlert from '../../component/common/UseAlert';
 
 export default function Notice(){
-    const data = useLoaderData();
     const location = useLocation();
-    console.log('location :' , location);
+    const showAlert = useAlert();
+    const navigate = useNavigate();
 
+    // 권한 확인
+    // console.log('location :' , location);
     useEffect(()=>{
         if(location.state?.noAuth){
-            alert('권한이 없거나 서버에 문제가 있습니다.');
+            showAlert('권한이 없거나 서버에 문제가 있습니다.');
+            navigate(location.pathname, { replace: true });
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[location]);
+    
     const DUMMY_DATA = [
         {  
             idx : 1 ,

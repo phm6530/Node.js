@@ -1,12 +1,11 @@
 import ReactDom from 'react-dom';
 import classes from './Alert.module.css';
-import { AlertContext } from '../../context/AlertContext';
-import { useContext } from 'react';
+import { useSelector } from 'react-redux';
 
 export default function Alert(){
-    const { alertMessage } =  useContext(AlertContext);
+    const { message } = useSelector(state => state.alertSlice);
     const AlertMessage = () =>{
-        return <div className={classes.Alert}>{alertMessage}</div>
+        return <div className={classes.Alert}>{message}</div>
     }
 
     return(

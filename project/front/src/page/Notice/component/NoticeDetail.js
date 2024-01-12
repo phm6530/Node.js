@@ -1,18 +1,23 @@
-import { useEffect } from 'react';
-import { Link , useParams , useLoaderData , useNavigate} from 'react-router-dom';
-
+import { useContext, useEffect } from 'react';
+import { Link , useParams  , useNavigate, useLoaderData} from 'react-router-dom';
+import { UserAuth  } from '../../../context/AuthContext';
 
 export default function NoticeDetail(){
     const param = useParams();
-    const data = useLoaderData();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
+    const { Auth } = useLoaderData();
+    console.log(Auth);
+    // const { user } = useContext(UserAuth);
     
-    useEffect(()=>{
-        if(!data.auth){
-            console.log(data);
-            navigate('/notice', { state: { noAuth: true } });
-        }
-    },[data , navigate]);
+    // useEffect(()=>{
+    //     if(user.login === false){
+    //         navigate('/notice', { 
+    //             state: { 
+    //                 noAuth: true 
+    //             } 
+    //         });
+    //     }
+    // },[user, navigate , Auth]);
     
     return(
         <>

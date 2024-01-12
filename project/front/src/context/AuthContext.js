@@ -6,10 +6,10 @@ const UserAuth = createContext();
 const Auth = (props)=>{
     const [ user , setUser ] = useState({ login : false });
     const showAlert = useAlert();
+    
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
-            // 토큰이 존재할 경우 로그인 상태를 true로 설정
             setUser({ login: true });
         }
     }, []);
