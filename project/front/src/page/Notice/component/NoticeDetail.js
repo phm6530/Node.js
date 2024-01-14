@@ -1,25 +1,11 @@
-import { useEffect } from 'react';
-import { Link , useParams  ,  useLoaderData , useNavigate} from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { Link , useParams } from 'react-router-dom';
+import useAuthRedirect from '../../../component/common/AuthCustum';
+
+
 
 export default function NoticeDetail(){
     const param = useParams();
-    const navigate = useNavigate();
-
-    const isAuth = useSelector(state => state.authSlice.login);
-    const { Auth } = useLoaderData();
-    console.log( 'server : ', Auth );
-    
-    useEffect(()=>{
-        if(Auth === false || isAuth  === false){
-            navigate('/notice', { 
-                state: { 
-                    noAuth: true 
-                } 
-            });
-        }
-    },[navigate ,isAuth , Auth]);  //서버 , 클라이언트에서 모두 체킹
-    
+    useAuthRedirect('/notice');
     return(
         <>
             {param.num} -  NoticeDetail

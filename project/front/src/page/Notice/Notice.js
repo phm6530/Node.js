@@ -1,21 +1,7 @@
-import { useEffect } from 'react';
-import { Link , useLocation , useNavigate} from 'react-router-dom'
-import useAlert from '../../component/common/UseAlert';
+import { Link } from 'react-router-dom'
 
 export default function Notice(){
-    const location = useLocation();
-    const showAlert = useAlert();
-    const navigate = useNavigate();
 
-    // 권한 확인
-    useEffect(()=>{
-        if(location.state?.noAuth){
-            showAlert('관리자 권한이 없습니다.');
-            navigate(location.pathname, { replace: true });
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[location]);
-    
     const DUMMY_DATA = [
         {  
             idx : 1 ,

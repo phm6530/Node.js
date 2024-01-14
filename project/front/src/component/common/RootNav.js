@@ -18,6 +18,8 @@ export default function RootNav({setViewPopup}){
     const { login } = useSelector(state => state.authSlice);
     
     const logOut =  LogOut();
+    
+
 
     //Dark Mode
     const ctx = useContext(DarkMode);

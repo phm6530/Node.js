@@ -1,11 +1,13 @@
 import RootNav from './RootNav'
 import { Outlet } from 'react-router-dom';
 
-import {   useState } from 'react';
-import Popup from '../popup/Popup';
+import {useState } from 'react';
+
+import Popup from '../popup/Popup'
 
 export default function RootLayout(){
     const [ viewPopup , setVIewPopup ] = useState(false);
+
 
     const closePopup = () =>{
         setVIewPopup(false);
