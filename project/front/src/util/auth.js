@@ -16,15 +16,16 @@ export async function tokenCheck(){
         );
         const data = await response.json(); // 데이터를 JSON 형태로 파싱
         if(!response.ok){
-            return json({Auth : false})
+            return json({Auth : false , message : data.message})
         }
+        
         // data를 사용하거나 반환
         console.log(data);
         return data;
     }
 
     catch(error){
-        console.error('error');
+        console.error(error.message);
         return json({Auth : false})
     }
  

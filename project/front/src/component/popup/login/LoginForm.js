@@ -54,17 +54,24 @@ export default function LoginForm({popupClose}){
             }
             const resultData = await response.json();
 
+            if(!resultData.Auth || resultData.token === undefined){
+                console.log(resultData);
+                showAlert(resultData.message);    
+                return;
+            }
             // 토큰 저장
             localStorage.setItem('token', resultData.token);
-    
+
             // 로그인 상태 업데이트 
             dispatch(authAction.login());
 
             // 로그인 OK
             showAlert('로그인 되었습니다.');
 
-            // 로그인 팝업 닫기
-            popupClose();
+            // 완료시에만 로그인 팝업 닫기
+            popupClose();       
+
+            
         }
         catch(error){
             console.error(error);
