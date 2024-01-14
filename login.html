@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     id: <input type="id" id="userId"><br>
     password : <input type="password" id="userPassword"><br>
@@ -12,18 +13,14 @@
 </body>
 
 <script>
-
-
 const token = localStorage.getItem('token');
-
 document.addEventListener('DOMContentLoaded', () => {
-
     const token = localStorage.getItem('token');
+    
     // 로그인 상태이고 현재 페이지가 로그인 페이지가 아니라면 메인 페이지로 리다이렉트
     if (token && window.location.pathname === '/login.html') {
         window.location.href = '/main.html';
     }
-
 });
 
 const submit =  async () =>{
@@ -41,7 +38,7 @@ const submit =  async () =>{
         user_id : UserId,
         user_password : userPassword
     }
-    console.log(Page);
+    
     try{
         const response = await fetch(`http://localhost:8080/${Page}`, {
                 method : "POST",

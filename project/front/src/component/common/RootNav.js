@@ -65,7 +65,17 @@ export default function RootNav({setViewPopup}){
                         Board
                     </NavLink>
                     </li>
-            
+                        
+                    <li>
+                    <NavLink
+                            to='/notice'
+                            className={({isActive}) => 
+                            isActive ? classes.active : undefined
+                        }>
+                        Calendar
+                    </NavLink>
+                    </li>
+
                     {login && (
                         <li>
                             <NavLink
