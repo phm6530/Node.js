@@ -5,7 +5,7 @@ export async function tokenCheck(){
     
     try{
         const token = localStorage.getItem('token');
-        console.log(token);
+
         const response = await fetch(`http://localhost:8080/auth` ,
             {
                 method : 'POST',
@@ -18,9 +18,9 @@ export async function tokenCheck(){
         if(!response.ok){
             return json({Auth : false , message : data.message})
         }
+        console.log(data);
         
         // data를 사용하거나 반환
-        console.log(data);
         return data;
     }
 
