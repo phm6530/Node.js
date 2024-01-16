@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 
 export default function Notice(){
     const { login } = useSelector(state => state.authSlice);
-    
+    const loading = useSelector(state => state.authSlice);
+    console.log(loading);
     
     const DUMMY_DATA = [
         {  

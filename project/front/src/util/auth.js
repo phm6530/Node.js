@@ -1,11 +1,11 @@
 import { json } from 'react-router-dom';
-
+import store, { authAction } from '../store/appSlice';
 
 export async function tokenCheck(){   
-    
+    store.dispatch(authAction.loading());
     try{
         const token = localStorage.getItem('token');
-
+        
         const response = await fetch(`http://localhost:8080/auth` ,
             {
                 method : 'POST',
@@ -18,7 +18,11 @@ export async function tokenCheck(){
         if(!response.ok){
             return json({Auth : false , message : data.message})
         }
-        console.log(data);
+        
+            
+        store.dispatch(authAction.complete());
+        
+        // console.log(data);
         
         // data를 사용하거나 반환
         return data;
@@ -26,6 +30,7 @@ export async function tokenCheck(){
 
     catch(error){
         console.error(error.message);
+        store.dispatch(authAction.complete());
         return json({Auth : false})
     }
  

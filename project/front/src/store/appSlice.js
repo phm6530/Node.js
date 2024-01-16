@@ -5,7 +5,8 @@ import { createSlice , configureStore } from '@reduxjs/toolkit';
 const authSlice = createSlice({
     name : 'auth',
     initialState : { 
-        login : Boolean(localStorage.getItem('token'))
+        login : Boolean(localStorage.getItem('token')),
+        loading : null
     },
     reducers : {
         login(state){
@@ -13,6 +14,12 @@ const authSlice = createSlice({
         },
         logOut(state){
             state.login = false;
+        },
+        loading(state){
+            state.loading = true;
+        },
+        complete(state){
+            state.loading = false;
         }
     }
 })

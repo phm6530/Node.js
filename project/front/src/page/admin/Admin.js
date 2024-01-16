@@ -1,6 +1,7 @@
 import useAuthRedirect from '../../component/common/AuthCustum';
 
 export default function Admin(){
+
     useAuthRedirect('/');
     return(
         <>

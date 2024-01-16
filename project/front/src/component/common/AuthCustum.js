@@ -8,7 +8,7 @@ export default function useAuthRedirect(redirectPath){
     const isAuth = useSelector(state => state.authSlice.login); // 클라이언트 인증로직
     const { Auth } = useLoaderData(); // 서버 인증로직
     const navigate = useNavigate(); 
-    console.log(Auth);
+
 
     useEffect(()=>{
         if(Auth === false || isAuth === false){

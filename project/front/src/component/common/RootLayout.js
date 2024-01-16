@@ -4,11 +4,14 @@ import { Outlet } from 'react-router-dom';
 import {useState } from 'react';
 
 import Popup from '../popup/Popup'
+import { useSelector } from 'react-redux';
+
 
 export default function RootLayout(){
     const [ viewPopup , setVIewPopup ] = useState(false);
+    const loading = useSelector(state => state.authSlice);
 
-
+    console.log(loading);
     const closePopup = () =>{
         setVIewPopup(false);
     }
