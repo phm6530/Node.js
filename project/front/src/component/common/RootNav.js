@@ -60,7 +60,7 @@ export default function RootNav({setViewPopup}){
                     {/* Nav 3 */}
                     <li>
                     <NavLink
-                            to='/notice'
+                            to='/Board'
                             className={({isActive}) => 
                             isActive ? classes.active : undefined
                         }>
@@ -70,7 +70,7 @@ export default function RootNav({setViewPopup}){
                         
                     <li>
                     <NavLink
-                            to='/notice'
+                            to='/todoCalnder'
                             className={({isActive}) => 
                             isActive ? classes.active : undefined
                         }>

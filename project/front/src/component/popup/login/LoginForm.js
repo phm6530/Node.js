@@ -9,7 +9,7 @@ import LoginInput from '../../ui/LoginInput';
 
 
 export default function LoginForm({popupClose}){
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const showAlert = useAlert();
 
     const [ fromValid , setFormValid ] = useState(false);

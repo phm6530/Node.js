@@ -1,10 +1,27 @@
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate ,  useLocation } from 'react-router-dom';
 
-export default function Notice(){
+export default function Board(){
     const { login } = useSelector(state => state.authSlice);
-    const loading = useSelector(state => state.authSlice);
-    console.log(loading);
+    // const loading = useSelector(state => state.authSlice);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+
+
+    const NavBtn = ({path}) =>{
+
+        const navHandler = (path) =>{
+            navigate(location.pathname + path);    
+        }
+    
+        
+        return(
+            <>
+                <button onClick={()=>navHandler(path)}>글쓰기</button>
+            </>
+        )
+    }
     
     const DUMMY_DATA = [
         {  
@@ -26,7 +43,7 @@ export default function Notice(){
 
     return(
         <>  
-            { login && '글쓰기'}
+            { login && <NavBtn path={'/BoardWirte'} />}
             {
                 DUMMY_DATA.map((Notice_name , idx)=>{
                     return (

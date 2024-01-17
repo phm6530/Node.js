@@ -17,16 +17,22 @@ import HomeComponent from './page/Home/HomeComponent';
 
 // MyProject
 import MyProject from './page/MyProject/MyProject';
+import ProjectAdd from './page/MyProject/addProject';
 
 // Notice
-import Notice from './page/Notice/Notice';
-import NoticeDetail from './page/Notice/component/NoticeDetail';
+import Board from './page/Board/Board';
+import BoardDetail from './page/Board/component/BoardDetail';
+import BoardWirte from './page/Board/BoardWIrte';
 
 // admin
 import Admin from './page/admin/Admin';
 
-//Auth Util
+
+
+//Auth Util 권한 Check
 import { tokenCheck } from './util/auth';
+import Todolist from './page/todo/Todolist';
+
 
 
 
@@ -40,20 +46,40 @@ const router = createBrowserRouter([
         // Project
         {
           path : '/project',
-          element : <MyProject/>,
+          
+          children : [
+            {
+              index : true,
+              element : <MyProject/>,
+            },
+            {
+              path : 'add',
+              element : <ProjectAdd/>,
+              loader : tokenCheck
+            }
+          ]
         },
 
-        // Notice
+        // Board
         {
-          path : '/notice',
+          path : '/Board',
           children : [
-              { index : true, element : <Notice/> },
+              { index : true, element : <Board/> },
               {
                 path: ':num',
-                element : <NoticeDetail/>,
+                element : <BoardDetail/>,
+                loader : tokenCheck,
+              },
+              { 
+                path : 'wirte',
+                element : <BoardWirte/>,
                 loader : tokenCheck,
               }
           ]
+        },
+        { 
+          path : 'todoCalnder',
+          element : <Todolist/>,
         }
         // 관리자페이지
         ,{

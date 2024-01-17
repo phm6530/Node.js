@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import useAlert from './UseAlert';
 
 export default function useAuthRedirect(redirectPath){
-    const showAlert =useAlert();
+    const showAlert = useAlert();
     const isAuth = useSelector(state => state.authSlice.login); // 클라이언트 인증로직
     const { Auth } = useLoaderData(); // 서버 인증로직
     const navigate = useNavigate(); 

@@ -1,7 +1,7 @@
 const { 
     compare 
 } = require('bcrypt');
-const { readData } = require('./readUserData');
+const { readData } = require('./readData');
 
 const isValidAdmin = async (id, password) => {
     try {

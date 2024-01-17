@@ -7,22 +7,8 @@ const { isValidAdmin } = require('./util/util');
 // DB 연결
 const dbConnect = require('./util/config');
 
-
-// const winston = require('winston');
-// const logger = winston.createLogger({
-//     level : 'info',
-//     format: winston.format.combine(
-//         winston.format.timestamp(),
-//         winston.format.json()
-//     ),
-//     transports:[
-//         new winston.transports.File({filename: '/log/logfile.log'})
-//     ]
-// })
-
-
 // Notice
-const noticeRouter = require('./page/notcie');
+const boardRouter = require('./page/notcie');
 
 const app = express();
 // console.log('암호키 : ',jwtSecret);
@@ -33,7 +19,7 @@ app.use(cors());
 
 
 // 게시판 로직
-app.use('/notice' , noticeRouter);
+app.use('/board' , boardRouter);
 
 
 // Login Token 생성
