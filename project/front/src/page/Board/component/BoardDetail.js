@@ -4,13 +4,7 @@ export default function BoardDetail(){
     const param = useParams();
 
     
-    const request = async () =>{
-        const response = await fetch('http://localhost:8080/Board');
-        const result = await response.json();
-        console.log(result);
-    }
-    
-    request();
+
 
 
     return(

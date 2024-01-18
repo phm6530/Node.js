@@ -1,3 +1,9 @@
+/* DarkMode */
+:root{
+  --dark-bgcolor : #000;
+  --dark-textColor : #fff;
+}
+
 .App {
   text-align: center;
   background-color: #282c34;
@@ -40,13 +46,10 @@
   }
 }
 
-/* DarkMode */
-:root{
-  --dark-bgcolor : #000;
-  --dark-textColor : #fff;
-}
+
 .darkMode{
   background-color: var(--dark-bgcolor);
+  color: var(--dark-textColor);
 }
 
 .darkMode li a , .darkMode li{
