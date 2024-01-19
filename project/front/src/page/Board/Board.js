@@ -1,25 +1,42 @@
 import { useEffect, useState } from 'react';
-import {  useLoaderData } from 'react-router-dom';
+import { useLoaderData , useLocation} from 'react-router-dom';
+import { validateWord } from '../../filter/filterWording';
+
 import InputReply from './component/InputReply';
-import { filterWording , validateWord } from '../../filter/filterWording';
 
 export default function Board(){
-    const { boardData } = useLoaderData();
+    const { boardData ,  counter } = useLoaderData(); // 초기 데이터 세팅
     const [ board , setBoard ] = useState(boardData);
+    
     // const { login } = useSelector(state => state.authSlice);
+
     const [ FormValid , setFormValid ] = useState(false); //Form 확인
+    const [ paging , setPaging ] = useState();
+    const location = useLocation()
+    
+    
+    
+    const createPaging = (totalData , DataPerItem) =>{
+        const page = Math.ceil(totalData / DataPerItem) ;
+        return Array.from({length : page}, (_,idx) => idx + 1);
+    }
 
-    console.log(board);
+    useEffect(()=>{
+        const limit = 10;    
+        const arr = createPaging( counter , limit )
+        setPaging(arr);
+    },[counter]);
+    
+    
 
+    // console.log('board Data : ', board);
     const [ reply , setReply ] = useState(
         {
-            userName : { value : '' ,  isValid : false ,  touched : false },
+            userName : { value : '' , isValid : false , touched : false },
             contents : { value : '' , isValid : false , touched : false},
             password : { value : '' , isValid : false , touched : false }
         }
     );
-
-    // console.log(reply);
 
     // isValid 로직
     useEffect(()=>{
@@ -75,24 +92,63 @@ export default function Board(){
                 throw new Error('전송오류')
             }
             const result = await response.json();
-            setBoard(prev => ([...prev, result.data]));
+            console.log(result);
+            // setBoard(prev => ([...prev, result.data]));
             
         }catch(error){
             console.log(error.message);
         }
     }   
 
+    const changePage = async (page) =>{
+        try{
+            const response = await fetch(`http://localhost:8080/Board/${page}`,{
+                method : 'POST',
+                headers : {
+                    'Content-Type' : 'application/json'
+                },
+                body : JSON.stringify({
+                    limit : 10
+                })
+            });
+            const result = await response.json();
+            if(!response.ok){ //200 번대 요청만 받음
+                throw new Error(result.message);
+            }
+            console.log(result);
+        }
+        catch(error){
+            console.error(error);
+        }        
+    }
+
+    
     return(
         <>  
+
+            {board.length === 0 &&  <p> 등록된 게시물이 없습니다. </p>}
             {
-                board.map((item , idx)=>{
+                board && board.map((item , idx)=>{
                     return (
                         <p className='BoardComment' key={idx}>
                                 {item.userName}
                                 {item.contents}
-                                {item.date}
                         </p>
                     )
+                })
+            }
+
+
+            {/* 페이징 */}
+            {
+                paging && paging.map((page , idx)=>{
+                  return <button 
+                  onClick={()=>changePage(idx+1)} 
+                  key={idx} 
+                  to={`${location.pathname}/${idx+1}`} 
+                  >
+                    {page}
+                  </button>
                 })
             }
 
@@ -135,6 +191,7 @@ export const boardList = async () =>{
             throw new Error('connect Error');
         }
         const result = await response.json();
+        console.log(result);
         return result;
     }
     catch(error){

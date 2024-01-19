@@ -78,9 +78,10 @@ app.get('/test', (req , res , next)=>{
     }
 })
 
+// 에러 미들웨어
 app.use((err, req, res, next) => {
     console.error(err.stack); // 서버 콘솔에 에러 로그 출력
-    res.status(500).json({ message: err.message }); // 에러 메시지를 JSON 응답으로 전송
+    res.status(err.status).json({ message: err.message }); // 에러 메시지를 JSON 응답으로 전송
 });
 
 app.listen(8080);
