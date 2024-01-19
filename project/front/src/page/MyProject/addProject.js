@@ -1,16 +1,19 @@
 import { useState } from 'react';
 import useAuthRedirect from '../../component/common/AuthCustum';
+import { useLoaderData } from 'react-router-dom';
 
 const initalList = [ '퍼블리싱' , '기획' , '개발' ]
 
 export default function ProjectAdd(){
+    const loader = useLoaderData();
+    console.log(loader);
     const [ skill , setSkill ] = useState([]);
     const [ value , setValue ] = useState('');
     const [ checkList , setCheckList ] = useState([]); 
     
     const isEmpty = value.length === 0 && !value;
 
-    console.log('checkList : ',checkList);
+    // console.log('checkList : ',checkList);
 
     useAuthRedirect('/project'); //project 리턴
     

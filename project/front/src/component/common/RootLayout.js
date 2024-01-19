@@ -11,7 +11,7 @@ export default function RootLayout(){
     const [ viewPopup , setVIewPopup ] = useState(false);
     const loading = useSelector(state => state.authSlice);
 
-    console.log(loading);
+    // console.log(loading);
     const closePopup = () =>{
         setVIewPopup(false);
     }

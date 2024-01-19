@@ -49,7 +49,8 @@ app.post('/login', async (req, res) => {
     
         }
         catch(error){
-            return res.json({message : error.message , Auth : false});
+            console.log(error);
+            return res.status(error.status).json({message : error.message , Auth : false});
         }
     }
 });

@@ -16,6 +16,7 @@ export async function tokenCheck(){
         );
         const data = await response.json(); // 데이터를 JSON 형태로 파싱
         if(!response.ok){
+            console.log(data);
             return json({Auth : false , message : data.message})
         }
         

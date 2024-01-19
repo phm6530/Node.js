@@ -1,12 +1,16 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate , useLocation, useLoaderData } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import {  useLoaderData } from 'react-router-dom';
 import InputReply from './component/InputReply';
+import { filterWording , validateWord } from '../../filter/filterWording';
 
 export default function Board(){
     const { boardData } = useLoaderData();
-    const { login } = useSelector(state => state.authSlice);
+    const [ board , setBoard ] = useState(boardData);
+    // const { login } = useSelector(state => state.authSlice);
     const [ FormValid , setFormValid ] = useState(false); //Form 확인
+
+    console.log(board);
+
     const [ reply , setReply ] = useState(
         {
             userName : { value : '' ,  isValid : false ,  touched : false },
@@ -14,27 +18,24 @@ export default function Board(){
             password : { value : '' , isValid : false , touched : false }
         }
     );
-    
-    console.log(reply);
 
-    const navigate = useNavigate();
-    const location = useLocation();
-    
-    // Nav
-    const NavBtn = ({path}) =>{
-        const navHandler = (path) =>{
-            navigate(location.pathname + path);    
-        }
-        return(
-            <>
-                <button onClick={()=>navHandler(path)}>글쓰기</button>
-            </>
-        )
-    }
+    // console.log(reply);
 
-    const onSubmitHandlr = (e) =>{
+    // isValid 로직
+    useEffect(()=>{
+        const obj = Object.values(reply);
+        const tester = obj.reduce((isValids , item)=>{
+                return isValids && item.isValid;
+        }, true );   
+        setFormValid(tester);
+    },[reply]);
+
+
+    const onSubmitHandlr = async(e) =>{
         e.preventDefault();
+        const { isValidate , badword } = validateWord(reply.contents.value);
 
+        // touched 해버리기
         setReply(prev => {
             const updateReply = {};
             for(let [key] of Object.entries(prev)){
@@ -47,18 +48,49 @@ export default function Board(){
             console.log('에러임');
             return;
         }
-        console.log('제출완료!');
+        if(isValidate){
+            console.log(`${badword}개의 욕설이 감지되었습니다.`);
+            return;
+        }
+        
+        // const formData ={
+        //     userName : reply.userName.value ,
+        //     contents : filterWording(reply.contents.value),
+        //     password : reply.password.value ,
+        // }
+
+        try{
+            const response = await fetch('http://localhost:8080/Board/reply', {
+                method : 'POST',
+                headers : {
+                    'Content-Type' : 'application/json'
+                },
+                body: JSON.stringify({
+                    userName : reply.userName.value ,
+                    contents : reply.contents.value ,
+                    password : reply.password.value ,
+                })
+            });
+            if(!response.ok){
+                throw new Error('전송오류')
+            }
+            const result = await response.json();
+            setBoard(prev => ([...prev, result.data]));
+            
+        }catch(error){
+            console.log(error.message);
+        }
     }   
 
     return(
         <>  
-            { login && <NavBtn path={'/BoardWirte'} />}
             {
-                boardData.map((Notice_name , idx)=>{
+                board.map((item , idx)=>{
                     return (
                         <p className='BoardComment' key={idx}>
-                                {Notice_name.idx}
-                                {Notice_name.title}
+                                {item.userName}
+                                {item.contents}
+                                {item.date}
                         </p>
                     )
                 })

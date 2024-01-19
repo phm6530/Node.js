@@ -48,16 +48,14 @@ export default function LoginForm({popupClose}){
                     user_password : loginData.pw.value
                 })
             });
+            const resultData = await response.json();
     
             if(!response.ok){
-                throw new Error('서버 응답 오류: ' + response.status);
+                throw new Error(resultData.message);
             }
-            const resultData = await response.json();
-
+            console.log(response.status);
             if(!resultData.Auth || resultData.token === undefined){
-                console.log(resultData);
-                showAlert(resultData.message);    
-                return;
+                throw new Error(resultData.message);
             }
             // 토큰 저장
             localStorage.setItem('token', resultData.token);
@@ -75,10 +73,9 @@ export default function LoginForm({popupClose}){
         }
         catch(error){
             console.error(error);
-            showAlert('로그인이 실패하였습니다. 서버상태를 확인하세요');
-            popupClose();
+            showAlert(error.message);
+            // popupClose();
         }
-    
     }
     
     return(

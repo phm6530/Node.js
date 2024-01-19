@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { NotFoundError } = require('./error');
 //sign = JWT 생성 //verify = JWT 검증
 
 require('dotenv').config();//.env 파일 읽기
@@ -6,7 +7,7 @@ require('dotenv').config();//.env 파일 읽기
 //Token 검증 로직
 const verify = (req,res,next)=>{
     const token = req.headers.authorization?.split(' ')[1];
-    if(!token) return res.status(401).json({message : '인증 실패'});
+    if(!token) throw new NotFoundError('권한이 없습니다.');
     try{
         jwt.verify(token , process.env.JWT_SECRET);
         next();
