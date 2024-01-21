@@ -76,6 +76,7 @@ export default function Board(){
         //     password : reply.password.value ,
         // }
 
+        // 24/1/21 댓글 
         try{
             const response = await fetch('http://localhost:8080/Board/reply', {
                 method : 'POST',
