@@ -10,7 +10,6 @@ export default function ProjectAdd(){
     const [ skill , setSkill ] = useState([]);
     const [ value , setValue ] = useState('');
     const [ checkList , setCheckList ] = useState([]); 
-    console.log(skill);
 
     // const isEmpty = value.length === 0 && !value;
 

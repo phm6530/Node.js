@@ -11,14 +11,15 @@ const filterWording = (word) =>{
 }
 
 // 욕설 있는지 찾기
-const validateWord = (word) =>{
+const findForBadword = (word) =>{
     const filter = filterWord.filter(badword => {
-        console.log(badword);
             return word.includes(badword);
     });
-    console.log(filter);
-    return { isValidate : filter.length > 0 ? true : false , badword : filter.length }
-    
-}
 
-export { filterWording , validateWord }
+    if(filter.length > 0){
+        console.log(`비속어는 입력 불가합니다.`);
+        return false;
+    }
+    return true;
+}
+export { filterWording , findForBadword }
