@@ -10,8 +10,9 @@ export default function ProjectAdd(){
     const [ skill , setSkill ] = useState([]);
     const [ value , setValue ] = useState('');
     const [ checkList , setCheckList ] = useState([]); 
-    
-    const isEmpty = value.length === 0 && !value;
+    console.log(skill);
+
+    // const isEmpty = value.length === 0 && !value;
 
     // console.log('checkList : ',checkList);
 
@@ -19,22 +20,20 @@ export default function ProjectAdd(){
     
     const submitHandler = (e) =>{
         e.preventDefault();
+        console.log('submit');
     }
 
     const listHnadler = () =>{
-        
         if(!value) {
             alert('입력하세요.');
             return;
         }
-
         setSkill(prev => [...prev , value]);
         setValue('');
-
     }
 
     const deleteSkill = (e) =>{
-        setSkill(prev => [...prev].filter((skill)=>{
+        setSkill(prev =>  prev.filter((skill)=>{
             return skill !== e;
         }))
     }
@@ -42,14 +41,12 @@ export default function ProjectAdd(){
     const checkboxHandler = (e) =>{
         const value = e.target.value;
         const isCheck = e.target.checked;
-
         if(isCheck){
             setCheckList(prev => [...prev , value]);
         }else{
             setCheckList(prev => prev.filter((item)=> item !== value ));
         }
     }
-
     return(
         <>  
             <h1>Project 등록</h1>
@@ -87,7 +84,6 @@ export default function ProjectAdd(){
                 <div>
                     <span>skill</span>
                     <input type="text" onChange={(e)=>setValue(e.target.value)} value={value}/>
-                    { !isEmpty && <p>입력해주세요</p> }
                     <button onClick={listHnadler}>추가</button>
 
                     {skill.length === 0 && '등록 스킬이 없습니다.'}
@@ -101,7 +97,7 @@ export default function ProjectAdd(){
                 <div>
                     <textarea name="textarea" style={{'resize' : 'none'}} ></textarea>
                 </div>
-                
+                <button type='submit'>등록</button>
             </form>
         </>
     )

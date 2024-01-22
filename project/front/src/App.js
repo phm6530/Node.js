@@ -23,7 +23,7 @@ import ProjectAdd from './page/MyProject/addProject';
 import Board from './page/Board/Board';
 import BoardDetail from './page/Board/component/BoardDetail';
 import BoardWirte from './page/Board/BoardWIrte';
-import { boardList } from './page/Board/Board';
+// import { boardList } from './page/Board/Board';
 
 // admin
 import Admin from './page/admin/Admin';
@@ -66,7 +66,7 @@ const router = createBrowserRouter([
           path : '/Board',
           children : [
               { index : true, element : <Board/> , 
-                loader : boardList,
+                // loader : boardList,
                 // action : replyAction
               },
               {
