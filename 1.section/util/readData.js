@@ -17,12 +17,16 @@ async function boardTotal(){
   return JSON.parse(total).length; 
 }
 
+async function allBoardData(){
+  const data = await fs.readFile( boardPath , 'utf8');
+  return JSON.parse(data);
+}
+
 async function BoardData(page = 1, limit = 10) {
   const data = await fs.readFile( boardPath , 'utf8');
   const parseData = JSON.parse(data);
 
   const pageLimit = limit || 10;
-
   const startObj = (( page || 1 ) - 1) * pageLimit;
   const endObj = startObj + pageLimit;
 
@@ -43,6 +47,7 @@ async function ProjectData() {
 
 exports.readData = readData;
 exports.boardTotal = boardTotal;
+exports.allBoardData = allBoardData;
 exports.BoardData = BoardData;
 exports.BoardWirte = BoardWirte;
 exports.ProjectData = ProjectData;

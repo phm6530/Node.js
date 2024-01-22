@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();//라우터 연결
-const { verify }  = require('../util/auth'); 
-const { BoardData , BoardWirte , boardTotal } = require('../util/readData');
+// const { verify }  = require('../util/auth'); 
+const { BoardData , BoardWirte , boardTotal , allBoardData } = require('../util/readData');
+const { passwordHashing } = require('../util/password');
 
 // 전체 게시판
 router.get('/', async (req, res, next) => {
@@ -27,16 +28,29 @@ router.get('/', async (req, res, next) => {
 });
 
 router.post('/reply' ,  async(req, res, next) =>{
-    const requestData = req.body;
-    const prevData = await BoardData(); //이전 Data
-    console.log(prevData);
-    console.log(requestData);
+    const { userName , contents , password , idx , page } = req.body;
+    const allData = await allBoardData(); //전체 데이터
 
-    await BoardWirte([...prevData , requestData]);
+    const hashedPassword = await passwordHashing(password);//비밀번호 해싱하기
+
+    //쓰기
+    await BoardWirte([{
+        idx,
+        userName,
+        contents,
+        hashedPassword
+    } , ...allData]);
+
+    //Total 값 리터
+    const boardCount = await boardTotal();
+
+    const resData = await BoardData(page);
 
     try{
         res.status(201).json({
             path : 'board/reply',
+            counter : boardCount,
+            resData : resData
         })
     }
     catch(error){
@@ -51,10 +65,13 @@ router.post('/:item', async (req, res, next) => {
     const { limit } = req.body;
 
     const boardPage = await BoardData(page, limit);
-    
+    //Total 값 리터
+    const boardCount = await boardTotal();
+
     try {
         res.status(201).json({
             path : 'paging',
+            counter : boardCount,
             pageData : boardPage
         });
     } catch (error) {
