@@ -3,12 +3,16 @@ const router = express.Router();//라우터 연결
 // const { verify }  = require('../util/auth'); 
 const { BoardData , BoardWirte , boardTotal , allBoardData } = require('../util/readData');
 const { passwordHashing } = require('../util/password');
+const { validation_Reply } = require('../util/validate');
+
+
+
 
 // 전체 게시판
 router.get('/', async (req, res, next) => {
     try {
         // 초기값 fs가 비동기이기에 await 선언해 줘야 동기 처리됨
-
+        
         //Total 값 리터
         const boardCount = await boardTotal();
         
@@ -27,26 +31,28 @@ router.get('/', async (req, res, next) => {
     }
 });
 
-router.post('/reply' ,  async(req, res, next) =>{
+router.post('/reply' ,  validation_Reply,  async(req, res, next) =>{
     const { userName , contents , password , idx , page } = req.body;
-    const allData = await allBoardData(); //전체 데이터
-
-    const hashedPassword = await passwordHashing(password);//비밀번호 해싱하기
-
-    //쓰기
-    await BoardWirte([{
-        idx,
-        userName,
-        contents,
-        hashedPassword
-    } , ...allData]);
-
-    //Total 값 리터
-    const boardCount = await boardTotal();
-
-    const resData = await BoardData(page);
-
+    
     try{
+        const allData = await allBoardData(); //전체 데이터
+            
+
+        const hashedPassword = await passwordHashing(password);//비밀번호 해싱하기
+
+        //쓰기
+        await BoardWirte([{
+            idx,
+            userName,
+            contents,
+            hashedPassword
+        } , ...allData]);
+
+        //Total 값 리터
+        const boardCount = await boardTotal();
+        const resData = await BoardData(page);
+
+   
         res.status(201).json({
             path : 'board/reply',
             counter : boardCount,
