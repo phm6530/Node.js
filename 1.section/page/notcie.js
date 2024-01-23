@@ -4,9 +4,7 @@ const router = express.Router();//라우터 연결
 const { BoardData , BoardWirte , boardTotal , allBoardData } = require('../util/readData');
 const { passwordHashing } = require('../util/password');
 const { validation_Reply } = require('../util/validate');
-
-
-
+const {isDeleteReply } = require('../util/util');
 
 // 전체 게시판
 router.get('/', async (req, res, next) => {
@@ -32,12 +30,10 @@ router.get('/', async (req, res, next) => {
 });
 
 router.post('/reply' ,  validation_Reply,  async(req, res, next) =>{
-    const { userName , contents , password , idx , page } = req.body;
-    
+    const { userName , contents , password , idx , page } = req.body;    
     try{
-        const allData = await allBoardData(); //전체 데이터
-            
 
+        const allData = await allBoardData(); //전체 데이터
         const hashedPassword = await passwordHashing(password);//비밀번호 해싱하기
 
         //쓰기
@@ -52,7 +48,6 @@ router.post('/reply' ,  validation_Reply,  async(req, res, next) =>{
         const boardCount = await boardTotal();
         const resData = await BoardData(page);
 
-   
         res.status(201).json({
             path : 'board/reply',
             counter : boardCount,
@@ -64,12 +59,22 @@ router.post('/reply' ,  validation_Reply,  async(req, res, next) =>{
     }
 });
 
+router.post('/reply/delete', async(req,res,next)=>{
+    const { reply_Idx , page, reply_password } = req.body;
+    try{
+        const isValid = await isDeleteReply(reply_Idx , reply_password , page);
+        res.json({message: '성공' , resData : isValid});
+    }catch(error){
+        console.log(error.message);
+        res.status(error.status || 500).json({message : error.message});
+    }
+});
+
 
 //게시판 Detail verify
 router.post('/:item', async (req, res, next) => {
     const page = req.params.item;
     const { limit } = req.body;
-
     const boardPage = await BoardData(page, limit);
     //Total 값 리터
     const boardCount = await boardTotal();

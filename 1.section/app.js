@@ -33,6 +33,7 @@ app.post('/login', async (req, res) => {
     if (!user_password) {
         return res.status(400).json({ message: 'Password is missing' });
     }
+    
     else{
         try{
             // ID와 비밀번호가 모두 제공된 경우

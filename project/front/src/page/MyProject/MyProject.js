@@ -18,8 +18,8 @@ export default function MyProject(){
                             <div>{project.idx}</div>
                             <div>{project.title}</div>
                             {
-                               project.skill &&  project.skill.map((e)=>{
-                                    return <div>{e}</div>
+                               project.skill &&  project.skill.map((e, idx)=>{
+                                    return <div key={idx}>{e}</div>
                                 })
                             }
                             <div>{project.contents}</div>

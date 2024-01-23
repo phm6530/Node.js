@@ -8,7 +8,7 @@ const validation_Reply = (req, res, next) =>{
         idx : joi.string().required(),
         userName : joi.string().required(),
         contents : joi.string().required(),
-        password : joi.string().required(),
+        password : joi.string().min(4).required(),
         page : joi.number().required(),
     })
 

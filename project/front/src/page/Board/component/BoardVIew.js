@@ -1,10 +1,14 @@
-import { useMemo , useEffect} from 'react';
+import { useMemo , useEffect, useState} from 'react';
 import { useNavigate , useLocation } from 'react-router-dom';
+import BoardReply from './BoardReply';
 
 export default function BoardView({counter, board , setBoard , setCounter }){
+    
     const navigate = useNavigate();
     const location = useLocation();
 
+
+    const [ idxDelete , setIdxDelete ] = useState(null);
     const createPaging = (totalData , DataPerItem) =>{
         const page = Math.ceil(totalData / DataPerItem) ;
         return Array.from({length : page}, (_,idx) => idx + 1);
@@ -52,18 +56,19 @@ export default function BoardView({counter, board , setBoard , setCounter }){
 
     return(
         <>
-               {board.length === 0 &&  <p> 등록된 게시물이 없습니다. </p>}
+            {board.length === 0 &&  <p> 등록된 게시물이 없습니다. </p>}
             {
-                board && board.map((item , idx)=>{
-                    return (
-                        <p className='BoardComment' key={idx}>
-                                {item.userName}
-                                {item.contents}
-                                {/* <button>삭제</button> */}
-                        </p>
-                    )
-                })
+                board && board.map((item)=> {
+                    return <BoardReply 
+                        key={item.idx} 
+                        reply={item}
+                        isIDX={item.idx === idxDelete}
+                        setIdxDelete={setIdxDelete}
+                        setBoard={setBoard}
+                    />
+                } )
             }
+            
             {/* 페이징 */}
             {
                 paging && paging.map((page , idx)=>{

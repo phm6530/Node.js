@@ -7,7 +7,7 @@ export default function LoginInput(props){
         dataType , 
         holder , 
         setFormData,
-        FormData
+        FormData,
     } = props;
 
 

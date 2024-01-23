@@ -1,7 +1,7 @@
 const { 
     compare 
 } = require('bcrypt');
-const { readData } = require('./readData');
+const { readData , allBoardData , BoardData , BoardWirte} = require('./readData');
 const { NotFoundError } = require('./error');
 
 const isValidAdmin = async (id, password) => {
@@ -27,7 +27,36 @@ const isValidAdmin = async (id, password) => {
     }
 }
 
+
+const isDeleteReply = async( replyIdx , password , page) =>{
+    try{
+        const data = await allBoardData();
+        const targetReley = data.find((e) => e.idx === replyIdx);
+        if(!targetReley){
+            throw new NotFoundError('이미 삭제되었거나 서버에 문제가 있습니다.');
+        }
+        const isMatch = await compare(password , targetReley.hashedPassword);
+
+        if(!isMatch){
+            throw new NotFoundError('비밀번호가 맞지않습니다.');
+        }
+        const newObject = data.filter((e)=>{
+            return e.idx !== replyIdx;
+        });
+        await BoardWirte(newObject);
+
+        const newReplyPage = await BoardData(page);
+        console.log('newReplyPage : ' ,  newReplyPage)
+        return newReplyPage;
+
+    }catch(err){
+        throw err;
+    }
+}
+
+
 exports.isValidAdmin = isValidAdmin;
+exports.isDeleteReply = isDeleteReply;
 
 
 

@@ -1,8 +1,8 @@
-import { LoginUser , LoginPassword  } from '../../icon/Icon';
 import { useEffect, useState } from 'react';
 import useAlert from '../../common/UseAlert';
 import { useDispatch } from 'react-redux';
 import  { authAction } from '../../../store/appSlice';
+import { LoginUser , LoginPassword} from '../../icon/Icon'; 
 
 // 인증로직
 import LoginInput from '../../ui/LoginInput';
@@ -93,7 +93,7 @@ export default function LoginForm({popupClose}){
                     {isIdValid && 'error'}
                 </label>
 
-                <label>                    
+                <label>     
                     <LoginPassword size={30}/>
                     <LoginInput
                          type = 'password'

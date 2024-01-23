@@ -4,6 +4,8 @@ import { findForBadword } from '../../filter/filterWording';
 import { v4 as uuidv4 } from 'uuid';
 import BoardReplyForm from './component/BoardReplyForm';
 import BoardView from './component/BoardVIew';
+import useAlert from '../../component/common/UseAlert';
+
 const formInital = {
     userName : { value : '' , isValid : false , touched : false },
     contents : { value : '' , isValid : false , touched : false},
@@ -15,7 +17,7 @@ export default function Board(){
     const [ counter , setCounter ] = useState();
     const [ reply , setReply ] = useState(formInital);
     const location = useLocation();
-
+    const showAlert = useAlert();
     // 폼 확인
     const validateCheck = () =>{
         const obj = Object.values(reply);
@@ -36,14 +38,16 @@ export default function Board(){
     }
 
     const fetchReply = async(formData) =>{
+        console.log(formData);
         const response = await fetch('http://localhost:8080/Board/reply', {
             method : 'POST',
             headers : {
                 'Content-Type' : 'application/json'
             },
-            body: JSON.stringify({formData})
+            body: JSON.stringify(formData)
         });
-        const result = response.json();
+        const result = await response.json();
+        console.log(result);
         if(!response.ok){
             throw new Error(result.message);
         }
@@ -69,12 +73,13 @@ export default function Board(){
                 password : reply.password.value ,
                 page : new URLSearchParams(location.search).get('page') || 1
             }
-
+            console.log(formData);
             const result = await fetchReply(formData);
-
+            console.log(result);
             setBoard(result.resData);
             setCounter(result.counter);
             setReply(formInital);
+            showAlert('댓글이 등록되었습니다.');
 
         }catch(error){
             console.log(error.message);

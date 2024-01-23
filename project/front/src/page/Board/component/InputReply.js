@@ -9,8 +9,6 @@ export default function InputReply(props){
     const [ error , setError] = useState({
         isValid : false , errorMessage : ''
     })
-    
-
 
     const touched = reply[inputName].touched;
 
@@ -54,6 +52,7 @@ export default function InputReply(props){
     }
 
     const isInValid = !error.isValid && touched;
+    const passwordInput = inputName === 'password' ? true : false;
     
     return(
         <>  
@@ -64,6 +63,7 @@ export default function InputReply(props){
                 value={reply[inputName].value}
                 onChange={(e)=>onChnageHandler(inputName , e.target.value)}
                 onBlur={()=>touchedHandler(inputName)}
+                autoComplete={ passwordInput ? 'on' : 'off'}
             />
             {isInValid && <p className={classes.error}> {error.errorMessage} </p>}
         </>
