@@ -29,10 +29,10 @@ import BoardWirte from './page/Board/BoardWIrte';
 import Admin from './page/admin/Admin';
 
 
-
 //Auth Util 권한 Check
 import { tokenCheck } from './util/auth';
 import Todolist from './page/todo/Todolist';
+import AuthComponent from './component/common/AuthComponent';
 
 
 
@@ -44,6 +44,7 @@ const router = createBrowserRouter([
     id : 'auth',
     children : [
         { index : true , element : <HomeComponent/> },
+
         // Project
         {
           path : '/project',
@@ -55,7 +56,7 @@ const router = createBrowserRouter([
             },
             {
               path : 'add',
-              element : <ProjectAdd/>,
+              element : <AuthComponent Component={ProjectAdd} redirectPath={'/project'}/> ,   
               loader : tokenCheck
             }
           ]

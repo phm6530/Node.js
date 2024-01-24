@@ -1,5 +1,5 @@
 import { json } from 'react-router-dom';
-import store, { authAction } from '../store/appSlice';
+import store , { authAction } from '../store/appSlice';
 
 export async function tokenCheck(){   
     store.dispatch(authAction.loading());
@@ -15,6 +15,7 @@ export async function tokenCheck(){
             }
         );
         const data = await response.json(); // 데이터를 JSON 형태로 파싱
+        console.log(data);
         if(!response.ok){
             console.log(data);
             return json({Auth : false , message : data.message})
@@ -30,7 +31,7 @@ export async function tokenCheck(){
     }
 
     catch(error){
-        console.error(error.message);
+        // console.error(error.message);
         store.dispatch(authAction.complete());
         return json({Auth : false})
     }

@@ -18,6 +18,7 @@ export default function Board(){
     const [ reply , setReply ] = useState(formInital);
     const location = useLocation();
     const showAlert = useAlert();
+    
     // 폼 확인
     const validateCheck = () =>{
         const obj = Object.values(reply);
