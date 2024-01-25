@@ -17,7 +17,6 @@ const findForBadword = (word) =>{
     });
 
     if(filter.length > 0){
-        console.log(`비속어는 입력 불가합니다.`);
         return false;
     }
     return true;

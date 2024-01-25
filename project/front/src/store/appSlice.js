@@ -29,12 +29,14 @@ const alertSlice = createSlice({
     name : 'alert',
     initialState : { 
         view : false ,
-        message : 'null'
+        message : '',
+        type : null
     },
     reducers : {
         alertViewOn(state , action){
             state.view = true;
-            state.message = action.payload;
+            state.message = action.payload.message;
+            state.type = action.payload.type;
         },
         alertViewOff(state){
             state.view =  false;

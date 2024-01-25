@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState , useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { findForBadword } from '../../filter/filterWording';
 import { v4 as uuidv4 } from 'uuid';
@@ -6,18 +6,50 @@ import BoardReplyForm from './component/BoardReplyForm';
 import BoardView from './component/BoardVIew';
 import useAlert from '../../component/common/UseAlert';
 
-const formInital = {
-    userName : { value : '' , isValid : false , touched : false },
-    contents : { value : '' , isValid : false , touched : false},
-    password : { value : '' , isValid : false , touched : false }
+import { fetchReply , fetchData } from './BoardFetch';
+
+const replyInital = {
+    userName : { value : '' , isValid : false , touched : false , errorMessage : '작성자는 필수항목입니다.'},
+    contents : { value : '' , isValid : false , touched : false , errorMessage : '내용은 2글자 이상 입력해주세요.'},
+    password : { value : '' , isValid : false , touched : false , errorMessage : 'password는 4글자 이상 입력해주세요.'}
 }
 
 export default function Board(){
-    const [ board , setBoard ] = useState('');
-    const [ counter , setCounter ] = useState();
-    const [ reply , setReply ] = useState(formInital);
+    const [ reply , setReply ] = useState(replyInital);
+    
+    const showAlert = useAlert(); // 팝업 커스텀 훅
     const location = useLocation();
-    const showAlert = useAlert();
+
+
+    // Board 데이터;
+    const [ board , setBoard ] = useState({
+        boardData : [],
+        counter : null, 
+        page : +new URLSearchParams(location.search).get('page') || +1
+    });
+
+
+
+    // 초기데이터 + 페이징 데이터 로드
+    useEffect(() => {
+        let isMounted = true;
+
+        fetchData(board.page)
+        .then(data => {
+                if(isMounted){
+                    setBoard(prev => (
+                        {...prev , counter : data.counter , boardData : [...data.pageData] }
+                    )); 
+                }
+            }
+        ).catch(error => console.log(error.message));
+
+        return () =>{
+            isMounted = false; 
+        }
+    }, [board.page]); 
+
+
     
     // 폼 확인
     const validateCheck = () =>{
@@ -27,8 +59,9 @@ export default function Board(){
         }, true );   
     }
 
+    // 전체 form touched 처리
     const touchedAll = () =>{
-        // 전체 form touched 버리기
+        
         setReply(prev => {
             const updateReply = {};
             for(let [key] of Object.entries(prev)){
@@ -38,33 +71,22 @@ export default function Board(){
         })
     }
 
-    const fetchReply = async(formData) =>{
-        console.log(formData);
-        const response = await fetch('http://localhost:8080/Board/reply', {
-            method : 'POST',
-            headers : {
-                'Content-Type' : 'application/json'
-            },
-            body: JSON.stringify(formData)
-        });
-        const result = await response.json();
-        console.log(result);
-        if(!response.ok){
-            throw new Error(result.message);
-        }
-        return result;
-    }
 
+    // submit
     const onSubmitHandlr = async(e) =>{
         e.preventDefault();
         
+
         touchedAll(); //touched All
+
         if(!validateCheck()){
             return;
         }
         if(!findForBadword(reply.contents.value)){
-            return
+            showAlert('비속어는 입력 불가합니다..' , false );
+            return;
         }
+        
         // 24/1/21 댓글 
         try{
            const formData = {
@@ -74,28 +96,30 @@ export default function Board(){
                 password : reply.password.value ,
                 page : new URLSearchParams(location.search).get('page') || 1
             }
-            console.log(formData);
-            const result = await fetchReply(formData);
-            console.log(result);
-            setBoard(result.resData);
-            setCounter(result.counter);
-            setReply(formInital);
-            showAlert('댓글이 등록되었습니다.');
+
+            const data = await fetchReply(formData);
+            
+            setBoard(prev => (
+                {...prev , counter : data.counter ,  boardData : [...data.resData] }
+            )); 
+
+            setReply(replyInital);
+            showAlert('댓글이 등록되었습니다.' , 1);
 
         }catch(error){
+            showAlert(error.message);
             console.log(error.message);
         }
     }   
 
+    // console.log(board.boardData);
     return(
         <>  
             {/* view or Page */}
             <BoardView
-                counter={counter}
                 board={board}
                 setBoard={setBoard}
-                setCounter={setCounter}
-            />
+            /> 
 
             {/* Form */}
             <BoardReplyForm

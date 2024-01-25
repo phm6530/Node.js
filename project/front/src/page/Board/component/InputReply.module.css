@@ -3,3 +3,12 @@
 .error{
     color: red;
 }
+
+.errorInput{
+    border: 1px solid #b40e0e;
+    background-color: #fddddd;
+}
+
+.inputClear{
+    color: #06b771;
+}

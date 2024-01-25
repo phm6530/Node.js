@@ -3,13 +3,16 @@ import { alertAction } from '../../store/appSlice';
 
 const useAlert = () => {
     const dispatch = useDispatch();
-
-    const showAlert = (message) => {
-        dispatch(alertAction.alertViewOn(message));
+    let debounce = null;
+    
+    const showAlert = (message, type) => {
+        if(debounce) clearTimeout(debounce);
+        dispatch(alertAction.alertViewOn({message , type}));
         
-        setTimeout(() => {
+        debounce = setTimeout(() => {
             dispatch(alertAction.alertViewOff());
-        }, 3000);
+            debounce = null;
+        }, 3000);        
     };
 
     return showAlert;

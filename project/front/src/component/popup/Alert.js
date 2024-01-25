@@ -3,9 +3,12 @@ import classes from './Alert.module.css';
 import { useSelector } from 'react-redux';
 
 export default function Alert(){
-    const { message } = useSelector(state => state.alertSlice);
+    const { message , type } = useSelector(state => state.alertSlice);
+    
+    const classNameAlert = type ? 'success' : 'falid' ;
+
     const AlertMessage = () =>{
-        return <div className={classes.Alert}>{message}</div>
+        return <div className={`${classes.alert} ${classes['alert_' + classNameAlert]}`}>{message}</div>
     }
 
     return(

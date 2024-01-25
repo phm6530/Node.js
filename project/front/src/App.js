@@ -89,11 +89,9 @@ const router = createBrowserRouter([
         // 관리자페이지
         ,{
           path : '/admin',
-          element : <Admin/>,
-          loader : tokenCheck,
+          element : <AuthComponent Component={Admin} redirectPath={'/'}/> ,   
+          loader : tokenCheck
         }
-
-
     ]
   }
 ])

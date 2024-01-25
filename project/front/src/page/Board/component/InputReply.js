@@ -1,47 +1,26 @@
-import { useState } from 'react';
 import classes from './InputReply.module.css';
-// import { filterWording } from '../../../filter/filterWording';
-
 
 export default function InputReply(props){
     const { inputTitle, type , inputName , reply , setReply } = props;
-
-    const [ error , setError] = useState({
-        isValid : false , errorMessage : ''
-    })
-
     const touched = reply[inputName].touched;
 
-    const validateInput = (type , value) =>{
-        if(type === 'password' && value.length < 4){
-            setError(prev => ({
-                ...prev , 
-                isValid : false , 
-                errorMessage : '비밀번호는 4글자 이상 등록해주세요'
-            }));
-            return false;
+    const validCheck = (type, value) => {
+        if (type === 'password') {
+            return value.length >= 4;
         }
-        else if(value.trim() === ''){
-            setError(prev => ({
-                ...prev , 
-                isValid : false , 
-                errorMessage : '빈칸은 입력 불가합니다.'
-            }));
-            return false;
-        }else{
-            setError(prev => ({
-                ...prev , 
-                isValid : true , 
-                errorMessage : ''
-            }));
-            return true;
+        else if (type === 'contents') {
+            return value.trim().length >= 2;
+        }
+        else {
+            return value.trim() !== '';
         }
     }
 
     const onChnageHandler = (type, value) =>{
-        const isValid = validateInput(type , value);
+        let isValid = validCheck(type, value);
+
         setReply(prev => ({
-            ...prev , [type] : {...prev[type] , value , isValid }
+            ...prev , [type] : {...prev[type] , isValid , value }
         }))
     }
     
@@ -51,13 +30,15 @@ export default function InputReply(props){
         }))
     }
 
-    const isInValid = !error.isValid && touched;
+    const isInValid = !reply[inputName].isValid && touched;
     const passwordInput = inputName === 'password' ? true : false;
     
+
     return(
         <>  
-            <p>{inputTitle}</p>
+            <p>{inputTitle} *</p>
             <input 
+                className={isInValid ? classes.errorInput : undefined}
                 type={type}
                 name={inputName}
                 value={reply[inputName].value}
@@ -65,7 +46,8 @@ export default function InputReply(props){
                 onBlur={()=>touchedHandler(inputName)}
                 autoComplete={ passwordInput ? 'on' : 'off'}
             />
-            {isInValid && <p className={classes.error}> {error.errorMessage} </p>}
+            {isInValid && <p className={classes.error}>{reply[inputName].errorMessage}</p>}
+            {(!isInValid && touched) && <p className={classes.inputClear}>good</p>}
         </>
     )
 }

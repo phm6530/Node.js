@@ -35,9 +35,9 @@ export default function BoardReply({reply, setIdxDelete, isIDX , setBoard}){
         }
         try{
             const resultData = await deleteFetch(formData);
-            console.log('리턴데이터임 : ',resultData);
-            setBoard(resultData.resData);
-            showAlert('삭제되었습니다.');
+            // console.log('리턴데이터임 : ',resultData);
+            setBoard(prev => ({...prev , boardData :resultData.resData }));
+            showAlert('삭제되었습니다.', 1);
         }
         catch(error){
             console.log(error);
@@ -58,6 +58,7 @@ export default function BoardReply({reply, setIdxDelete, isIDX , setBoard}){
                     autoComplete='off'
                 />
                 <button type='submit'>확인</button>
+                <button type='button' onClick={()=>setIdxDelete(null)}>취소</button>
             </form>
             
         )}

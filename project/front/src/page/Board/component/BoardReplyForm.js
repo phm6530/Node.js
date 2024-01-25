@@ -16,19 +16,21 @@ export default function BoardReplyForm({
                         setReply={setReply}
                     />
                     <InputReply 
-                        inputTitle={'내용'}
-                        type="text" 
-                        inputName='contents'
-                        reply={reply}
-                        setReply={setReply}
-                    />
-                    <InputReply 
                         inputTitle={'password'}
                         type="password" 
                         inputName='password'
                         reply={reply}
                         setReply={setReply}
                     />
+                    <InputReply 
+                        inputTitle={'내용'}
+                        type="text" 
+                        inputName='contents'
+                        reply={reply}
+                        setReply={setReply}
+                    />
+                    
+
                     <button type='submit'>reply</button>
                 </form>
         </div>

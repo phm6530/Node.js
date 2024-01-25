@@ -14,10 +14,10 @@ export default  function AuthComponent({Component , redirectPath}){
     useEffect(() => {
       if (!isAuth || !Auth) {
         navigate(redirectPath);
-        showPopup('권한이 없습니다.')
+        showPopup('권한이 없습니다.' , 0 );
       }
     }, [isAuth, Auth, navigate, redirectPath ,  showPopup]);
 
-    return (isAuth || Auth) && <Component/> ;
+    return (isAuth && Auth) ? <Component/> : null;
     
 }

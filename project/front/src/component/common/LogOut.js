@@ -9,7 +9,7 @@ const LogOut =() =>{
     const logOutAction = () =>{
         localStorage.removeItem('token');
         dispatch(authAction.logOut());
-        showAlert('로그아웃 되었습니다.');
+        showAlert('로그아웃 되었습니다.' , 1);
     }
     
     

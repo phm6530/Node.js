@@ -64,7 +64,7 @@ export default function LoginForm({popupClose}){
             dispatch(authAction.login());
 
             // 로그인 OK
-            showAlert('로그인 되었습니다.');
+            showAlert('로그인 되었습니다.' , 1 );
 
             // 완료시에만 로그인 팝업 닫기
             popupClose();       
