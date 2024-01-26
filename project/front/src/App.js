@@ -17,7 +17,7 @@ import HomeComponent from './page/Home/HomeComponent';
 
 // MyProject
 import MyProject from './page/MyProject/MyProject';
-import ProjectAdd from './page/MyProject/addProject';
+import AddProject from './page/MyProject/AddProject';
 
 // Notice
 import Board from './page/Board/Board';
@@ -56,7 +56,7 @@ const router = createBrowserRouter([
             },
             {
               path : 'add',
-              element : <AuthComponent Component={ProjectAdd} redirectPath={'/project'}/> ,   
+              element : <AuthComponent Component={AddProject} redirectPath={'/project'}/> ,   
               loader : tokenCheck
             }
           ]

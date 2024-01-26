@@ -1,8 +1,8 @@
-const DUMMY_PROJECT = [
+let DUMMY_PROJECT = [
     {
         idx : 1,
         title : '강원랜드 직원 모바일',
-        skill : [
+        stack : [
             'JavaScript',
             'css',
             'html',
@@ -14,7 +14,7 @@ const DUMMY_PROJECT = [
     {
         idx : 2,
         title : '대웅제약 직원 모바일',
-        skill : [
+        stack : [
             'html',
             'css'
         ],
@@ -24,7 +24,7 @@ const DUMMY_PROJECT = [
     {
         idx : 3,
         title : 'Menteimo',
-        skill : [
+        stack : [
             'html',
             'css',
             'JQuery',
@@ -36,7 +36,7 @@ const DUMMY_PROJECT = [
     {
         idx : 4,
         title : 'All digital - 한국진흥통신전파원',
-        skill : [
+        stack : [
             'html',
             'css',
             'JQuery',

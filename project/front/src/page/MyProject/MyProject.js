@@ -18,7 +18,7 @@ export default function MyProject(){
                             <div>{project.idx}</div>
                             <div>{project.title}</div>
                             {
-                               project.skill &&  project.skill.map((e, idx)=>{
+                               project.stack &&  project.stack.map((e, idx)=>{
                                     return <div key={idx}>{e}</div>
                                 })
                             }

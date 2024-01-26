@@ -1,70 +1,45 @@
-# Getting Started with Create React App
+# Node.js
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+yarn install
+yarn express
+yarn add body-parser <-- 요즘 Node.js 내부라이브러리로 변경됨
 
-## Available Scripts
 
-In the project directory, you can run:
+npm install --save 요즘은 save잘안씀 반영되있음
+npm install body-parser 
 
-### `npm start`
+npm install --save express-handlebars@3.0 
+> SSR 방식 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+# Node.js 라이브러리
 
-### `npm test`
+jsonwebtoken
+> JWT 토큰 생성기
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+cors
+> CORS 예외 처리 라이브러리
 
-### `npm run build`
+express
+> Express 라이브러리
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+mysql2
+> mysql2 라이브러리
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+dotenv
+> .env 파일 root 에서 읽기
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+crypto 
+> 시크릿키 생성
 
-### `npm run eject`
+bcrypt
+> 주로 비밀번호 해싱에 사용되는 라이브러리 [암호화]
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+# React-icons
+npm install react-icons --save // npm
+yarn add react-icons // yarn
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# 커밋
+최종
