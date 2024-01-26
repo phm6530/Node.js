@@ -1,8 +1,7 @@
-import { useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import * as Yup from 'yup';
-import { Controller, useForm , useWatch } from 'react-hook-form';
+import { useForm} from 'react-hook-form';
 import useAuthRedirect from '../../component/common/AuthCustum';
 import Checkbox from './component/CheckBox';
 
@@ -10,7 +9,7 @@ import Checkbox from './component/CheckBox';
 import { DUMMY_PROJECT } from './DUMMY_DATA';
 
 
-const initalList = [ '퍼블리싱' , '기획' , '개발' ]
+// const initalList = [ '퍼블리싱' , '기획' , '개발' ]
 const projectStack = [ 'Node.js' , 'Next.js' , 'Css' , 'Html' , 'JavaSciprt' , 'PHP' , 'MySql', 'Scss'];
 
 const schema = Yup.object({
