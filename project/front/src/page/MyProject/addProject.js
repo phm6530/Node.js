@@ -1,28 +1,49 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import * as Yup from 'yup';
-import { useForm} from 'react-hook-form';
+import { Controller, useForm, useWatch} from 'react-hook-form';
 import useAuthRedirect from '../../component/common/AuthCustum';
 import Checkbox from './component/CheckBox';
 
+//
+import { v4 as uuidv4 } from 'uuid';
+import * as Yup from 'yup';
+import CustumDatePicker from './component/CustumDatePicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
 // 
 import { DUMMY_PROJECT } from './DUMMY_DATA';
+import useAlert from '../../component/common/UseAlert';
 
 
 // const initalList = [ '퍼블리싱' , '기획' , '개발' ]
 const projectStack = [ 'Node.js' , 'Next.js' , 'Css' , 'Html' , 'JavaSciprt' , 'PHP' , 'MySql', 'Scss'];
 
+
 const schema = Yup.object({
     project_name : Yup.string().required('필수로 입력해주세요.'),
     project_stack : Yup.array().min(1 , '한개 이상의 stack을 등록해주세요'),
+    project_url : Yup.string().required('필수로 입력해주세요.').url('Url 형식으로 입력해주세요. 예)https://sitename.com'),
+    project_startDate : Yup.date().required('시작일을 입력해주세요'),
+    project_endDate : Yup.date().min(Yup.ref('project_startDate') , '종료일은 시작일 이후로 설정해주세요').required('종료일을 입력해주세요.'),
     project_contents : Yup.string().required('필수로 입력해주세요.').min(10, '10글자 이상써주세요')
 });
 
+
 export default function AddProject(){
-    const { register , handleSubmit  , reset , formState : { errors }  }= useForm({
+    const { register , handleSubmit  , reset ,  formState : { errors } , control }= useForm({
         resolver : yupResolver(schema) , 
-        defaultValues: { project_stack: [] }
+        defaultValues: {
+            project_name: '',
+            project_stack: [],
+            project_url: '',
+            project_contents: ''
+          }
     });
+
+    // 팝업
+    const showAlert = useAlert();
+
+    useAuthRedirect('/project'); //project 리턴
 
     // register: 폼 필드를 React Hook Form에 연결하는 함수입니다. 
     //이 함수는 ref를 반환하며, 이를 통해 폼 필드와 React Hook Form의 내부 상태가 연결됩니다.
@@ -38,25 +59,40 @@ export default function AddProject(){
     // watch: 지정한 필드 또는 모든 필드의 현재 값을 반환하는 함수입니다.
 
 
+    const requestData = async (formData) =>{
+        try{
+            const response = await fetch('http://localhost:8080/project/add',
+                {
+                    method : 'POST',
+                    headers : {'Content-Type' : 'application/json'},
+                    body: JSON.stringify(formData)
+                }
+            );
+            if(!response.ok){
+                throw new Error(response.message);
+            }
+            return response.json();
+        }
+        catch(error){
+            console.error('An error occurred:', error);
+            showAlert('네트워크 오류 또는 기타 문제가 발생했습니다.');
+        }
+    }
 
+    const onSubmitHandler = async(data) => {
+        console.log(data);
+        try {
+            const setObj = { 
+                idx : uuidv4() , ...data 
+            };
+            const newArray = [...DUMMY_PROJECT, setObj];
+            const result = await requestData(newArray);
 
-    useAuthRedirect('/project'); //project 리턴
-
-    // const requestData = async () =>{
-    //     try{
-    //         const response = await fetch('http://localhost:8080/project');
-    //     }
-    //     catch(error){
-
-    //     }
-    
-    // }
-
-    const onSubmitHandler = (data) =>{
-        const setObj = { idx : DUMMY_PROJECT.length + 1 , title : data.project_name ,  stack : data.project_stack, contents : data.project_contents}
-        const newArray = [...DUMMY_PROJECT , setObj ]
-        console.log(newArray);
-        reset();
+            console.log(result);
+            reset(); // 서버 요청이 성공적일 때만 reset 호출
+        } catch (error) {
+            showAlert(error.message);
+        }
     }
 
     return(
@@ -66,9 +102,21 @@ export default function AddProject(){
 
                 <div>
                     <span>프로젝트 명 </span><br></br>
-                    <input type="text" {...register('project_name')}/>
+                    <input type="text" 
+                        {...register('project_name')}
+                    />
                     {errors.project_name && <p>{errors.project_name.message}</p>}
                 </div>
+
+                {/* date Picker */}
+                <CustumDatePicker  
+                    control={control}  
+                    errors={errors}
+                    label='프로젝트 제작기간'
+                    startDateName='project_startDate'
+                    endDateName='project_endDate'
+                />
+
 
                 <div>
                     <span>프로젝트 기술스택 </span><br></br>
@@ -78,6 +126,12 @@ export default function AddProject(){
                         {...register('project_stack')}
                     />)}
                     {errors.project_stack && <p>{errors.project_stack.message}</p>}
+                </div>
+ 
+                <div>
+                    <span>Site Url</span>
+                    <input {...register('project_url')}></input>
+                    {errors.project_url && <p>{errors.project_url.message}</p>}
                 </div>
 
                 <div>

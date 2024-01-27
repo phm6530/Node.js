@@ -7,8 +7,9 @@ const Checkbox = forwardRef((props , ref) => {
       <input
         type="checkbox"
         ref={ref}
-        {...rest}
         value={label}
+        
+        {...rest}
       /> {label}
     </label>
   );

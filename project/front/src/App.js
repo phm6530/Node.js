@@ -33,6 +33,7 @@ import Admin from './page/admin/Admin';
 import { tokenCheck } from './util/auth';
 import Todolist from './page/todo/Todolist';
 import AuthComponent from './component/common/AuthComponent';
+import Test from './test';
 
 
 
@@ -91,6 +92,11 @@ const router = createBrowserRouter([
           path : '/admin',
           element : <AuthComponent Component={Admin} redirectPath={'/'}/> ,   
           loader : tokenCheck
+        }
+        ,{
+          path : '/test',
+          element : <Test/> ,   
+          
         }
     ]
   }
