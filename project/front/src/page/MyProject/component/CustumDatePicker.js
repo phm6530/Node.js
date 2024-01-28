@@ -6,7 +6,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const CustumDatePicker = ({control , errors , label , startDateName , endDateName }) => {
     const [ startDate , setStartDate ] = useState(false);
-
     return (
       <div className='custumDatePicker'>
             {label}
@@ -26,7 +25,7 @@ const CustumDatePicker = ({control , errors , label , startDateName , endDateNam
                     />
                 }
             />
-            {errors[startDateName] && errors[startDateName].message}
+            {errors[startDateName] && <p className='errorMessage'>{errors[startDateName].message}</p>}
 
             {startDate &&  (
                 <>
@@ -43,7 +42,7 @@ const CustumDatePicker = ({control , errors , label , startDateName , endDateNam
                         />
                     }
                 />
-                {errors[endDateName] && errors[endDateName].message}
+                {errors[endDateName] && <p className='errorMessage'>{errors[endDateName].message}</p>}
                 </>
             )
         }

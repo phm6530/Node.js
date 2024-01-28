@@ -70,7 +70,32 @@ export default function Board(){
             return updateReply;
         })
     }
+    
+    
 
+    const dateFormating = (today) =>{
+        const arrDay = ['일','월','화','수','목','금','토'];
+
+        const year = today.getFullYear();
+        const month = today.getMonth() + 1;
+        const date = today.getDate();
+        const day = today.getDay();
+
+        const hour = today.getHours();
+        const minit = today.getMinutes();
+
+        const dateFormating = [ year , month , date  ].join('-');
+        const wirteDay = arrDay[day];
+        const writeTime =  `${hour} : ${minit}`;
+
+        return [ dateFormating  , wirteDay, writeTime ] ;
+    }
+
+    
+    console.log(dateFormating(new Date()));
+
+    
+    
 
     // submit
     const onSubmitHandlr = async(e) =>{
@@ -86,7 +111,11 @@ export default function Board(){
             showAlert('비속어는 입력 불가합니다..' , false );
             return;
         }
-        
+
+        // 날짜  인스턴스 생성 
+        // const today = new Date();
+        // const wirteDate = dateFormating(today);
+
         // 24/1/21 댓글 
         try{
            const formData = {
@@ -94,11 +123,11 @@ export default function Board(){
                 userName : reply.userName.value ,
                 contents : reply.contents.value ,
                 password : reply.password.value ,
-                page : new URLSearchParams(location.search).get('page') || 1
+                page : new URLSearchParams(location.search).get('page') || 1 ,
             }
 
             const data = await fetchReply(formData);
-            
+            console.log(data);
             setBoard(prev => (
                 {...prev , counter : data.counter ,  boardData : [...data.resData] }
             )); 
@@ -107,7 +136,7 @@ export default function Board(){
             showAlert('댓글이 등록되었습니다.' , 1);
 
         }catch(error){
-            showAlert(error.message);
+            showAlert(`요청에 실패하였습니다 사유 : ${error.message}`);
             console.log(error.message);
         }
     }   

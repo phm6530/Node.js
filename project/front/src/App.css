@@ -2,6 +2,7 @@
 :root{
   --dark-bgcolor : #000;
   --dark-textColor : #fff;
+  --error-Message-color : red;
 }
 
 .App {
@@ -54,4 +55,9 @@
 
 .darkMode li a , .darkMode li{
   color: var(--dark-textColor);
+}
+
+
+.errorMessage{
+  color: var(--error-Message-color);
 }

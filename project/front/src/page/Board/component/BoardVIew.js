@@ -4,7 +4,7 @@ import BoardReply from './BoardReply';
 
 export default function BoardView({ board , setBoard }){
     const { boardData , counter} = board;
-
+    console.log(boardData);
     const navigate = useNavigate();
     const [ idxDelete , setIdxDelete ] = useState(null);
 
@@ -29,10 +29,11 @@ export default function BoardView({ board , setBoard }){
             {boardData.length === 0 &&  <p> 등록된 게시물이 없습니다. </p>}
             {
                 boardData && boardData.map((item)=> {
+                    // console.log('item :' , item)
                     return <BoardReply 
-                        key={item.idx} 
+                        key={item.board_key} 
                         reply={item}
-                        isIDX={item.idx === idxDelete}
+                        isIdx={item.idx === idxDelete}
                         setIdxDelete={setIdxDelete}
                         setBoard={setBoard}
                     />
