@@ -1,9 +1,12 @@
 import { useEffect, useState , useMemo } from 'react';
-import useAlert from '../../../component/common/UseAlert';
 import { deleteFetch } from '../BoardFetch';
+import useAlert from '../../../component/common/UseAlert';
+
+
 export default function BoardReply({reply, setIdxDelete, isIdx , setBoard}){
 
     const showAlert = useAlert();
+
     const { 
         user_name, 
         idx , 
@@ -26,16 +29,23 @@ export default function BoardReply({reply, setIdxDelete, isIdx , setBoard}){
         }
     },[isIdx , setReplyValid , initalReply]);
 
+
     const onChangeHandler = (value) =>{
         setReplyValid(prev => ({...prev , value}));
     }
+
 
     const isReplyValidate = !replyValid.value && replyValid.touched;
 
 
     const onSubmitHandler = async(e) =>{
         e.preventDefault();
-        
+        setReplyValid(prev => ({...prev, touched:true}))
+
+        if(replyValid.value.trim() === ''){
+            return; 
+        }
+
         const form = new FormData(e.target);
         const password = form.get('password');
         const formData ={

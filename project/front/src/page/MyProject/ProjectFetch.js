@@ -1,5 +1,21 @@
 
-const requestData = async (formData) =>{
+
+const projectFetch = async() =>{
+    try{
+        const response = await fetch('http://localhost:8080/project');
+        if(!response.ok){
+            throw new Error(response.message || `연결 오류 ${response.status}` )
+        }
+        const data = await response.json();
+        return data
+    }
+    catch(error){
+        throw error;
+    }
+}
+
+
+const addProjectFetch = async (formData) =>{
     try{
         const response = await fetch('http://localhost:8080/project/add',
             {
@@ -9,16 +25,18 @@ const requestData = async (formData) =>{
             }
         );
         if(!response.ok){
-            throw new Error(response.message);
+        
+            const errorResult = await response.json();
+            throw new Error(errorResult.message);
         }
-        return response.json();
+        return await response.json();
     }
     catch(error){
+        console.log(error);
         throw error;
     }
 }
-
-
 export{
-    requestData
-}
+    addProjectFetch,
+    projectFetch
+};

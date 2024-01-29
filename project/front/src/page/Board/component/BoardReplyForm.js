@@ -1,35 +1,51 @@
+import { Controller } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import InputReply from './InputReply'
+// import ReplyInput from './ReplyInput';
 
 export default function BoardReplyForm({
     onSubmitHandlr,
-    reply,
-    setReply
+    control
 }){
+
+    const { handleSubmit ,  formState : { errors } } = useFormContext();//useForm 트리
+    
     return(
         <div className='BoardComment'>
-            <form method='POST' onSubmit={onSubmitHandlr}>
-                    <InputReply 
-                        inputTitle={'작성자'}
-                        type="text" 
-                        inputName='userName'
-                        reply={reply}
-                        setReply={setReply}
-                    />
-                    <InputReply 
-                        inputTitle={'password'}
-                        type="password" 
-                        inputName='password'
-                        reply={reply}
-                        setReply={setReply}
-                    />
-                    <InputReply 
-                        inputTitle={'내용'}
-                        type="text" 
-                        inputName='contents'
-                        reply={reply}
-                        setReply={setReply}
-                    />
-                    
+            <form method='POST' onSubmit={handleSubmit(onSubmitHandlr)}>
+
+                <Controller
+                    name='userName'
+                    control={control}
+                    render={({field})=>
+                        <InputReply 
+                            {...field}
+                            error={errors[{...field}.name]}
+                        />
+                    }
+                />
+                
+                <Controller
+                    name='password'
+                    control={control}
+                    render={({field})=>
+                        <InputReply 
+                            {...field}
+                            error={errors[{...field}.name]}
+                        />
+                    }
+                />
+
+                <Controller
+                    name='contents'
+                    control={control}
+                    render={({field})=>
+                        <InputReply 
+                            {...field}
+                            error={errors[{...field}.name]}
+                        />
+                    }
+                />
 
                     <button type='submit'>reply</button>
                 </form>

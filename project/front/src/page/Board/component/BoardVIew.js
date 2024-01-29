@@ -1,12 +1,12 @@
-import { useMemo , useState} from 'react';
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BoardReply from './BoardReply';
 
 export default function BoardView({ board , setBoard }){
-    const { boardData , counter} = board;
-    console.log(boardData);
+    const { pageData , counter} = board;
+    
     const navigate = useNavigate();
-    const [ idxDelete , setIdxDelete ] = useState(null);
+    
 
     const createPaging = (totalData , DataPerItem) =>{
         const page = Math.ceil(totalData / DataPerItem) ;
@@ -17,24 +17,23 @@ export default function BoardView({ board , setBoard }){
         const limit = 10;
         return createPaging(counter, limit);
     }, [counter]);
-    
-    
+
+
+
     const changePage = async (page) =>{
-        navigate(`/Board?page=${page}`);  
-        setBoard(prev => ({...prev , page}))
+        navigate(`/Board?page=${page}`);
     };
+
 
     return(
         <>
-            {boardData.length === 0 &&  <p> 등록된 게시물이 없습니다. </p>}
+            {pageData.length === 0 &&  <p> 등록된 게시물이 없습니다. </p>}
             {
-                boardData && boardData.map((item)=> {
+                pageData && pageData.map((item)=> {
                     // console.log('item :' , item)
                     return <BoardReply 
                         key={item.board_key} 
                         reply={item}
-                        isIdx={item.idx === idxDelete}
-                        setIdxDelete={setIdxDelete}
                         setBoard={setBoard}
                     />
                 } )
@@ -46,7 +45,6 @@ export default function BoardView({ board , setBoard }){
                   return <button 
                   onClick={()=>changePage(idx+1)} 
                   key={idx} 
-         
                   >
                     {page}
                   </button>

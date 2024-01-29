@@ -15,7 +15,10 @@ import { DUMMY_PROJECT } from './DUMMY_DATA';
 import useAlert from '../../component/common/UseAlert';
 import { useNavigate } from 'react-router-dom';
 
-import { requestData } from './ProjectFetch';
+import { addProjectFetch } from './ProjectFetch';
+
+
+
 
 // const initalList = [ '퍼블리싱' , '기획' , '개발' ]
 const projectStack = [ 'Node.js' , 'Next.js' , 'Css' , 'Html' , 'JavaSciprt' , 'PHP' , 'MySql', 'Scss'];
@@ -25,14 +28,14 @@ const MSG = {
 }
 
 const schema = Yup.object().shape({
-    project_name: Yup.string().required(MSG[1]),
-    project_stack: Yup.array().min(1, '한개 이상의 stack을 등록해주세요'),
-    project_where: Yup.string().required('필수 입력란 입니다.'),
-    project_url: Yup.string().required(MSG[1]).url('Url 형식으로 입력해주세요. 예)https://sitename.com'),
+    title: Yup.string().required(MSG[1]),
+    skill: Yup.array().min(1, '한개 이상의 stack을 등록해주세요'),
+    company: Yup.string().required('필수 입력란 입니다.'),
+    projectUrl: Yup.string().required(MSG[1]).url('Url 형식으로 입력해주세요. 예)https://sitename.com'),
     
-    project_startDate: Yup.date().required('시작일을 입력해주세요'),
-    project_endDate: Yup.date().min(Yup.ref('project_startDate'), '종료일은 시작일 이후로 설정해주세요').required('종료일을 입력해주세요'),
-    project_contents: Yup.string().required(MSG[1]).min(10, '10글자 이상써주세요')
+    startDate: Yup.date().required('시작일을 입력해주세요'),
+    endDate: Yup.date().min(Yup.ref('startDate'), '종료일은 시작일 이후로 설정해주세요').required('종료일을 입력해주세요'),
+    description: Yup.string().required(MSG[1]).min(10, '10글자 이상써주세요')
 });
 
 
@@ -40,10 +43,10 @@ export default function AddProject(){
     const { register , handleSubmit  , reset ,  formState : { errors } , control }= useForm({
         resolver : yupResolver(schema) , 
         defaultValues: {
-            project_name: '',
-            project_stack: [],
-            project_url: '',
-            project_contents: ''
+            title: '',
+            skill: [],
+            projectUrl: '',
+            description: ''
           }
     });
 
@@ -67,23 +70,24 @@ export default function AddProject(){
     // formState: 폼의 현재 상태 정보를 포함하고 있으며, isSubmitting, isDirty 등의 상태를 확인할 수 있습니다.
     // watch: 지정한 필드 또는 모든 필드의 현재 값을 반환하는 함수입니다.
 
-    const cancleEvent = () =>{
+    const cancelEvent = () =>{
         navigate(-1);
     } 
 
-
-
     const onSubmitHandler = async(data) => {
+        console.log(data);
         try {
             const setObj = { idx : uuidv4() , ...data };
-            const newArray = [...DUMMY_PROJECT, setObj];
 
-            const result = await requestData(newArray);
+            const result = await addProjectFetch(setObj);
             console.log(result);
-            reset(); // 서버 요청이 성공적일 때만 reset 호출
+            showAlert('프로젝트가 등록되었습니다.' ,1);
+            navigate('/project');
+            // reset(); // 서버 요청이 성공적일 때만 reset 호출
             
         } catch (error) {
-            showAlert(error.message);
+            console.log(error);
+            showAlert(error.message , 0);
         }
     }
 
@@ -95,15 +99,15 @@ export default function AddProject(){
                 <div>
                     <span>프로젝트 명 </span><br></br>
                     <input type="text" 
-                        {...register('project_name')}
+                        {...register('title')}
                     />
-                    {errors.project_name && <p className='errorMessage'>{errors.project_name.message}</p>}
+                    {errors.title && <p className='errorMessage'>{errors.title.message}</p>}
                 </div>
 
                 <div>
                     <span>프로젝트 의뢰기관</span>
-                    <input {...register('project_where')}></input>
-                    {errors.project_where && <p className='errorMessage'>{errors.project_where.message}</p>}
+                    <input {...register('company')}></input>
+                    {errors.company && <p className='errorMessage'>{errors.company.message}</p>}
                 </div>
 
 
@@ -112,8 +116,8 @@ export default function AddProject(){
                     control={control}  
                     errors={errors}
                     label='프로젝트 제작기간'
-                    startDateName='project_startDate'
-                    endDateName='project_endDate'
+                    startDateName='startDate'
+                    endDateName='endDate'
                 />
 
 
@@ -122,26 +126,26 @@ export default function AddProject(){
                     {projectStack.map((e)=> <Checkbox 
                         key={e}
                         label={e}
-                        {...register('project_stack')}
+                        {...register('skill')}
                     />)}
-                    {errors.project_stack && <p className='errorMessage'>{errors.project_stack.message}</p>}
+                    {errors.skill && <p className='errorMessage'>{errors.skill.message}</p>}
                 </div>
  
                 <div>
                     <span>Site Url</span>
-                    <input {...register('project_url')}></input>
-                    {errors.project_url && <p className='errorMessage'>{errors.project_url.message}</p>}
+                    <input {...register('projectUrl')}></input>
+                    {errors.projectUrl && <p className='errorMessage'>{errors.projectUrl.message}</p>}
                 </div>
 
                 <div>
                     <span>Contents</span>
-                    <textarea {...register('project_contents')}></textarea>
-                    {errors.project_contents && <p className='errorMessage'>{errors.project_contents.message}</p>}
+                    <textarea {...register('description')}></textarea>
+                    {errors.description && <p className='errorMessage'>{errors.description.message}</p>}
                 </div>
                 
 
                 <button type='submit'>등록</button>
-                <button onClick={()=>cancleEvent()}>취소</button>
+                <button type='button' onClick={()=>cancelEvent()}>취소</button>
             </form>
         </>
     )
