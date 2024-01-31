@@ -27,7 +27,6 @@ export default function ProjectSeach({
         navigate(location.pathname + path);
     }
 
-
     return(
         <>
           <form onSubmit={seachProejct}>

@@ -88,8 +88,14 @@ export default function RootNav({setViewPopup}){
                             </NavLink>
                         </li>
                     )}
-                    
-                    
+                    <li>
+                        <NavLink
+                            to='/ani'
+                            className={({isActive}) => 
+                            isActive ? classes.active : undefined}>
+                            ani
+                        </NavLink>
+                    </li>
                     {!login && (
                         <li onClick={()=>setViewPopup(true)}>
                             로그인

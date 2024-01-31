@@ -1,67 +1,53 @@
-import { useEffect, useState , useMemo } from 'react';
 import { deleteFetch } from '../BoardFetch';
 import useAlert from '../../../component/common/UseAlert';
 
+import { useMutation, useQueryClient } from 'react-query';
+import { Controller, useForm } from 'react-hook-form';
+import * as Yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
-export default function BoardReply({reply, setIdxDelete, isIdx , setBoard}){
+const schema = Yup.object({
+    password : Yup.string().required('비밀번호를 입력해주세요.')
+})
 
-    const showAlert = useAlert();
 
+export default function BoardReply({reply, selectIdx , setSelectIdx }){
     const { 
-        user_name, 
-        idx , 
-        contents , 
-        date,
+        user_name,  idx ,  contents ,  date,
         board_key // 식별 board key
     } = reply;
 
-    const initalReply = useMemo(()=>({
-        value : '' , 
-        touched : false
-    }), [] )
-    
-    const [ replyValid , setReplyValid ] = useState(initalReply);
+    const queryClient = useQueryClient();
 
-
-    useEffect(()=>{
-        if(!isIdx){
-            setReplyValid(initalReply);
+    const { handleSubmit , formState : { errors } , reset , control } = useForm({
+        resolver : yupResolver(schema),
+        defaultValues : {
+            password : ''
         }
-    },[isIdx , setReplyValid , initalReply]);
+    });
 
-
-    const onChangeHandler = (value) =>{
-        setReplyValid(prev => ({...prev , value}));
-    }
-
-
-    const isReplyValidate = !replyValid.value && replyValid.touched;
-
-
-    const onSubmitHandler = async(e) =>{
-        e.preventDefault();
-        setReplyValid(prev => ({...prev, touched:true}))
-
-        if(replyValid.value.trim() === ''){
-            return; 
+    const { mutateAsync  }  = useMutation((formData)=>deleteFetch(formData),{
+        onSuccess : () =>{
+            queryClient.invalidateQueries('board');
         }
+    })
 
-        const form = new FormData(e.target);
-        const password = form.get('password');
+    const showAlert = useAlert();
+    const onSubmitHandler = async(data) =>{
+        const password = data.password;
+
         const formData ={
             reply_Idx : idx,
             reply_password : password,
             board_key : board_key,
             page : new URL(window.location.href).searchParams.get('page') || 1
         }
+
         try{
-            const {resData , counter  } = await deleteFetch(formData);
-            
-            setBoard(prev => ({...prev , boardData : resData , counter }));
+            await mutateAsync(formData)
             showAlert('삭제되었습니다.', 1);
         }
         catch(error){
-            console.log(error.message);
             showAlert(error.message);
         }
     }
@@ -71,21 +57,30 @@ export default function BoardReply({reply, setIdxDelete, isIdx , setBoard}){
         <p>작성자 : {user_name}</p>
         <p>작성일 : {date}</p> 
         {contents}
-        {!isIdx && <button onClick={()=>setIdxDelete(idx)}>삭제</button>}
-        {isIdx && (
-            
-            <form onSubmit={onSubmitHandler}>
-                <input type="password" 
+        {!selectIdx && <button onClick={()=>setSelectIdx(idx)}>삭제</button>}
+        {selectIdx && (
+            <form onSubmit={handleSubmit(onSubmitHandler)}>
+                <Controller
                     name='password'
-                    autoComplete='off'
-                    onChange={(e)=>onChangeHandler(e.target.value)}
-                    onBlur={()=>setReplyValid(prev => ({...prev , touched : true}))}
+                    control={control}
+                    render={({field})=>
+                        <input 
+                            autoComplete='off'
+                            type='password'
+                            {...field}
+                        />
+                    }
                 />
+
                 <button type='submit'>확인</button>
-                <button type='button' onClick={()=>setIdxDelete(null)}>취소</button>
+
+                <button type='button' onClick={()=>{
+                    setSelectIdx(null);  
+                    reset();
+                    }}>취소</button>
             </form>
         )}
-        {isReplyValidate && '에러'}
+        {errors.password && errors.password.message}
         </div>    
     )
 }

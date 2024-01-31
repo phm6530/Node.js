@@ -40,19 +40,21 @@ export default function Board(){
 
     const { data, isLoading , isError } = useQuery(
         ['board', page], () => fetchData(page), {
+            refetchOnWindowFocus: false,
             onError: (error) => {
                 console.log('실행');
                 showAlert(error.message, 0);
             }
+
         }
     ); 
 
-
+    // QueryClient 연결
     const queryClient = useQueryClient();
 
     // Query 뮤테이션
     const mutation = useMutation(formData => fetchReply(formData), {
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries('board');
 
             showAlert('댓글이 등록되었습니다.' , 1);
@@ -65,7 +67,6 @@ export default function Board(){
         }
     });
 
-    
 
     // submit
     const onSubmitHandlr = async(data) =>{

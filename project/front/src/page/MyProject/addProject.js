@@ -11,7 +11,6 @@ import CustumDatePicker from './component/CustumDatePicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 // 
-import { DUMMY_PROJECT } from './DUMMY_DATA';
 import useAlert from '../../component/common/UseAlert';
 import { useNavigate } from 'react-router-dom';
 
@@ -83,7 +82,7 @@ export default function AddProject(){
             console.log(result);
             showAlert('프로젝트가 등록되었습니다.' ,1);
             navigate('/project');
-            // reset(); // 서버 요청이 성공적일 때만 reset 호출
+            reset(); // 서버 요청이 성공적일 때만 reset 호출
             
         } catch (error) {
             console.log(error);

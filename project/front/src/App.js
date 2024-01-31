@@ -33,8 +33,10 @@ import Admin from './page/admin/Admin';
 import { tokenCheck } from './util/auth';
 import Todolist from './page/todo/Todolist';
 import AuthComponent from './component/common/AuthComponent';
-import Test from './test';
 
+
+import Test from './test';
+import Animation from './Animation';
 
 
 
@@ -96,6 +98,10 @@ const router = createBrowserRouter([
         ,{
           path : '/test',
           element : <Test/> ,   
+          
+        }  ,{
+          path : '/ani',
+          element : <Animation/> ,   
           
         }
     ]

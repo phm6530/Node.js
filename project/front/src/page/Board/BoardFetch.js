@@ -35,10 +35,11 @@ const fetchData = async (page) => {
     try {
         const response = await fetch(`http://localhost:8080/Board/${page}`);
         
-        if (!response.ok) {
-            throw new Error(response.message || `요청이 실패하였습니다. errorCode :  ${response.status}`);
-        }
         const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.message || `요청이 실패하였습니다. errorCode :  ${response.status}`);
+        }
         return result;
 
     } catch (error) {
@@ -49,21 +50,25 @@ const fetchData = async (page) => {
 
 //댓글 삭제로직
 const deleteFetch = async(formData) =>{
-    const response = await fetch('http://localhost:8080/board/reply/delete',{
-            method: 'POST',
-            headers:{
-                'Content-Type' : 'application/json'
-            },
-            body : JSON.stringify(formData)
-        })
-        
-        const result = await response.json();
-        console.log(result);
+    try{
+        const response = await fetch('http://localhost:8080/board/reply/delete',{
+                method: 'POST',
+                headers:{
+                    'Content-Type' : 'application/json'
+                },
+                body : JSON.stringify(formData)
+            })
 
-        if(!response.ok){
-            throw new Error(result.message);
+            const result = await response.json();
+            if(!response.ok){
+                throw new Error(result.message || `요청이 실패하였습니다. errorCode :  ${response.status}`);
+            }  
+            return result;
+
+        }catch(error){
+            throw error;
         }
-        return result;
+
     }
 
 export { fetchReply , fetchData , deleteFetch }

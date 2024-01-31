@@ -1,13 +1,13 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BoardReply from './BoardReply';
 
-export default function BoardView({ board , setBoard }){
-    const { pageData , counter} = board;
-    
-    const navigate = useNavigate();
-    
 
+export default function BoardView({ board }){
+    const { pageData , counter} = board;
+    const [ selectIdx , setSelectIdx ] = useState(null);
+
+    const navigate = useNavigate();
     const createPaging = (totalData , DataPerItem) =>{
         const page = Math.ceil(totalData / DataPerItem) ;
         return Array.from({length : page}, (_,idx) => idx + 1);
@@ -19,22 +19,23 @@ export default function BoardView({ board , setBoard }){
     }, [counter]);
 
 
-
     const changePage = async (page) =>{
         navigate(`/Board?page=${page}`);
     };
 
-
     return(
-        <>
+        <>  
             {pageData.length === 0 &&  <p> 등록된 게시물이 없습니다. </p>}
             {
                 pageData && pageData.map((item)=> {
-                    // console.log('item :' , item)
+                    
                     return <BoardReply 
                         key={item.board_key} 
+
                         reply={item}
-                        setBoard={setBoard}
+                        selectIdx={selectIdx === item.idx}
+                        setSelectIdx={setSelectIdx}
+                        
                     />
                 } )
             }
