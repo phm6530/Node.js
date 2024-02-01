@@ -4,6 +4,12 @@ const {
 const { readData , allBoardData , BoardData , BoardWirte} = require('./readData');
 const { NotFoundError } = require('./error');
 
+//DB 연동
+const util = require('util');
+const db = require('../util/config');
+db.query = util.promisify(db.query); //프로미스 생성
+
+
 const isValidAdmin = async (id, password) => {
     try {
         const data = await readData();
@@ -21,35 +27,48 @@ const isValidAdmin = async (id, password) => {
 
         return true;
     } catch (error) {
-        // 여기서 에러를 처리하거나, 필요에 따라 호출한 곳으로 에러를 전파합니다.
-        // console.error('Error in isValidAdmin:', error.message);
-        throw error; // 에러를 다시 throw하여 호출한 곳에서 처리하도록 할 수 있습니다.
+        throw error; 
     }
 }
 
 
-const isDeleteReply = async( replyIdx , password , page) =>{
+
+
+const isDeleteReply = async({ replyIdx , reply_password , page , board_key }) =>{
+
+    const limit = 10;
+    const offset = ((page || 1 ) - 1) * 10
     try{
-        const data = await allBoardData();
-        const targetReley = data.find((e) => e.idx === replyIdx);
-        if(!targetReley){
+        let sql_ReplyFind = `select * from board where board_key = ? `;
+        const boardRecord = await db.query(sql_ReplyFind, [board_key]);
+        
+        if(!boardRecord){
             throw new NotFoundError('이미 삭제되었거나 서버에 문제가 있습니다.');
         }
-        const isMatch = await compare(password , targetReley.hashedPassword);
-
+        const isMatch = await compare(reply_password , boardRecord[0].user_password);
         if(!isMatch){
             throw new NotFoundError('비밀번호가 맞지않습니다.');
         }
-        const newObject = data.filter((e)=>{
-            return e.idx !== replyIdx;
-        });
-        await BoardWirte(newObject);
 
-        const newReplyPage = await BoardData(page);
-        console.log('newReplyPage : ' ,  newReplyPage)
-        return newReplyPage;
+            let sql_delete = `delete from board where board_key = ? `;
+            const isDelete = await db.query(sql_delete, [board_key]);
 
-    }catch(err){
+
+            let sql_NewArry = `select idx, user_name , contents , board_key from board order by idx desc limit ? offset ?`;
+            const newArray = await db.query(sql_NewArry, [limit , offset]);
+
+            let sql_cnt = `select count(*) as cnt from board`;
+            const counter = await db.query(sql_cnt);
+
+            console.log(newArray);
+            return {
+                isValid  : isDelete ,
+                newArray : newArray,
+                counter : counter[0].cnt
+            }
+        
+    }
+    catch(err){
         throw err;
     }
 }

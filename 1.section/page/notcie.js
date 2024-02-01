@@ -1,69 +1,69 @@
 const express = require('express');
 const router = express.Router();//라우터 연결
 // const { verify }  = require('../util/auth'); 
-const { BoardData , BoardWirte , boardTotal , allBoardData } = require('../util/readData');
+
 const { passwordHashing } = require('../util/password');
 const { validation_Reply } = require('../util/validate');
-const {isDeleteReply } = require('../util/util');
+const { isDeleteReply } = require('../util/util');
 
-// 전체 게시판
-router.get('/', async (req, res, next) => {
-    try {
-        // 초기값 fs가 비동기이기에 await 선언해 줘야 동기 처리됨
-        
-        //Total 값 리터
-        const boardCount = await boardTotal();
-        
-        //리턴할 데이터 가져오기
-        const board = await BoardData();
-        
-        res.status(201).json({
-            path : 'Board',
-            counter : boardCount,
-            boardData : board
-        });
 
-    } catch (error) {
-        const err = new Error('Board 오류');
-        next(err);
-    }
-});
 
+// DB 연결
+const util = require('util');
+
+const db = require('../util/config');
+const { NotFoundError } = require('../util/error');
+db.query = util.promisify(db.query); //프로미스 생성
+
+
+// 댓글 등록완료
 router.post('/reply' ,  validation_Reply,  async(req, res, next) =>{
-    const { userName , contents , password , idx , page } = req.body;    
+    const { userName , contents , password , idx , page } = req.body; 
+       
+    const limit = 10;
+    const dbOffset = (page - 1) * limit;
+    
     try{
-
-        const allData = await allBoardData(); //전체 데이터
         const hashedPassword = await passwordHashing(password);//비밀번호 해싱하기
+        
+        let req_sql = 
+        `INSERT INTO 
+        board (user_name , user_password , contents , board_key ,date) 
+        value (?,?,?,? , NOW())`;
+        await db.query(req_sql , [ userName , hashedPassword , contents , idx]); //반영
 
-        //쓰기
-        await BoardWirte([{
-            idx,
-            userName,
-            contents,
-            hashedPassword
-        } , ...allData]);
+        let res_sql = `
+            SELECT idx , 
+            user_name , 
+            contents , 
+            board_key , 
+            date 
+            FROM board ORDER BY idx DESC LIMIT ? OFFSET ?`;
+        const response = await db.query(res_sql , [limit , dbOffset]); //리턴데이터
+        
+        const count_sql = `select count(*) as cnt from board`;
+        const counter = await db.query(count_sql);
 
-        //Total 값 리터
-        const boardCount = await boardTotal();
-        const resData = await BoardData(page);
 
         res.status(201).json({
             path : 'board/reply',
-            counter : boardCount,
-            resData : resData
-        })
-    }
+            counter : counter[0].cnt,
+            resData : response
+        });
+
+    }   
     catch(error){
-        throw new Error('댓글 에러');
+        const err = new NotFoundError('database insert falied');
+        next(err)
     }
 });
 
 router.post('/reply/delete', async(req,res,next)=>{
-    const { reply_Idx , page, reply_password } = req.body;
+    const body = req.body;
+    console.log('실행');
     try{
-        const isValid = await isDeleteReply(reply_Idx , reply_password , page);
-        res.json({message: '성공' , resData : isValid});
+        const { newArray , counter } = await isDeleteReply(body);
+        res.json({message: '성공' , resData : newArray , counter });
     }catch(error){
         console.log(error.message);
         res.status(error.status || 500).json({message : error.message});
@@ -71,22 +71,37 @@ router.post('/reply/delete', async(req,res,next)=>{
 });
 
 
-//게시판 Detail verify
-router.post('/:item', async (req, res, next) => {
-    const page = req.params.item;
-    const { limit } = req.body;
-    const boardPage = await BoardData(page, limit);
-    //Total 값 리터
-    const boardCount = await boardTotal();
+// 초기로드 or 게시판 페이징
+router.get('/:page', async (req, res, next) => {
 
     try {
+        const page = req.params.page;
+
+        // const boardPage = await BoardData();
+        const limit  = 10;
+        const offset = ((page || 1) - 1) * 10;
+
+        const sql = `select idx , 
+        user_name , 
+        contents , 
+        board_key , 
+        date 
+        from board order by idx desc limit ? offset ?`;
+        const response_database = await db.query(sql ,[limit , offset])
+
+        const count_sql = `select count(*) as cnt from board`;
+        const counter = await db.query(count_sql);
+    
         res.status(201).json({
             path : 'paging',
-            counter : boardCount,
-            pageData : boardPage
+            counter : counter[0].cnt,
+            pageData : response_database
         });
-    } catch (error) {
-        throw new Error('게시판 불러오기 오류');
+
+    }
+    catch (error) {
+        const err = new NotFoundError()
+        next(err);
     }
 });
 

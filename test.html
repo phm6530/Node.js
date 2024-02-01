@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-color: #000;
+            color: #fff;
+            padding :0;
+            margin: 0 ;
+        }
+
+        .naming{
+            background-color: rgb(61, 61, 61);
+            margin-bottom: 10px;
+            height: 300px;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .view{
+            animation:  ani 1s ease-in-out forwards;
+        }
+
+        @keyframes ani {
+            from{
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to{
+                opacity: 1;
+                transform: translateY(0px);
+            }
+        }
+   
+    </style>
+    
+</head>
+<body>
+    <div class="slideContainer">
+        <div class="slideWrap">
+            <div class="slide">hi</div>
+            <div class="slide">hi</div>
+            <div class="slide">hi</div>
+        </div>
+        <div class="slideNav"></div>
+        <div class="slideButton">
+            <div class="prev">prev</div>
+            <div class="next">next</div>
+        </div>
+    </div>
+    <style>
+        .slideContainer{
+            overflow: hidden;
+        }
+        .slideWrap{
+            width: 100%;
+            height: 200px;
+            position: relative;            transition:  all 1s ease;
+            background-color: rgba(255,255,255,0.1);   
+        }
+        .slide{
+            width: 100%;
+            position: absolute;
+            height: 100%;
+            left: 0;
+            opacity: .6;
+            background-color: rgb(233, 131, 131);
+        }
+
+        .nav{
+            width: 7px;
+            height: 7px;
+            background-color: rgb(255, 167, 167);
+            border-radius: 100%;
+        }
+        .slideNav{
+            display: flex;
+            width: 100%;
+            justify-content: center;
+        }
+    </style>
+
+</body>
+<script>
+
+
+    const slide = document.querySelectorAll('.slide');
+    slide.forEach((e, idx)=>{
+        e.style.left = `${idx * 100}%`;
+    });
+
+    const prev = document.querySelector('.prev');
+
+
+    const next = document.querySelector('.next');
+
+let currentIndex = 0;
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
+
+
+
+let initialSlideWidth;
+
+const indicator = document.querySelector('.slideNav');
+
+
+
+for(let i = 0; i < totalSlides; i ++ ){
+    const div = document.createElement('div');
+    div.classList.add('nav');    
+    indicator.appendChild(div);
+}
+const nav = document.querySelectorAll('.nav');
+console.log(nav);
+
+
+const updateSlidePosition = () => {
+    const slideWidth = slides[0].clientWidth || initialSlideWidth;
+    console.log(slideWidth);
+    const newLeft = -(slideWidth * currentIndex) + 'px';
+    document.querySelector('.slideWrap').style.left = newLeft;
+};
+
+
+
+const navAtive = (target) => {
+    // 모든 슬라이드에서 'active' 클래스 제거
+    target.forEach(slide => {
+        slide.classList.remove('active');
+    });
+
+    console.log(target[currentIndex]);
+    // 현재 인덱스의 슬라이드에만 'active' 클래스 추가
+    target[currentIndex].classList.add('active');
+};
+
+const onloadSize = () =>{
+    initialSlideWidth = slides[0].clientWidth;
+    updateSlidePosition(); 
+    navAtive(slides);
+    navAtive(nav);
+}
+onloadSize();
+
+// 창 크기가 변경될 때마다 슬라이드 위치 업데이트
+window.addEventListener('resize', updateSlidePosition);
+
+prev.addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+    updateSlidePosition();
+    navAtive(slides);
+    navAtive(nav);
+});
+
+next.addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % totalSlides;
+    updateSlidePosition();
+    navAtive(nav);
+});
+
+    
+
+    const targets = document.querySelectorAll('.naming');
+    
+    const scrollHandler = (entris)=>{
+        entris.forEach((entry, idx )=>{
+            if(entry.isIntersecting){
+                setTimeout(()=>{
+                    entry.target.classList.add('view')
+                }, 100 * idx);
+            }else{
+                entry.target.classList.remove('view')
+            }
+            
+        });
+    }
+
+    const io = new IntersectionObserver(scrollHandler , { threshold : .5});
+    
+    //타겟지정
+
+    targets.forEach((e)=>{
+        io.observe(e)
+    });
+    
+    // io.disconnect(target);
+</script>
+</html>

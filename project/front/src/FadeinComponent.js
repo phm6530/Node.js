@@ -84,10 +84,10 @@ export default function FadeinComponent({position ,children}){
         io.observe(view);
 
         return () => io.disconnect(view)
-    },[]);
+    },[]);  
 
     return(
-        <Component  $visible={visible} ref={ref} $position={position}>
+        <Component $visible={visible} ref={ref} $position={position}>
             {children}
         </Component>
     )
