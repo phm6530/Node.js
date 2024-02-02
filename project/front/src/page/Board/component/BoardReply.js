@@ -26,7 +26,9 @@ export default function BoardReply({reply, selectIdx , setSelectIdx }){
         }
     });
 
-    const { mutateAsync  }  = useMutation((formData)=>deleteFetch(formData),{
+    console.log(errors.password);
+
+    const { mutateAsync}  = useMutation((formData)=>deleteFetch(formData),{
         onSuccess : () =>{
             queryClient.invalidateQueries('board');
         }
@@ -34,6 +36,7 @@ export default function BoardReply({reply, selectIdx , setSelectIdx }){
 
     const showAlert = useAlert();
     const onSubmitHandler = async(data) =>{
+
         const password = data.password;
 
         const formData ={
@@ -56,7 +59,9 @@ export default function BoardReply({reply, selectIdx , setSelectIdx }){
         <div className='BoardComment' key={idx}>
         <p>작성자 : {user_name}</p>
         <p>작성일 : {date}</p> 
+
         {contents}
+
         {!selectIdx && <button onClick={()=>setSelectIdx(idx)}>삭제</button>}
         {selectIdx && (
             <form onSubmit={handleSubmit(onSubmitHandler)}>
@@ -64,6 +69,7 @@ export default function BoardReply({reply, selectIdx , setSelectIdx }){
                     name='password'
                     control={control}
                     render={({field})=>
+
                         <input 
                             autoComplete='off'
                             type='password'

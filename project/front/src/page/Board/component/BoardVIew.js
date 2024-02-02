@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BoardReply from './BoardReply';
-
+import Fadeup from '../../../FadeinComponent';
 
 export default function BoardView({ board }){
     const { pageData , counter} = board;
@@ -23,20 +23,25 @@ export default function BoardView({ board }){
         navigate(`/Board?page=${page}`);
     };
 
+
+    
     return(
         <>  
+
             {pageData.length === 0 &&  <p> 등록된 게시물이 없습니다. </p>}
             {
                 pageData && pageData.map((item)=> {
-                    
-                    return <BoardReply 
-                        key={item.board_key} 
+                    return <Fadeup 
+                    key={item.board_key} 
+                        position={'right'}
+                    >
+                        <BoardReply 
+                            reply={item}
+                            selectIdx={selectIdx === item.idx}
+                            setSelectIdx={setSelectIdx}
+                        />
+                    </Fadeup>
 
-                        reply={item}
-                        selectIdx={selectIdx === item.idx}
-                        setSelectIdx={setSelectIdx}
-                        
-                    />
                 } )
             }
             

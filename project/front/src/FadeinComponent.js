@@ -78,7 +78,7 @@ export default function FadeinComponent({position ,children}){
     // div 관찰
     useEffect(()=>{
         // if(!ref) return;
-        console.log(ref);
+        // console.log(ref);/
         const view = ref.current;
         const io = new IntersectionObserver(slideHandler);
         io.observe(view);
