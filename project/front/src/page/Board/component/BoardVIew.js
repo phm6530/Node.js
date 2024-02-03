@@ -14,8 +14,8 @@ export default function BoardView({ board }){
     }
 
     const paging = useMemo(() => {
-        const limit = 10;
-        return createPaging(counter, limit);
+            const limit = 10;
+            return createPaging(counter, limit);
     }, [counter]);
 
 
@@ -31,17 +31,13 @@ export default function BoardView({ board }){
             {pageData.length === 0 &&  <p> 등록된 게시물이 없습니다. </p>}
             {
                 pageData && pageData.map((item)=> {
-                    return <Fadeup 
-                    key={item.board_key} 
-                        position={'right'}
-                    >
+                    return <Fadeup  key={item.board_key}  position={'right'}>
                         <BoardReply 
                             reply={item}
                             selectIdx={selectIdx === item.idx}
                             setSelectIdx={setSelectIdx}
                         />
                     </Fadeup>
-
                 } )
             }
             

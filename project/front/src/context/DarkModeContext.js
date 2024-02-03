@@ -1,22 +1,29 @@
 import { createContext, useState , useEffect} from 'react';
+import {createGlobalStyle} from 'styled-components';
 
 // 초기값은 value값이 없을때 리턴하는 거임
 const DarkMode = createContext()
 
-const Mode = (props) =>{
+    const GlobalStyle = createGlobalStyle`
+        body{
+            ${props => props.darkMode ? `background: #000;` : `background: #fff; `}
+            ${props => props.transition ? '' : `transition: background .6s 0.3s cubic-bezier(0, 0.88, 0, 1.03)`}
+        }   
+    `
+    const Mode = (props) =>{
+        const [ transition , setTransition ] = useState(true);
+        console.log(transition);
 
-    const [modeState , setModeState ] = useState(()=>{
-        const store = localStorage.getItem('darkMode');
-        return store === 'true' ? true : false;
-    });
+        const [modeState , setModeState ] = useState(()=>{
+            const store = localStorage.getItem('darkMode');
+            return store === 'true' ? true : false;
+        });
+
 
     useEffect(()=>{
-        if(modeState){
-            document.body.classList.add('darkMode');
-        }else{
-            document.body.classList.remove('darkMode');
-        }
-    },[modeState]);
+      setTransition(false);
+    },[]);
+
 
 
     const toggleMode = () =>{
@@ -32,9 +39,11 @@ const Mode = (props) =>{
         darkMode : modeState,
         toggleMode : toggleMode
     }
-
+    
     return(
-        <>
+        <>  
+            {/* 전역스타일 GlobalStyle */}
+            <GlobalStyle darkMode={modeState} transition={transition}/> 
             <DarkMode.Provider value={darkModeValue}>
                 {props.children}
             </DarkMode.Provider>

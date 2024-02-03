@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import {  useContext } from 'react';
+import {  useContext, useState } from 'react';
 import { DarkMode } from '../../context/DarkModeContext';
 import LogOut from './LogOut';
 
@@ -24,7 +24,6 @@ const link = ({children ,  to , ...prop }) =>{
 
 //css in js  초기랜더링 > 훅실행 > 스타일 생성 
 const List = styled(link)`
-    
     a{
         transition:  color .5s ease;
         color : blue;
@@ -35,16 +34,18 @@ const List = styled(link)`
     }
     
 `
-const Mybutton = styled.button`
-	background: rgba(255,255,255,.7);
-    color: #fff;
+
+const Test = styled.div`
+    color:red;
+    ${props=> props.visible && 'color:blue'}
 `
 
-
-
-
 export default function RootNav({setViewPopup}){
+    // 
+    const [ visible, setVisible ] = useState(false); 
+    //
     const { view } = useSelector(state => state.alertSlice);
+    //
     const { login } = useSelector(state => state.authSlice);
     
     const logOut =  LogOut();
@@ -55,10 +56,10 @@ export default function RootNav({setViewPopup}){
 
     return(
         <>  
-        
+            <Test visible={visible}>hi!</Test>
             {/* Alert */}
             { view && <Alert/>}
-            <Mybutton>hello world</Mybutton>
+
             <nav>
                 <DarkModeBtn  onClick={ctx.toggleMode} $darkMode={ctx.darkMode}> 
                     <Moon size={'15'}/>

@@ -24,9 +24,7 @@
 }
 
 body {
-  background-color: #fff;
   color: #fff;
-  transition: background-color .6s 0.3s cubic-bezier(0, 0.88, 0, 1.03);
 }
 
 .darkMode {
