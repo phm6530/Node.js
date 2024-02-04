@@ -37,7 +37,7 @@ const List = styled(link)`
 
 const Test = styled.div`
     color:red;
-    ${props=> props.visible && 'color:blue'}
+    ${props=> props.$visible && 'color:blue'}
 `
 
 export default function RootNav({setViewPopup}){
@@ -56,7 +56,7 @@ export default function RootNav({setViewPopup}){
 
     return(
         <>  
-            <Test visible={visible}>hi!</Test>
+            <Test $visible={visible}>hi!</Test>
             {/* Alert */}
             { view && <Alert/>}
 
