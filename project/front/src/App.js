@@ -1,8 +1,9 @@
 import './App.css';
 import { Provider } from 'react-redux';
+import { useEffect } from 'react';
 
 // Rounter
-import { createBrowserRouter , RouterProvider  } from 'react-router-dom';
+import { createBrowserRouter , RouterProvider, useLocation  } from 'react-router-dom';
 
 import RootLayout from './component/common/RootLayout';
 
@@ -111,14 +112,14 @@ const router = createBrowserRouter([
 
 
 function App() {
+
+
   return (
     
       <Mode>
           {/* redux */}
           <Provider store={store}>
-            
               <RouterProvider router={router}/>
-            
           </Provider>
       </Mode>
     

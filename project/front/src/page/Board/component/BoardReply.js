@@ -26,7 +26,6 @@ export default function BoardReply({reply, selectIdx , setSelectIdx }){
         }
     });
 
-    console.log(errors.password);
 
     const { mutateAsync}  = useMutation((formData)=>deleteFetch(formData),{
         onSuccess : () =>{

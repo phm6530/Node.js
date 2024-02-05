@@ -9,30 +9,36 @@ const DarkMode = createContext()
             ${props => props.darkMode ? `background: #000;` : `background: #fff; `}
             ${props => props.transition ? '' : `transition: background .6s 0.3s cubic-bezier(0, 0.88, 0, 1.03)`}
         }   
-    `
+        
+        p,span, li{
+                color : ${props=>props.darkMode ? `#ffffff` : `#000`};
+                ${props => props.transition ? '' : `transition: color .6s 0.3s cubic-bezier(0, 0.88, 0, 1.03) `
+            }
+        }
+    `    
+    
     const Mode = (props) =>{
         const [ transition , setTransition ] = useState(true);
-        // console.log(transition);
+        console.log(transition);
 
         const [modeState , setModeState ] = useState(()=>{
             const store = localStorage.getItem('darkMode');
             return store === 'true' ? true : false;
         });
+        
+        useEffect(()=>{
+        setTransition(false);
+        },[]);
 
 
-    useEffect(()=>{
-      setTransition(false);
-    },[]);
 
-
-
-    const toggleMode = () =>{
-        setModeState(prev => {
-            const modeChange = !prev;
-            localStorage.setItem('darkMode' , modeChange);
-            return modeChange;
-        });   
-    }
+        const toggleMode = () =>{
+            setModeState(prev => {
+                const modeChange = !prev;
+                localStorage.setItem('darkMode' , modeChange);
+                return modeChange;
+            });   
+        }
 
 
     const darkModeValue = {

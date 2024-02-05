@@ -1,4 +1,3 @@
-import { NavLink } from 'react-router-dom';
 import {  useContext, useState } from 'react';
 import { DarkMode } from '../../context/DarkModeContext';
 import LogOut from './LogOut';
@@ -15,48 +14,40 @@ import { Moon } from '../icon/Icon';
 import Alert from '../popup/Alert';
 
 import DarkModeBtn from '../ui/DarkModeBtn';
+import { useLocation } from 'react-router-dom';
 
 
 // Nav 선택
-const link = ({children ,  to , ...prop }) =>{
-    return <li {...prop}><NavLink to={to}>{children}</NavLink></li>
+const Link = ({children , className , to , ...prop }) =>{
+    return <li className={className} {...prop}>{children}</li>
 }
 
 //css in js  초기랜더링 > 훅실행 > 스타일 생성 
-const List = styled(link)`
-    a{
-        transition:  color .5s ease;
-        color : blue;
-
-        &.active{
-            color:red;
-        }
-    }
-    
+const List = styled(Link)`
+    transition:  color .6s cubic-bezier(0, 0.88, 0, 1.03);
+    ${props => props.$active ? `color : red;`  : ''}
 `
 
-const Test = styled.div`
-    color:red;
-    ${props=> props.$visible && 'color:blue'}
-`
-
-export default function RootNav({setViewPopup}){
-    // 
-    const [ visible, setVisible ] = useState(false); 
-    //
+export default function RootNav({setViewPopup, ChangePageHandler}){
     const { view } = useSelector(state => state.alertSlice);
-    //
     const { login } = useSelector(state => state.authSlice);
-    
+    const { pathname } = useLocation();
+    console.log('pathName:', pathname);
+    const [ active, setActive ] = useState(pathname);
+
     const logOut =  LogOut();
 
-
     //Dark Mode
-    const ctx = useContext(DarkMode);
+    const ctx = useContext(DarkMode); 
+    const NavPageObject = [
+        { path : '/' , pathName : 'HOME' , AuthPage : false },
+        { path : '/project' , pathName : 'PROJECT' , AuthPage : false },
+        { path : '/todoCalnder' , pathName : 'MY Calendar' , AuthPage : false },
+        { path : '/admin' , pathName : 'Admin' , AuthPage : true },
+    ]
 
     return(
         <>  
-            <Test $visible={visible}>hi!</Test>
             {/* Alert */}
             { view && <Alert/>}
 
@@ -66,15 +57,32 @@ export default function RootNav({setViewPopup}){
                     <Moon size={'15'}/>
                 </DarkModeBtn>
 
+                {/* Nav */}
                 <ul>
-                    {/* Nav */}
-                    <List to={'/'}>HOME</List>
-                    <List to={'/project'}>PORTPOLIO</List>
-                    <List to={'/Board'}>Board</List>
-                    <List to={'/todoCalnder'}>Calendar</List>
-                    {login && ( <List to={'/admin'}>admin</List> )}
-                    <List to={'/ani'}>ani</List>
+
+                    {
+                        NavPageObject.map((e,idx)=>{
+                            if(e.AuthPage){
+                                return (login && ( 
+                                <List 
+                                    key={idx} 
+                                    $active={active === e.path} 
+                                    onClick={()=>{ChangePageHandler(e.path); setActive(e.path)}}  
+                                    to={e.path}
+                                >        
+                                        {e.pathName}
+                                </List> ))
+                            }
+                            return <List 
+                                to={e.path}
+                                key={idx}    
+                                $active={active === e.path} 
+                                onClick={()=>{ChangePageHandler(e.path); setActive(e.path)}}
+                            >{e.pathName}</List>
+                        })
+                    }
                     
+          
                     {/* login Component */}
                     {!login && (
                         <li onClick={()=>setViewPopup(true)}>

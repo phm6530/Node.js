@@ -35,7 +35,6 @@ to {
 `;
 
 const Component = styled.div`
-
     width: 50%;
     height: 200px;
     background-color: rgba(255,255,255,.3);
@@ -67,7 +66,7 @@ const Component = styled.div`
 
 
 
-export default function FadeinComponent({position ,children}){
+export default function FadeinComponent({position ,children , idx}){
     const ref = useRef();
     const [ visible, setVisible ] = useState(false);
 

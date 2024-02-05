@@ -4,7 +4,7 @@ import BoardReply from './BoardReply';
 import Fadeup from '../../../FadeinComponent';
 
 export default function BoardView({ board }){
-    const { pageData , counter} = board;
+    const { pageData , counter } = board;
     const [ selectIdx , setSelectIdx ] = useState(null);
 
     const navigate = useNavigate();
@@ -30,8 +30,8 @@ export default function BoardView({ board }){
 
             {pageData.length === 0 &&  <p> 등록된 게시물이 없습니다. </p>}
             {
-                pageData && pageData.map((item)=> {
-                    return <Fadeup  key={item.board_key}  position={'right'}>
+                pageData && pageData.map((item, idx)=> {
+                    return <Fadeup  key={item.board_key}>
                         <BoardReply 
                             reply={item}
                             selectIdx={selectIdx === item.idx}

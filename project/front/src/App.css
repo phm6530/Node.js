@@ -23,10 +23,6 @@
   color: white;
 }
 
-body {
-  color: #fff;
-}
-
 .darkMode {
   background-color: #000;
   color: #fff;
@@ -40,4 +36,34 @@ body {
 
 .errorMessage {
   color: rgb(233, 97, 97);
+}
+
+.loaded {
+  animation: 0.4s ease load forwards;
+  opacity: 0;
+}
+
+.unloaded {
+  animation: 0.4s ease unload forwards;
+}
+
+@keyframes load {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+@keyframes unload {
+  0% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
 }/*# sourceMappingURL=app.css.map */
