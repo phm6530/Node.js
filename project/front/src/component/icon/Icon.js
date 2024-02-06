@@ -17,7 +17,7 @@ const Moon = ({size , color})=>{
     return <BsFillMoonFill size={size}/>
 }
 
-const sun = ({size , color})=>{
+const Sun = ({size , color})=>{
     return <BsFillMoonFill size={size}/>
 }
 
@@ -32,5 +32,5 @@ export {
 
     // moon
     Moon,
-    sun
+    Sun
 };

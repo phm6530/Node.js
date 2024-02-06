@@ -1,7 +1,9 @@
 import { useCallback } from 'react';
+import { useSelector } from 'react-redux';
 
 export default function LoginInput(props){
 
+    const isAuth = useSelector(state => state.authSlice.login);
     const { 
         type , 
         dataType , 
@@ -33,6 +35,7 @@ export default function LoginInput(props){
                 onBlur={()=>onblurHandelr(dataType)}
                 value={FormData[dataType].value}
                 autoComplete={dataType && 'pw'}
+                disabled={isAuth}
             />
         </>
     )

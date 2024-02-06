@@ -18,6 +18,7 @@ export default function MyProject(){
         refetchOnWindowFocus: false
     });
 
+    
 
     return(
         <>  
@@ -25,24 +26,22 @@ export default function MyProject(){
         {(!isLoading && isError) && 'error'}
         {(!isLoading && !isFetching && !isError )&& (
             <>
-            {project.length === 0 && '검색 결과 없습니다.'}
-            {
+                {project.length === 0 && '검색 결과 없습니다.'}
+                {
 
-            project.map((project)=>
-                <ProjectItem        
-                    {...project}
-                    key={project.project_key}
-                /> 
-            )
-            
-            }
+                    project.map((project)=>
+                        <ProjectItem        
+                            {...project}
+                            key={project.project_key}
+                        /> 
+                    )
+                    
+                }
 
-            <ProjectSeach 
-                data = ''
-                realData={data}
-                seachData={project}
-                // setProject = {setProject}
-            />
+                <ProjectSeach 
+                    realData={data}
+                    setProject = {setProject}
+                />
 
             </>
         )}

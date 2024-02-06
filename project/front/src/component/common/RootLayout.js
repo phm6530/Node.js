@@ -5,9 +5,7 @@ import { useRef, useState } from 'react';
 
 import Popup from '../popup/Popup'
 import styled, { css } from 'styled-components';
-
-
-
+import LoginForm from '../popup/login/LoginForm';
 
 const PageChange = styled.div`
     /* transition: background ease-in-out; */
@@ -16,15 +14,15 @@ const PageChange = styled.div`
         switch(props.$path){
             case '/' : 
                 return css`
-                    background: red;
+                    /* background: red; */
                 `
             case '/project' : 
                 return css`
-                    background: #2d2d2d;
+                    
                 `
             default :
                 return css`
-                    background: #000;
+                    
                 `
         }
     }}
@@ -59,7 +57,9 @@ export default function RootLayout(){
 
             {/* 로그인 팝업 */}
             {/* 24/1/13 - 하위컴포넌트 랜더링 문제가 있어서 변경함 */}
-            { viewPopup &&  <Popup popupClose={closePopup} />}
+            { viewPopup &&  <Popup popupClose={closePopup} >
+                    <LoginForm/>
+                </Popup>}
 
             {/* Common Nav */}
             <RootNav 
@@ -68,7 +68,9 @@ export default function RootLayout(){
             />
 
             <PageChange ref={wrapRef} $path={path} className='loaded'>
-                <Outlet/>
+      
+                    <Outlet/>
+          
             </PageChange>
         </>
     )

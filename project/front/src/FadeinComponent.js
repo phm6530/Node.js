@@ -35,28 +35,22 @@ to {
 `;
 
 const Component = styled.div`
-    width: 50%;
-    height: 200px;
-    background-color: rgba(255,255,255,.3);
-    margin-bottom: 10px;
-    opacity: 0;
-
     ${props => {
         if (props.$visible) {
             switch(props.$position){
                 case 'left' :
                     return css`
                         transform: translateX(-40px);
-                        animation: ${fadeInLeft} 1s ease-in-out forwards;
+                        animation: ${fadeInLeft} .5s ease forwards;
                     `;
                 case 'right' : 
                 return css`
                     transform: translateX(40px);
-                    animation: ${fadeInRight} 1s ease-in-out forwards;
+                    animation: ${fadeInRight} .5s ease forwards;
                 `;
                 default : 
                 return css`
-                    animation: ${fadeInUp} 1s ease-in-out forwards;
+                    animation: ${fadeInUp} .5s ease forwards;
                 `;
             }
         
@@ -71,7 +65,7 @@ export default function FadeinComponent({position ,children , idx}){
     const [ visible, setVisible ] = useState(false);
 
     const slideHandler = (entry) =>{
-            entry[0].isIntersecting ? setVisible(true) : setVisible(false);
+            entry[0].isIntersecting && setVisible(true) ;
     }
 
     // div 관찰
@@ -79,7 +73,7 @@ export default function FadeinComponent({position ,children , idx}){
         // if(!ref) return;
         // console.log(ref);/
         const view = ref.current;
-        const io = new IntersectionObserver(slideHandler);
+        const io = new IntersectionObserver(slideHandler , { threshold: .5});
         io.observe(view);
 
         return () => io.disconnect(view)

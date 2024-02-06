@@ -1,34 +1,43 @@
 import classes from './Popup.module.css';
 import ReactDOM from 'react-dom';
 
-import LoginForm from './login/LoginForm';
+import { useEffect, useState } from 'react';
+import PopupStyle from './PopupStyle';
+import { useSelector } from 'react-redux';
 
-export default function Popup(props){
-    const { popupClose } = props;
+
+export default function Popup({popupClose , children}){
+    const [ close , setClose ] = useState(false);
+    const isAuth = useSelector(state => state.authSlice.login);
 
     // background
     const Backdrop = ({popupClose}) =>{
         return <div className={classes.backdrop} onClick={popupClose}></div>
     }
 
-    //로그인 팝업
-    const PopupContainer = ({popupClose}) =>{
-        return (
-            <div className={classes.popupContainer}>
-                <LoginForm
-                    popupClose={popupClose}
-                />
-                <button onClick={popupClose}>닫기</button>
-            </div>
-        )
+    // 닫기 애니메이션
+    const ClosePopup = () =>{
+        setClose(true);
+        setTimeout(()=>{
+            popupClose();
+            setClose(false);
+        },400);
     }
+
+    
+    useEffect(()=>{
+        if(isAuth){
+            ClosePopup();
+        }
+    },[isAuth]);
+
 
     return(
         <>
             {
                 ReactDOM.createPortal(
                     <Backdrop 
-                        popupClose={popupClose}
+                        // popupClose={popupClose}
                     />,
                     document.getElementById('backdrop-root')
                 )
@@ -36,9 +45,18 @@ export default function Popup(props){
 
             {
                 ReactDOM.createPortal(
-                    <PopupContainer
-                        popupClose={popupClose}
-                    />,
+                    <PopupStyle $close={close}>
+                        <div>
+
+                            {children}
+                            {/* <LoginForm popupClose={ClosePopup} /> */}
+
+                            
+                            <button onClick={ClosePopup} className='close'>
+                                <span>Close</span>
+                            </button>
+                        </div>
+                    </PopupStyle>,
                     document.getElementById('modal-root')
                 )
             }

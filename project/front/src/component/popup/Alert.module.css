@@ -3,6 +3,7 @@
     width: 100%;
     text-align: center;
     color: #fff;
+    z-index: 9999;
 }
 
 .alert_success{

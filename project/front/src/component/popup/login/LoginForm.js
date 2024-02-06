@@ -1,14 +1,61 @@
 import { useEffect, useState } from 'react';
 import useAlert from '../../common/UseAlert';
-import { useDispatch } from 'react-redux';
+import { useDispatch , useSelector } from 'react-redux';
 import  { authAction } from '../../../store/appSlice';
-import { LoginUser , LoginPassword } from '../../icon/Icon'; 
+import styled from 'styled-components';
+
+
+// import { LoginUser , LoginPassword } from '../../icon/Icon'; 
 
 // 인증로직
 import LoginInput from '../../ui/LoginInput';
 
+const LoginStyle = styled.form`
+   input{
+        width: 100%;
+        border: 1px solid #c6c6c6;
+        border-radius: 3px;
+        padding: 10px;
+        font-size:14px;
+    }
 
-export default function LoginForm({popupClose}){
+    label{
+        position: relative;
+        margin-bottom: 20px;
+        &::after{
+            position: absolute;
+            left: 5px;
+            top: -10px;
+            padding: 0px 5px;
+            font-size: 12px;
+            background:#fff;
+            font-weight: bold;
+        }
+    }
+
+    label:first-child{
+        &::after{
+            content: "Admin ID";
+        }
+    }
+
+    label:nth-child(2){
+        &::after{
+            content: "password";
+        }
+    }
+
+    button{
+        width: 100%;
+        background: #000;
+        color: #fff;
+        padding: 10px;
+        border-radius: 5em;
+        margin-bottom: 10px;
+    }
+`
+
+export default function LoginForm(){
     const dispatch = useDispatch();
     const showAlert = useAlert();
 
@@ -22,6 +69,7 @@ export default function LoginForm({popupClose}){
     
     const isIdValid =  !loginData.id.isValid && loginData.id.touched;
     const isPwValid =  !loginData.pw.isValid && loginData.pw.touched;
+
 
     // 디바운싱
     useEffect(()=>{
@@ -67,9 +115,8 @@ export default function LoginForm({popupClose}){
             showAlert('로그인 되었습니다.' , 1 );
 
             // 완료시에만 로그인 팝업 닫기
-            popupClose();       
+            // popupClose();       
 
-            
         }
         catch(error){
             console.error(error);
@@ -80,9 +127,9 @@ export default function LoginForm({popupClose}){
     
     return(
         <>
-           <form onSubmit={onSubmitHandler}>
+           <LoginStyle onSubmit={onSubmitHandler}>
                 <label>
-                    <LoginUser size={30}/>
+                    {/* <LoginUser size={30}/> */}
                     <LoginInput
                         type = 'text'
                         dataType = 'id'
@@ -94,7 +141,7 @@ export default function LoginForm({popupClose}){
                 </label>
 
                 <label>     
-                    <LoginPassword size={30}/>
+                    {/* <LoginPassword size={30}/> */}
                     <LoginInput
                          type = 'password'
                          dataType = 'pw'
@@ -107,8 +154,10 @@ export default function LoginForm({popupClose}){
 
                 <button
                     disabled={!fromValid}
-                >로그인</button>
-            </form>
+                >login</button>
+            </LoginStyle>
         </>
     )
 }
+
+

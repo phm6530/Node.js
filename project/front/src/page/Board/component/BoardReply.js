@@ -55,12 +55,13 @@ export default function BoardReply({reply, selectIdx , setSelectIdx }){
     }
 
     return(
-        <div className='BoardComment' key={idx}>
-        <p>작성자 : {user_name}</p>
-        <p>작성일 : {date}</p> 
-
-        {contents}
-
+    <div className='BoardComment' key={idx}>
+        <div className="replyPicture"></div>
+        <div className="replyContents">
+        <div className="replyHeader">
+            
+            <p className='reply_UserName'>{user_name}</p>
+        <div className='replyDelete'>
         {!selectIdx && <button onClick={()=>setSelectIdx(idx)}>삭제</button>}
         {selectIdx && (
             <form onSubmit={handleSubmit(onSubmitHandler)}>
@@ -85,6 +86,15 @@ export default function BoardReply({reply, selectIdx , setSelectIdx }){
                     }}>취소</button>
             </form>
         )}
+        </div>
+       
+        </div>
+        <div className="replyDescription">
+            {contents}
+        </div>
+        <p className='replyDate'>{date}</p> 
+        </div>
+        
         {errors.password && errors.password.message}
         </div>    
     )

@@ -24,9 +24,16 @@ const Link = ({children , className , to , ...prop }) =>{
 
 //css in js  초기랜더링 > 훅실행 > 스타일 생성 
 const List = styled(Link)`
-    transition:  color .6s cubic-bezier(0, 0.88, 0, 1.03);
-    ${props => props.$active ? `color : red;`  : ''}
+    transition:  color .4s cubic-bezier(0, 0.88, 0, 1.03);
+    ${props => props.$active && 'color : red; font-weight:bold;'};
 `
+
+const Header = styled.header`
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+`
+
 
 export default function RootNav({setViewPopup, ChangePageHandler}){
     const { view } = useSelector(state => state.alertSlice);
@@ -43,6 +50,7 @@ export default function RootNav({setViewPopup, ChangePageHandler}){
         { path : '/' , pathName : 'HOME' , AuthPage : false },
         { path : '/project' , pathName : 'PROJECT' , AuthPage : false },
         { path : '/todoCalnder' , pathName : 'MY Calendar' , AuthPage : false },
+        { path : '/Board' , pathName : 'Board' , AuthPage : false },
         { path : '/admin' , pathName : 'Admin' , AuthPage : true },
     ]
 
@@ -50,53 +58,56 @@ export default function RootNav({setViewPopup, ChangePageHandler}){
         <>  
             {/* Alert */}
             { view && <Alert/>}
+        <Header>
+            <div className="wrap">
+                <nav>
+                    <DarkModeBtn  onClick={ctx.toggleMode} $darkMode={ctx.darkMode}> 
+                        <Moon size={'15'}/>
+                        <Moon size={'15'}/>
+                    </DarkModeBtn>
 
-            <nav>
-                <DarkModeBtn  onClick={ctx.toggleMode} $darkMode={ctx.darkMode}> 
-                    <Moon size={'15'}/>
-                    <Moon size={'15'}/>
-                </DarkModeBtn>
+                    {/* Nav */}
+                    <ul>
 
-                {/* Nav */}
-                <ul>
-
-                    {
-                        NavPageObject.map((e,idx)=>{
-                            if(e.AuthPage){
-                                return (login && ( 
-                                <List 
-                                    key={idx} 
-                                    $active={active === e.path} 
-                                    onClick={()=>{ChangePageHandler(e.path); setActive(e.path)}}  
+                        {
+                            NavPageObject.map((e,idx)=>{
+                                if(e.AuthPage){
+                                    return (login && ( 
+                                    <List 
+                                        key={idx} 
+                                        $active={active === e.path} 
+                                        onClick={()=>{ChangePageHandler(e.path); setActive(e.path)}}  
+                                        to={e.path}
+                                    >        
+                                            {e.pathName}
+                                    </List> ))
+                                }
+                                return <List 
                                     to={e.path}
-                                >        
-                                        {e.pathName}
-                                </List> ))
-                            }
-                            return <List 
-                                to={e.path}
-                                key={idx}    
-                                $active={active === e.path} 
-                                onClick={()=>{ChangePageHandler(e.path); setActive(e.path)}}
-                            >{e.pathName}</List>
-                        })
-                    }
-                    
-          
-                    {/* login Component */}
-                    {!login && (
-                        <li onClick={()=>setViewPopup(true)}>
-                            로그인
-                        </li>
-                    )}
-                    {login && (
-                        <li onClick={logOut}>
-                            로그아웃
-                        </li>
-                    )}
+                                    key={idx}    
+                                    $active={active === e.path} 
+                                    onClick={()=>{ChangePageHandler(e.path); setActive(e.path)}}
+                                >{e.pathName}</List>
+                            })
+                        }
+                        
+            
+                        {/* login Component */}
+                        {!login && (
+                            <li onClick={()=>setViewPopup(true)}>
+                                로그인
+                            </li>
+                        )}
+                        {login && (
+                            <li onClick={logOut}>
+                                로그아웃
+                            </li>
+                        )}
 
-                </ul>
-            </nav>
+                    </ul>
+                </nav>
+            </div>
+            </Header>
         </>
     )
 }

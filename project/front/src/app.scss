@@ -1,12 +1,34 @@
+@font-face {
+  font-family: 'S-CoreDream-3Light';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SUIT-Regular';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body{
+  font-family: 'SUIT-Regular';
+  input{
+    background: transparent;
+  }
+}
+
+.wrap{
+  width: 1200px;
+  margin: 0 auto;
+}
+
+
 /* DarkMode */
 $dark-bgcolor : #000;
 $dark-textColor : #fff;
 $error-Message-color : rgb(233, 97, 97);
 
-
-.App {
-    background-color: #282c34;
-}
 
 .App-logo {
     height: 40vmin;
@@ -71,5 +93,162 @@ $error-Message-color : rgb(233, 97, 97);
       opacity: 0;
       transform: translateY(20px);
     }
+  }
+  
+
+  label{
+    display: block;
+  }
+  input:focus{
+    outline: none;
+  }
+  button{
+    cursor: pointer;
+  }
+
+  input:disabled{
+    background: #F0F0F0;
+    opacity: .5;
+  }
+
+
+
+  nav{
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    align-items: center;
+    ul{
+      display: flex;
+      li{
+        margin-left: 30px;
+        padding: 25px 0px;
+      }
+    }
+  }
+
+
+  // Board
+  .BoardReplyForm{
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 2em;
+    
+    .formInputDiv{
+      width: 100%;
+      border: 1px solid #c6c6c6;
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-size: 14px;
+      margin-bottom: 15px;
+      position: relative;
+      span{
+        position: absolute;
+        left: 10px;
+        top:-10px;
+        padding:0px 10px;
+        display: block;
+      }
+      
+    }
+  }
+
+  .BoardComment{
+    margin-bottom: 3px;
+    /* border-radius: 1em; */
+    padding: 15px 20px;
+    display: flex;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    position: relative;
+    /* box-shadow: -4px -4px 15px rgba(255, 255, 255, 0.7), 4px 4px 15px rgba(36, 36, 36, 0.15);*/
+    .replyPicture{
+      width: 50px;
+    height: 50px;
+    margin-right: 20px;
+    border-radius: 5em;
+    background-color: rgba(0, 0, 0, 0.2);
+    box-shadow: -4px -4px 10px rgb(255, 255, 255), 4px 4px 10px rgba(36, 36, 36, 0.15);
+    border: 2px solid #ffffff5c;
+    }
+    .replyHeader{
+      display: flex;
+      align-items: center;
+      .reply_UserName{
+        font-weight: bold;
+      }
+    }
+    .replyDate{
+      font-size: 12px;
+      opacity: .5;
+    }
+    .replyDescription{
+      margin-bottom: 10px;
+    }
+    .replyDelete{
+      position: absolute;
+      right: 20px;
+    }
+    .replyContents{
+      background-color: #fff;
+      padding: 10px;
+      border-radius: .5em;
+      position: relative;
+
+      &::before{
+        content: "";
+        display: block;
+        position: absolute;
+        left: -20px;
+        top: 15px;
+        width: 0;
+        height: 0;
+        border-bottom: 5px solid transparent;
+        border-top: 5px solid transparent;
+        border-left: 10px solid rgb(255, 255, 255);
+        border-right: 10px solid transparent;
+        transform: rotate(180deg);
+      }
+    }
+
+  }
+
+  .btnStyle_Type_1{
+    display: inline-block;
+    background: linear-gradient(to right, #e2e6ef, #c5cde0);
+    background: #e5e9f2;
+    font-weight: bold;
+    /* padding: 8px 19px 8px 25px; */
+    width: 100px;
+    height: 40px;
+    display: flex;
+    border-radius: 1em;
+    color: rgba(38, 65, 125, 0.6);
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: -3px -1px 13px rgb(255, 255, 255), 9px 4px 18px rgba(36, 36, 36, 0.15);
+    position: relative;
+    box-shadow: -4px -4px 10px rgb(255, 255, 255), 4px 4px 10px rgba(36, 36, 36, 0.15);
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to right, #d7dff0, #c5cde0);
+    border: 2px solid #fff;
+    &:active{
+        box-shadow: 3px 1px 17px rgba(255, 255, 255, 0.8), 1px -1px 4px rgba(48, 59, 73, 0.24);
+    
+    }
+  }
+  
+
+  .pageTitle{
+    font-size: 70px;
+    font-weight: bold;
+  }
+
+
+  .pageDashBoard{
+    height: 400px;
+    display: flex;
+    align-items: center;
+    background-color: #fff;
   }
   

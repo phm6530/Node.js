@@ -2,24 +2,24 @@ import { useState } from 'react';
 import { useNavigate , useLocation } from 'react-router-dom';
 
 export default function ProjectSeach({
-    DUMMY_PROJECT : projectArr,
+    realData,
     setProject
 }){
     const [ input , setInput ] = useState('');
-
+    const { resData } = realData;
     const navigate = useNavigate();
     const location = useLocation();
-
     
     const seachProejct = (e) =>{
         e.preventDefault();
-        
+
         if(input.trim() === ''){
-            setProject(projectArr);
+            setProject(resData);
+            return;
         }
         setProject(
-            projectArr.filter((project)=>{
-                return project.title.includes(input);
+            resData.filter((arr)=>{
+                return arr.title.includes(input);
             }
         ));
     }

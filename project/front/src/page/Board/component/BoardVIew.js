@@ -27,7 +27,7 @@ export default function BoardView({ board }){
     
     return(
         <>  
-
+        <div className="BoardReplyWrap wrap">
             {pageData.length === 0 &&  <p> 등록된 게시물이 없습니다. </p>}
             {
                 pageData && pageData.map((item, idx)=> {
@@ -51,7 +51,7 @@ export default function BoardView({ board }){
                     {page}
                   </button>
                 })}    
-        
+        </div>
         </>
     )
 }

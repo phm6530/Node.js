@@ -91,17 +91,24 @@ export default function Board(){
         <>  
         {/* formProvider */}
         <FormProvider {...formMethod}>
+            <div className="pageDashBoard">
+                <div className="wrap">
+                    <span className='pageTitle'>BOARD</span>
+                </div>
+            </div>
+
+            {/* Form */}
+            <BoardReplyForm 
+                onSubmitHandlr={onSubmitHandlr}
+            />
+
+
             {/* view or Page */}
             {(!isLoading && !isError ) && (
                 <>
                     <BoardView
                         board={data}
                     /> 
-
-                    {/* Form */}
-                    <BoardReplyForm
-                        onSubmitHandlr={onSubmitHandlr}
-                    />
                 </>
             )
             }
