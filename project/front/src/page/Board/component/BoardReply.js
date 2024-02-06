@@ -5,17 +5,38 @@ import { useMutation, useQueryClient } from 'react-query';
 import { Controller, useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { DeleteIcon } from '../../../component/icon/Icon';
+import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
 const schema = Yup.object({
     password : Yup.string().required('비밀번호를 입력해주세요.')
 })
 
+const HoverStyle = ({ className, children }) => {
+    return <span className={className}>{children}</span>;
+};
+const HoverStyled = styled(HoverStyle)`
+    &:hover {
+        // 아이콘에 대한 호버 스타일 정의
+        svg {
+            fill: rgb(97 124 163); // 예: #ff0000
+        }
+    }
+`;
+
+const ReplyPicture = styled.div`
+    ${props => `background :url(/img/board/${props.$pirture}.png)`};
+    background-size: cover;
+`
 
 export default function BoardReply({reply, selectIdx , setSelectIdx }){
     const { 
+        user_icon,
         user_name,  idx ,  contents ,  date,
         board_key // 식별 board key
     } = reply;
+
 
     const queryClient = useQueryClient();
 
@@ -56,13 +77,17 @@ export default function BoardReply({reply, selectIdx , setSelectIdx }){
 
     return(
     <div className='BoardComment' key={idx}>
-        <div className="replyPicture"></div>
+        <ReplyPicture $pirture={user_icon} className="replyPicture"></ReplyPicture>
         <div className="replyContents">
         <div className="replyHeader">
             
             <p className='reply_UserName'>{user_name}</p>
         <div className='replyDelete'>
-        {!selectIdx && <button onClick={()=>setSelectIdx(idx)}>삭제</button>}
+        {!selectIdx && <button onClick={()=>setSelectIdx(idx)}>
+            <HoverStyled>
+                <DeleteIcon size='20' color='#cdcdcd' />    
+            </HoverStyled>
+        </button>}
         {selectIdx && (
             <form onSubmit={handleSubmit(onSubmitHandler)}>
                 <Controller

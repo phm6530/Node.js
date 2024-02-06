@@ -140,6 +140,14 @@ nav ul li {
   display: block;
 }
 
+.boardDashBoard {
+  width: 50%;
+}
+
+.borderReply {
+  width: 50%;
+}
+
 .BoardComment {
   margin-bottom: 3px;
   /* border-radius: 1em; */
@@ -154,9 +162,9 @@ nav ul li {
   height: 50px;
   margin-right: 20px;
   border-radius: 5em;
-  background-color: rgba(0, 0, 0, 0.2);
   box-shadow: -4px -4px 10px rgb(255, 255, 255), 4px 4px 10px rgba(36, 36, 36, 0.15);
-  border: 2px solid rgba(255, 255, 255, 0.3607843137);
+  border: 2px solid rgb(255, 255, 255);
+  box-sizing: border-box;
 }
 .BoardComment .replyHeader {
   display: flex;
@@ -164,6 +172,7 @@ nav ul li {
 }
 .BoardComment .replyHeader .reply_UserName {
   font-weight: bold;
+  font-size: 14px;
 }
 .BoardComment .replyDate {
   font-size: 12px;
@@ -171,6 +180,7 @@ nav ul li {
 }
 .BoardComment .replyDescription {
   margin-bottom: 10px;
+  font-size: 14px;
 }
 .BoardComment .replyDelete {
   position: absolute;
@@ -206,7 +216,7 @@ nav ul li {
   width: 100px;
   height: 40px;
   display: flex;
-  border-radius: 1em;
+  border-radius: 5em;
   color: rgba(38, 65, 125, 0.6);
   font-size: 14px;
   cursor: pointer;
@@ -223,13 +233,6 @@ nav ul li {
 }
 
 .pageTitle {
-  font-size: 70px;
+  font-size: 120px;
   font-weight: bold;
-}
-
-.pageDashBoard {
-  height: 400px;
-  display: flex;
-  align-items: center;
-  background-color: #fff;
 }/*# sourceMappingURL=app.css.map */

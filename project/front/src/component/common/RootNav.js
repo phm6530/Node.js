@@ -39,7 +39,7 @@ export default function RootNav({setViewPopup, ChangePageHandler}){
     const { view } = useSelector(state => state.alertSlice);
     const { login } = useSelector(state => state.authSlice);
     const { pathname } = useLocation();
-    console.log('pathName:', pathname);
+    // console.log('pathName:', pathname);
     const [ active, setActive ] = useState(pathname);
 
     const logOut =  LogOut();

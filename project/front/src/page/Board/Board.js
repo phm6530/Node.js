@@ -8,27 +8,62 @@ import BoardReplyForm from './component/BoardReplyForm';
 import BoardView from './component/BoardVIew';
 import useAlert from '../../component/common/UseAlert';
 import * as Yup from 'yup';
+import styled from 'styled-components';
 
 // import { dateFormating } from '../../component/common/DateFormat';
 
 import { useForm , FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup'; // Yup + form hook 연동
+import { useSelector } from 'react-redux';
 
-const schama = Yup.object({
-    userName : Yup.string().required('필수항목 입니다.'),
-    contents : Yup.string().required('필수항목 입니다.').min(10, '최소 10글자 이상 적어주세요'),
-    password : Yup.string().required('필수항목 입니다.').min(4, '최소 4글자의 비밀번호를 기재해주세요')
-})
+
+
+
+
+const BoardStyle = styled.div`
+    display: flex;
+    transform: translateY(-130px);
+`
+
+
+const PageDashBoard = styled.div`
+    background: #212123;
+    width: 100%;
+    height: 350px;
+    background-image : url('/img/board/banner.jpg');
+    background-size: cover;
+`
+
+const PageTitleStyle = styled.div`
+    color:#e2e6ef;
+    background: linear-gradient(to bottom, #000000, #000000 50%, #ff2ff2);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+`
+
 
 export default function Board(){
     const navigate = useNavigate();
     const showAlert = useAlert(); // 팝업 커스텀 훅
     const location = useLocation();
+    const isAuth = useSelector(state => state.authSlice);
+
+    const schama = Yup.object({
+        userIcon : Yup.string().required('필수항목 입니다.'),
+        userName : Yup.string().required('필수항목 입니다.'),
+        contents : Yup.string().required('필수항목 입니다.').min(10, '최소 10글자 이상 적어주세요'),
+        password : Yup.string().when([],()=>{
+            return isAuth
+                ? Yup.string().notRequired()
+                : Yup.string().required('필수항목 입니다.').min(4, '최소 4글자의 비밀번호를 기재해주세요')
+        })
+    })
 
     // React-hook-form
     const formMethod = useForm({
         resolver : yupResolver(schama) ,
         defaultValues : {
+            userIcon : '',
             userName : '',
             contents : '',
             password : ''
@@ -48,6 +83,7 @@ export default function Board(){
 
         }
     ); 
+    // console.log(data);
 
     // QueryClient 연결
     const queryClient = useQueryClient();
@@ -70,7 +106,7 @@ export default function Board(){
 
     // submit
     const onSubmitHandlr = async(data) =>{
-        console.log(data);
+        // console.log(data);
 
         if(!findForBadword(data.contents)){
             showAlert('비속어는 입력 불가합니다..' , false );
@@ -91,17 +127,23 @@ export default function Board(){
         <>  
         {/* formProvider */}
         <FormProvider {...formMethod}>
-            <div className="pageDashBoard">
-                <div className="wrap">
-                    <span className='pageTitle'>BOARD</span>
-                </div>
-            </div>
+                <PageDashBoard className="pageDashBoard">
 
-            {/* Form */}
-            <BoardReplyForm 
-                onSubmitHandlr={onSubmitHandlr}
-            />
 
+                </PageDashBoard>
+                <BoardStyle className="wrap">
+                    
+                    <div className="boardDashBoard">
+                    <PageTitleStyle className='pageTitle'>Guest Book</PageTitleStyle>
+                    <p>남기고 싶은 말씀을 적어주세요</p>
+                    <p>Verfly으로 compare하는 형식으로 알고리즘으로 비밀번호를 변환하기에 제작자 또한 비밀번호를 알 수 없습니다.</p>
+                      {/* Form */}
+                        <BoardReplyForm  
+                            onSubmitHandlr={onSubmitHandlr}
+                        />
+
+                    </div>
+                    <div className="borderReply">
 
             {/* view or Page */}
             {(!isLoading && !isError ) && (
@@ -114,7 +156,10 @@ export default function Board(){
             }
             {isLoading && 'loading....'}
             {(!isLoading && isError) && 'error'}
-            
+
+                    </div>
+
+                </BoardStyle>
         </FormProvider>
         </>
     )

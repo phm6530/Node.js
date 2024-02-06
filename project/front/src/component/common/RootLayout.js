@@ -1,7 +1,7 @@
 import RootNav from './RootNav'
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Popup from '../popup/Popup'
 import styled, { css } from 'styled-components';
@@ -27,6 +27,37 @@ const PageChange = styled.div`
         }
     }}
 `
+
+
+const Timer = ({...props}) =>{
+    const [ time , setTime ] = useState(new Date());
+    
+
+
+    useEffect(()=>{
+        const timer = setTimeout(()=>{
+            setTime(new Date());
+        },1000);    
+
+        return()=> clearTimeout(timer);
+    },[time]);   
+
+    return(
+        <>
+            <div {...props}>{time.toLocaleTimeString().replace('오전', 'AM').replace('오후', 'PM')}</div>
+        </>
+    )
+}
+
+const TimerStyle = styled(Timer)`
+    position: absolute;
+    z-index: 1;
+    font-weight: bold;
+    font-size: 40px;
+    background:#fff;
+
+`
+
 
 export default function RootLayout(){
     const [ viewPopup , setVIewPopup ] = useState(false);
@@ -66,11 +97,9 @@ export default function RootLayout(){
                 setViewPopup={setVIewPopup}
                 ChangePageHandler={ChangePageHandler}
             />
-
+            <TimerStyle/>
             <PageChange ref={wrapRef} $path={path} className='loaded'>
-      
                     <Outlet/>
-          
             </PageChange>
         </>
     )

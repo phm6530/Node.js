@@ -1,6 +1,7 @@
 //login Icon
 import { IoPersonCircleSharp } from "react-icons/io5";
 import { RiLockPasswordFill } from "react-icons/ri";
+import { TiDelete } from "react-icons/ti";
 
 // icon
 import { BsFillMoonFill } from "react-icons/bs";
@@ -18,10 +19,15 @@ const Moon = ({size , color})=>{
 }
 
 const Sun = ({size , color})=>{
-    return <BsFillMoonFill size={size}/>
+    return <BsFillMoonFill size={size} />
 }
 
 
+// BoardIcon
+
+const DeleteIcon = ({size , color})=>{
+    return <TiDelete size={size} color={color || "black"}/>
+}
 
 
 
@@ -32,5 +38,8 @@ export {
 
     // moon
     Moon,
-    Sun
+    Sun,
+
+    // Board
+    DeleteIcon
 };

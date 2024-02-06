@@ -1,6 +1,8 @@
-import { forwardRef, useContext } from 'react';
+import { forwardRef, useContext, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { DarkMode } from '../../../context/DarkModeContext';
+import { useSelector } from 'react-redux';
+import { useFormContext } from 'react-hook-form';
 
 
 const errorAnimation = keyframes`
@@ -58,7 +60,7 @@ const FormInputDiv = styled.div`
     span{
         position: absolute;
         left: 10px;
-        top: -10px;
+        /* top: -10px; */
         padding: 0px 10px;
         display: block;
         font-weight: bold;
@@ -66,11 +68,22 @@ const FormInputDiv = styled.div`
         ${props => props.$darkMode ? `background: #000`  : 'background : #e2e6ef'}
     }
 `
-const InputReply = forwardRef((fields , ref)=>{
+const InputReply = forwardRef((fields ,ref)=>{
   const {darkMode} = useContext(DarkMode); 
+  const { setValue } = useFormContext();
+  const { isAuth , ...props } = fields;
+//   console.log(isAuth);
+//   console.log('props : ',{...props});
+
+    useEffect(() => {
+        if (isAuth) {
+            setValue(props.name, '관리자'); // 'name' 필드에 '관리자' 값을 설정
+        }
+    }, [isAuth, props.name, setValue]);
+
 
     const {label , error} =fields;
-    
+    // console.log(isAuth);
     return(
         <>  
             <FormInputDiv
@@ -78,11 +91,12 @@ const InputReply = forwardRef((fields , ref)=>{
             >
                 <span>{label}</span>
                 <input
-                    {...fields}
+                    {...props}
                     ref={ref}
                     type={fields.name === 'password' ? 'password' : 'text'}
                     autoComplete='off'
-                  
+                    value={isAuth && '관리자'}
+                    disabled={isAuth}
                 />
                 {error && <ErrorStyle $error={Boolean(error)}>{error.message}</ErrorStyle>}
             </FormInputDiv>
