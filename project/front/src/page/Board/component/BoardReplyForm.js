@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import InputReply from './InputReply'
 import styled, { keyframes } from 'styled-components';
 import { DarkMode } from '../../../context/DarkModeContext';
-import { useContext } from 'react';
+import { useContext , useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 const Button = styled.button`
@@ -26,6 +26,7 @@ const BoardReplyStyle = styled.div`
     border-radius: 2em;
     margin-top: 50px;
     box-shadow: -4px -4px 15px rgba(255, 255, 255, 0.7), 4px 4px 15px rgba(36, 36, 36, 0.15);
+    width: 90%;
 `
 const FormStyle = styled.form`
     .radioWrap{
@@ -67,33 +68,38 @@ export default function BoardReplyForm({
     control
 }){
     const { darkMode } = useContext(DarkMode);
-    const { handleSubmit ,  formState : { errors } } = useFormContext();//useForm 트리
+    const { handleSubmit , setValue ,  formState : { errors } } = useFormContext();//useForm 트리
     const { login } = useSelector(state => state.authSlice);
     console.log(errors);
+
+    // useEffect(() => {
+    //     setValue('userIcon', 'person_1', { shouldValidate: true });
+    // }, [setValue]);
 
     return(
         <BoardReplyStyle $darkMode={darkMode}>
             <FormStyle  method='POST' onSubmit={handleSubmit(onSubmitHandlr)}>
-
-                
                 <Controller
                     name='userIcon'
                     control={control}
+                    defaultValue="person_1"
                     render={({field})=>
                         <>
                         <div className="radioWrap">
+                            
                             {   
                                 [...Array(6)].map((_,idx)=> {
                                     const icon = `person_${idx + 1}`;
-                                    return <RadioStyle key={idx} className={icon === field.value ? 'checked' : undefined}>
+                                    return <RadioStyle key={idx} className={
+                                        icon === field.value ? 'checked' : undefined
+                                    }>
                                         <img src={`/img/board/${icon}.png`} alt="" />
-                                        {/* {console.log(field.value === icon)} */}
                                         <input 
                                             type="radio"
                                             value={icon}
                                             onChange={()=>field.onChange(icon)}
                                             name={field.name}
-                                            checked={field.value === icon}
+                                            checked={field.value  === icon}
                                          />
                                     </RadioStyle>
                                 } )

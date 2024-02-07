@@ -22,48 +22,51 @@ import { useSelector } from 'react-redux';
 
 const BoardStyle = styled.div`
     display: flex;
-    transform: translateY(-130px);
+    transform: translateY(-111px);
 `
 
 
-const PageDashBoard = styled.div`
-    background: #212123;
-    width: 100%;
-    height: 350px;
-    background-image : url('/img/board/banner.jpg');
-    background-size: cover;
-`
 
 const PageTitleStyle = styled.div`
     color:#e2e6ef;
-    background: linear-gradient(to bottom, #000000, #000000 50%, #ff2ff2);
+    /* background: linear-gradient(to bottom, #000000, #000000 50%, #ff2ff2);
     background-clip: text;
-    -webkit-text-fill-color: transparent;
+    -webkit-text-fill-color: transparent; */
+    
 `
 
+const BoardDashBoard = styled.div`
+    
+`
 
 export default function Board(){
     const navigate = useNavigate();
     const showAlert = useAlert(); // 팝업 커스텀 훅
     const location = useLocation();
-    const isAuth = useSelector(state => state.authSlice);
+    const { login } = useSelector(state => state.authSlice);
+    // console.log(login);
+    
 
     const schama = Yup.object({
         userIcon : Yup.string().required('필수항목 입니다.'),
         userName : Yup.string().required('필수항목 입니다.'),
         contents : Yup.string().required('필수항목 입니다.').min(10, '최소 10글자 이상 적어주세요'),
         password : Yup.string().when([],()=>{
-            return isAuth
+            return login
                 ? Yup.string().notRequired()
                 : Yup.string().required('필수항목 입니다.').min(4, '최소 4글자의 비밀번호를 기재해주세요')
         })
     })
 
+    
+    const personIcon = [...Array(6)].map((_,idx)=> `person_${idx + 1}`);    
+    const randomUserIcon = personIcon[Math.floor(Math.random() * personIcon.length)];
+
     // React-hook-form
     const formMethod = useForm({
         resolver : yupResolver(schama) ,
         defaultValues : {
-            userIcon : '',
+            userIcon : randomUserIcon,
             userName : '',
             contents : '',
             password : ''
@@ -127,22 +130,21 @@ export default function Board(){
         <>  
         {/* formProvider */}
         <FormProvider {...formMethod}>
-                <PageDashBoard className="pageDashBoard">
+                <div className="pageDashBoard">
 
-
-                </PageDashBoard>
+                </div>
                 <BoardStyle className="wrap">
                     
-                    <div className="boardDashBoard">
+                    <BoardDashBoard>
                     <PageTitleStyle className='pageTitle'>Guest Book</PageTitleStyle>
-                    <p>남기고 싶은 말씀을 적어주세요</p>
+                    <p>남기고 싶은 말씀을 적어주세요!</p>
                     <p>Verfly으로 compare하는 형식으로 알고리즘으로 비밀번호를 변환하기에 제작자 또한 비밀번호를 알 수 없습니다.</p>
                       {/* Form */}
                         <BoardReplyForm  
                             onSubmitHandlr={onSubmitHandlr}
                         />
 
-                    </div>
+                    </BoardDashBoard>
                     <div className="borderReply">
 
             {/* view or Page */}
@@ -152,7 +154,7 @@ export default function Board(){
                         board={data}
                     /> 
                 </>
-            )
+                )
             }
             {isLoading && 'loading....'}
             {(!isLoading && isError) && 'error'}

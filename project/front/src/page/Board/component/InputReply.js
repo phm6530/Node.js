@@ -74,7 +74,7 @@ const InputReply = forwardRef((fields ,ref)=>{
   const { isAuth , ...props } = fields;
 //   console.log(isAuth);
 //   console.log('props : ',{...props});
-
+    // console.log(isAuth);
     useEffect(() => {
         if (isAuth) {
             setValue(props.name, '관리자'); // 'name' 필드에 '관리자' 값을 설정
@@ -95,7 +95,7 @@ const InputReply = forwardRef((fields ,ref)=>{
                     ref={ref}
                     type={fields.name === 'password' ? 'password' : 'text'}
                     autoComplete='off'
-                    value={isAuth && '관리자'}
+                    // {isAuth && (value = '관리자')}
                     disabled={isAuth}
                 />
                 {error && <ErrorStyle $error={Boolean(error)}>{error.message}</ErrorStyle>}
