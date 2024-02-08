@@ -7,7 +7,6 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { DeleteIcon } from '../../../component/icon/Icon';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
 import { forwardRef } from 'react';
 
 const schema = Yup.object({
@@ -32,14 +31,14 @@ const ReplyPicture = styled.div`
 `
 
 const BoardReply = forwardRef((props , ref )=>{
-    const { reply , selectIdx , setSelectIdx } = props;
+    const { reply , selectIdx , setSelectIdx , setUserData } = props;
     const { 
         user_icon,
         user_name,  idx ,  contents ,  date,
         board_key // 식별 board key
     } = reply;
-
-
+    
+    
     const queryClient = useQueryClient();
 
     const { handleSubmit , formState : { errors } , reset , control } = useForm({
@@ -52,22 +51,22 @@ const BoardReply = forwardRef((props , ref )=>{
 
     const { mutateAsync}  = useMutation((formData)=>deleteFetch(formData),{
         onSuccess : (data) =>{
-            console.log(data);
-            queryClient.invalidateQueries('board');
+            setUserData(prev => {
+                return prev.filter((e)=>{
+                    return e.board_key !== data.isDeleted_key
+                });
+            });
         }
     })
 
     const showAlert = useAlert();
     const onSubmitHandler = async(data) =>{
-
         const password = data.password;
         const formData ={
-            reply_Idx : idx,
             reply_password : password,
             board_key : board_key,
-            page : new URL(window.location.href).searchParams.get('page') || 1
         }
-
+        console.log('formData :' , formData);
         try{
             await mutateAsync(formData)
             showAlert('삭제되었습니다.', 1);
@@ -78,14 +77,14 @@ const BoardReply = forwardRef((props , ref )=>{
     }
 
     return(
-    <div className='BoardComment' key={idx} ref={ref}>
+    <div className='BoardComment' key={board_key} ref={ref}>
         <ReplyPicture $pirture={user_icon} className="replyPicture"></ReplyPicture>
         <div className="replyContents">
         <div className="replyHeader">
             
             <p className='reply_UserName'>{user_name}</p>
         <div className='replyDelete'>
-        {!selectIdx && <button onClick={()=>setSelectIdx(idx)}>
+        {!selectIdx && <button onClick={()=>setSelectIdx(board_key)}>
             <HoverStyled>
                 <DeleteIcon size='20' color='#cdcdcd' />    
                 {idx}

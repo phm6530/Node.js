@@ -194,7 +194,7 @@ $error-Message-color : rgb(233, 97, 97);
       border-radius: 0.5em;
       position: relative;
       width: calc(100% - 70px);
-
+      box-shadow: -4px -4px 15px rgba(255, 255, 255, 0.7), 4px 4px 15px rgba(36, 36, 36, 0.15);
       &::before{
         content: "";
         display: block;

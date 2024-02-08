@@ -52,20 +52,23 @@ const FormInputDiv = styled.div`
     padding: 10px 20px;
     font-size: 14px;
     margin-bottom: 15px;
+    display: flex;
     position: relative;
     box-shadow: inset 4px 5px 3px rgba(36, 36, 36, 0.15), 4px 4px 2px rgba(255, 255, 255, 0.5);
     input{
-        width: 100%;
+        width: calc(100% - 100px);
     }
     span{
-        position: absolute;
+        /* position: absolute; */
         left: 10px;
         /* top: -10px; */
         padding: 0px 10px;
         display: block;
         font-weight: bold;
-        transition: background .6s 0.3s cubic-bezier(0, 0.88, 0, 1.03);
-        ${props => props.$darkMode ? `background: #000`  : 'background : #e2e6ef'}
+        /* background: red; */
+        width: 80px;
+        /* transition: background .6s 0.3s cubic-bezier(0, 0.88, 0, 1.03); */
+        /* ${props => props.$darkMode ? `background: #000`  : 'background : #e2e6ef'} */
     }
 `
 const InputReply = forwardRef((fields ,ref)=>{
@@ -82,8 +85,9 @@ const InputReply = forwardRef((fields ,ref)=>{
     }, [isAuth, props.name, setValue]);
 
 
-    const {label , error} =fields;
-    // console.log(isAuth);
+    const {label , error  } =fields;
+    // console.log('name : ' , type);
+
     return(
         <>  
             <FormInputDiv
@@ -93,8 +97,10 @@ const InputReply = forwardRef((fields ,ref)=>{
                 <input
                     {...props}
                     ref={ref}
+            
                     type={fields.name === 'password' ? 'password' : 'text'}
                     autoComplete='off'
+                    
                     // {isAuth && (value = '관리자')}
                     disabled={isAuth}
                 />

@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import BoardReply from './BoardReply';
 import Fadeup from '../../../FadeinComponent';
 import styled from 'styled-components';
-import { useQuery } from 'react-query';
 
 const BoardReplyWrap = styled.div`
   height: 700px;
@@ -25,25 +24,34 @@ const BoardReplyWrap = styled.div`
     }
 `
 
-export default function BoardView({ moreData , board ,setPage }){
+export default function BoardView({ moreData , board ,setUserData,setLastPageIdx }){
     const [ selectIdx , setSelectIdx ] = useState(null);
-    // const { data } = useQuery();
-    const ref = useRef();
-    console.log(board);
-    
+    const refs = useRef([]);
+
     useEffect(()=>{
-        const lastRef = ref.current;
+        if(!moreData) return ;
+
+
+        
+        const selectRefs = refs.current.slice(0, refs.current.length);
+        console.log(selectRefs.length);
+        const lastRef = selectRefs[board.length - 1];
+        if(lastRef){
+            lastRef.style.backgroundColor = 'red';
+            //디버깅용 색칠하기
+        }
         const io = new IntersectionObserver((entry)=>{
-            // console.log('랜더링');
-            if(entry[0].isIntersecting && moreData ) setPage(prev => prev + 1);
+            if(entry[0].isIntersecting && moreData ) {
+                setLastPageIdx(selectRefs.length);
+            }
         } , { threshold : .5})
         if(lastRef){
             io.observe(lastRef);
         }
         return ()=>{
-            io.disconnect(lastRef);
+            io.disconnect();
         }
-    },[board ,setPage , moreData]);
+    },[board, setLastPageIdx,  moreData]);
 
 
     return(
@@ -52,13 +60,21 @@ export default function BoardView({ moreData , board ,setPage }){
             {board.length === 0 &&  <p> 등록된 게시물이 없습니다. </p>}
             {
                 board && board.map((item, idx)=> {
-                    return <Fadeup key={item.board_key}>
+                    return <Fadeup key={item.board_key} >
                         <BoardReply 
-                            ref={ref}
+                    ref={(e) => {
+                        
+                        refs.current[idx] = e;
+                        
+                        if (e === null) {
+                          refs.current = refs.current.slice(0, idx);
+                        }
+                      }}
                             reply={item}
                             idx={item.idx}
-                            selectIdx={selectIdx === item.idx}
+                            selectIdx={selectIdx === item.board_key}
                             setSelectIdx={setSelectIdx}
+                            setUserData={setUserData}
                         />
                     </Fadeup>
                 } )

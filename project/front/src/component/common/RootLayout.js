@@ -28,12 +28,8 @@ const PageChange = styled.div`
     }}
 `
 
-
 const Timer = ({...props}) =>{
     const [ time , setTime ] = useState(new Date());
-    
-
-
     useEffect(()=>{
         const timer = setTimeout(()=>{
             setTime(new Date());
@@ -81,8 +77,6 @@ export default function RootLayout(){
         },390);
     }
     
-
-
     return(
         <>    
 

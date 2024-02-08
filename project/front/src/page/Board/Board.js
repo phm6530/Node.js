@@ -1,5 +1,5 @@
-import { useQuery , useMutation, useQueryClient } from 'react-query';
-import { useLocation , useNavigate} from 'react-router-dom';
+import { useQuery , useMutation } from 'react-query';
+import { useLocation} from 'react-router-dom';
 import { findForBadword } from '../../filter/filterWording';
 import { v4 as uuidv4 } from 'uuid';
 import { fetchReply , fetchData } from './BoardFetch';
@@ -18,6 +18,7 @@ import { useForm , FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup'; // Yup + form hook 연동
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
+import Gird from '../../component/ui/Grid';
 
 const BoardStyle = styled.div`
     display: flex;
@@ -62,7 +63,6 @@ export default function Board(){
     const showAlert = useAlert(); // 팝업 커스텀 훅
     const location = useLocation();
     const { login } = useSelector(state => state.authSlice);
-    // console.log('pageTouched: ',pageTouched);
 
     const schama = Yup.object({
         userIcon : Yup.string().required('필수항목 입니다.'),
@@ -92,26 +92,22 @@ export default function Board(){
 
 
     // 초기데이터 + 페이징 데이터 로드
-    const [ page, setPage ] = useState(1);
     const [ userData , setUserData] = useState([]);
     const [ moreData , setMoreData ] = useState(true);
     const [ total ,setTotal ] = useState(0);
+    const [ lastPageIdx , setLastPageIdx ] = useState(null);
+    console.log(userData);
+    console.log('startIdx : ', lastPageIdx);
     
-    // userData.forEach((e)=>{
-    //     console.count();
-    //     console.log('board key : ',e.board_key); 
-    // });
-    console.log('page : ',page);
-
     const { isLoading , isError } = useQuery(
-        ['board', page], () => fetchData(page), {
+        ['board', lastPageIdx], () => fetchData(lastPageIdx), {
             refetchOnWindowFocus: false,
             onSuccess :(data) =>{
                 if(data.pageData.length === 0 ){
                     setMoreData(false);
                 }
                 setTotal(data.counter);
-
+                console.log('userQuery 실행');
                 // 이건 맞음
                 setUserData(prev => {
                     return [...prev , ...data.pageData]
@@ -120,28 +116,23 @@ export default function Board(){
             onError: (error) => {
                 console.log('실행');
                 showAlert(error.message, 0);
-            }
+            } 
         }
     ); 
+
+    // console.log('Board / userData : ',userData);
     
-    // QueryClient 연결
-    const queryClient = useQueryClient();
 
     // Query 뮤테이션
     const mutation = useMutation(formData => fetchReply(formData), {
         onSuccess: (data) => {
-            console.log('Myation reply data :',data);
-            
-            const newArr = [...data.resData , ...userData ];
-            // console.log(newArr);
-            // console.log(newArr);
-            setUserData(newArr);
-            // queryClient.invalidateQueries('board');
-            showAlert('댓글이 등록되었습니다.' , 1);
+            setUserData(prev => [...data.resData , ...prev]);
+            showAlert('댓글이 등록되었습니다.', 1);
+            console.log('userMutation 실행');
             formMethod.reset();
         },
-        onError : (error)=>{
-            showAlert(error.message , 0);
+        onError: (error) => {
+            showAlert(error.message, 0);
         }
     });
     
@@ -167,40 +158,37 @@ export default function Board(){
 
         
         <FormProvider {...formMethod}>
-
                 <div className="pageDashBoard"></div>
-                
-                <BoardStyle className="wrap">
-                    
-                    <BoardDashBoard>
-                    <PageTitleStyle className='pageTitle'>Guest Book</PageTitleStyle>
-                    <PageText>
-                        <p>남기고 싶은 말씀을 적어주세요!</p>
-                        <p>Verfly으로 compare하는 형식으로 알고리즘으로 비밀번호를 변환하기에 제작자 또한 비밀번호를 알 수 없습니다.</p>
-                    </PageText>
-                      {/* Form */}
-                        <BoardReplyForm  
-                            onSubmitHandlr={onSubmitHandlr}
-                        />
-                    </BoardDashBoard>
+                <Gird>
+                    <BoardStyle>
+                        <BoardDashBoard>
+                        <PageTitleStyle className='pageTitle'>Guest Book</PageTitleStyle>
+                        <PageText>
+                            <p>남기고 싶은 말씀을 적어주세요!</p>
+                            <p>Verfly으로 compare하는 형식으로 알고리즘으로 비밀번호를 변환하기에 제작자 또한 비밀번호를 알 수 없습니다.</p>
+                        </PageText>
+                        {/* Form */}
+                            <BoardReplyForm  
+                                onSubmitHandlr={onSubmitHandlr}
+                            />
+                        </BoardDashBoard>
 
-                    <BoardReplyStyle>
-                        <ReplyWrapHeader>
-                            <span>Total {total}</span>
-                        </ReplyWrapHeader>
-                        {/* view or Page */}
-                        {userData && <BoardView
-                                    board={userData}
-                                    // pageTouched={pageTouched}
-                                    page={page}
-                                    setPage={setPage}
-                                    moreData={moreData}
-                        /> }
-                        {/* {isLoading && 'loading....'} */}
-                        {(!isLoading && isError) && 'error'}
-                    </BoardReplyStyle>
-                    
-                </BoardStyle>
+                        <BoardReplyStyle>
+                            <ReplyWrapHeader>
+                                <span>Total {total}</span>
+                            </ReplyWrapHeader>
+                            {/* view or Page */}
+                            {userData && <BoardView
+                                        board={userData}
+                                        moreData={moreData}
+                                        setUserData={setUserData}
+                                        setLastPageIdx={setLastPageIdx}
+                            /> }
+                            {/* {isLoading && 'loading....'} */}
+                            {(!isLoading && isError) && 'error'}
+                        </BoardReplyStyle>
+                    </BoardStyle>
+                </Gird>
         </FormProvider>
 
         </>

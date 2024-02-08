@@ -19,7 +19,6 @@ const DarkMode = createContext()
     
     const Mode = (props) =>{
         const [ transition , setTransition ] = useState(true);
-        console.log(transition);
 
         const [modeState , setModeState ] = useState(()=>{
             const store = localStorage.getItem('darkMode');

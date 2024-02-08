@@ -1,9 +1,8 @@
 import './App.css';
 import { Provider } from 'react-redux';
-import { useEffect } from 'react';
 
 // Rounter
-import { createBrowserRouter , RouterProvider, useLocation  } from 'react-router-dom';
+import { createBrowserRouter , RouterProvider } from 'react-router-dom';
 
 import RootLayout from './component/common/RootLayout';
 
@@ -22,8 +21,8 @@ import AddProject from './page/MyProject/AddProject';
 
 // Notice
 import Board from './page/Board/Board';
-import BoardDetail from './page/Board/component/BoardDetail';
-import BoardWirte from './page/Board/BoardWIrte';
+// import BoardDetail from './page/Board/component/BoardDetail';
+// import BoardWirte from './page/Board/BoardWIrte';
 // import { boardList } from './page/Board/Board';
 
 // admin

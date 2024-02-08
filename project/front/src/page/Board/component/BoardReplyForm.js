@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import InputReply from './InputReply'
 import styled, { keyframes } from 'styled-components';
 import { DarkMode } from '../../../context/DarkModeContext';
-import { useContext , useEffect } from 'react';
+import { useContext } from 'react';
 import { useSelector } from 'react-redux';
 
 const Button = styled.button`
@@ -124,6 +124,7 @@ export default function BoardReplyForm({
                                 {...field}
                                 label='글쓴이'
                                 isAuth={login}
+                                type={'text'}
                                 error={errors[{...field}.name]}
                             />
                         }
@@ -138,6 +139,7 @@ export default function BoardReplyForm({
                                 <InputReply 
                                     {...field}
                                     label='password'
+                                    type={'password'}
                                     error={errors[{...field}.name]}
                                 />
                             }
@@ -150,6 +152,7 @@ export default function BoardReplyForm({
                         <InputReply 
                             {...field}
                             label='댓글'
+                            type={'text'}
                             error={errors[{...field}.name]}
                         />
                     }

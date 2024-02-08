@@ -21,6 +21,7 @@ const fetchReply = async(formData) =>{
         }
 
         const result = await response.json();
+        console.log('result : : ',result);
         return result;
     }catch(error){
         throw error;
@@ -31,9 +32,10 @@ const fetchReply = async(formData) =>{
 
 // 초기 데이터 + 페이징
 const fetchData = async (page) => {
-    console.log('page : ',page);
+    const targetIdx = page || 0 ;
+    console.log(targetIdx);
     try {
-        const response = await fetch(`http://localhost:8080/Board/${page}`);
+        const response = await fetch(`http://localhost:8080/Board/${targetIdx}`);
         
         const result = await response.json();
 
