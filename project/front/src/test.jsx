@@ -1,48 +1,63 @@
-import { yupResolver } from '@hookform/resolvers/yup';
-import DatePicker from 'react-datepicker'; 
-import { useForm , Controller } from 'react-hook-form'; 
-import * as Yup from 'yup';
+import styled, { keyframes } from 'styled-components'
+import { fetchData } from './page/Board/BoardFetch';
+import { useQuery } from 'react-query';
+import { useEffect, useState } from 'react';
 
+const effect = keyframes`
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+`
 
-//Yup을 이용한 Validation
-const schema = Yup.object({
-    start_Date : Yup.date().required('시작일자를 정해주세요'),
-    end_Date : Yup.date().min(Yup.ref('start_Date'), '종료일이 시작일자보다 빠릅니다.').required('종료일자를 정해주세요'),
-})
+const Wrap = styled.div`
+  padding-top: 50px;
+  width: 1200px;
+  margin: 0 auto;
+  div {
+    width: 100%;
+    height: 100px;
+    background-color: red;
+    margin-bottom: 10px;
+    animation: ${effect} .5s .3s ease;
+  }
+`;
 
+export default function InfiniteScrollTest() {
+  const [items, setItems] = useState(Array.from({ length: 10 }, (_, i) => i)); // 초기 아이템들
+  console.log(items);
+  useEffect(() => {
+    if(items.length > 20){
+        return;
+    }
+    const observer = new IntersectionObserver((entries) => {
+      // 마지막 요소가 뷰포트에 보일 때 새 아이템 추가
+      if (entries[0].isIntersecting) {
+        setItems((prevItems) => [...prevItems, prevItems.length]);
+      }
+    }, { threshold: 0.5 });
 
-
-export default function Test(){
-    const { control ,handleSubmit , formState : { errors }} = useForm({
-        resolver : yupResolver(schema) // yupResolver를 이용해서 Yup 스키마 유효성 연동
-    });
-
-    console.log(errors);
-
-
-    //SubmitHandler
-    const onSubmitHandler = (data) =>{
-        console.log(data);
+    // 현재 마지막 요소를 관찰 대상으로 설정
+    const lastItem = document.querySelector('.item:last-child');
+    if (lastItem) {
+      observer.observe(lastItem);
     }
 
-    return(
-        <>
-        <form onSubmit={handleSubmit(onSubmitHandler)}>
-            <Controller
-                name = 'start_Date'
-                control={control}
-                render={({field : { onChange , value }})=> 
-                    <DatePicker
-                        onChange={(startDate)=>onChange(startDate)}
-                        selected={value}
-                        dateFormat={'yyyy-MM-dd'}
-                    />
-                }
-            />
-            {errors['start_Date'] && errors['start_Date'].message}
-           <button type='submit'>등록</button>
-        </form>    
-        </>
-        
-    )
+    // 클린업 함수
+    return () => {
+      if (lastItem) {
+        observer.unobserve(lastItem);
+      }
+    };
+  }, [items]); // 아이템 목록이 변경될 때마다 useEffect 재실행
+
+  return (
+    <Wrap>
+      {items.map((item, index) => (
+        <div key={index} className="item">Item {item}</div>
+      ))}
+    </Wrap>
+  );
 }

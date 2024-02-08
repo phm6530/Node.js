@@ -151,16 +151,12 @@ $error-Message-color : rgb(233, 97, 97);
       }
     }
   }
-  .borderReply{
-    width: 50%;
-  }
 
   .BoardComment{
     margin-bottom: 3px;
     /* border-radius: 1em; */
     padding: 15px 20px;
     display: flex;
-    border-bottom: 1px solid rgba(0,0,0,0.1);
     position: relative;
     /* box-shadow: -4px -4px 15px rgba(255, 255, 255, 0.7), 4px 4px 15px rgba(36, 36, 36, 0.15);*/
     .replyPicture{

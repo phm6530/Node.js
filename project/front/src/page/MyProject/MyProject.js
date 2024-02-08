@@ -10,7 +10,7 @@ import ProjectItem from '../Board/component/ProjectItem';
 export default function MyProject(){
 
     const [ project , setProject ] = useState([]);
-    const { data , isLoading , isFetching , isError , error} = useQuery('project' , projectFetch,{
+    const { data , isLoading , isFetching , isError } = useQuery('project' , projectFetch,{
         onSuccess : (data)=>{
             const responseData = data?.resData || [];        
             setProject(responseData);
@@ -18,11 +18,9 @@ export default function MyProject(){
         refetchOnWindowFocus: false
     });
 
-    
-
     return(
         <>  
-        {isLoading && 'loading....'}
+        {/* {isLoading && 'loading....'} */}
         {(!isLoading && isError) && 'error'}
         {(!isLoading && !isFetching && !isError )&& (
             <>

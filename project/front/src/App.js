@@ -73,17 +73,18 @@ const router = createBrowserRouter([
               { index : true, element : <Board/> , 
                 // loader : boardList,
                 // action : replyAction
-              },
-              {
-                path: ':num',
-                element : <BoardDetail/>,
-                loader : tokenCheck,
-              },
-              { 
-                path : 'wirte',
-                element : <BoardWirte/>,
-                loader : tokenCheck,
               }
+              // ,
+              // {
+              //   path: ':num',
+              //   element : <BoardDetail/>,
+              //   loader : tokenCheck,
+              // },
+              // { 
+              //   path : 'wirte',
+              //   element : <BoardWirte/>,
+              //   loader : tokenCheck,
+              // }
           ]
         },
         { 

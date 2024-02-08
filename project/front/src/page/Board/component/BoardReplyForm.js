@@ -68,9 +68,9 @@ export default function BoardReplyForm({
     control
 }){
     const { darkMode } = useContext(DarkMode);
-    const { handleSubmit , setValue ,  formState : { errors } } = useFormContext();//useForm 트리
+    const { handleSubmit ,  formState : { errors } } = useFormContext();//useForm 트리
     const { login } = useSelector(state => state.authSlice);
-    console.log(errors);
+    // console.log(errors);
 
     // useEffect(() => {
     //     setValue('userIcon', 'person_1', { shouldValidate: true });
@@ -90,7 +90,7 @@ export default function BoardReplyForm({
                             {   
                                 [...Array(6)].map((_,idx)=> {
                                     const icon = `person_${idx + 1}`;
-                                    return <RadioStyle key={idx} className={
+                                    return <RadioStyle key={icon} className={
                                         icon === field.value ? 'checked' : undefined
                                     }>
                                         <img src={`/img/board/${icon}.png`} alt="" />

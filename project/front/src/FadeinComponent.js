@@ -34,7 +34,18 @@ to {
 }
 `;
 
+const FadeOut = keyframes`
+    from{
+        opacity: 1;
+    }
+    to{
+        opacity: 0;
+    }
+
+`
+
 const Component = styled.div`
+    opacity: 0;
     ${props => {
         if (props.$visible) {
             switch(props.$position){
@@ -56,18 +67,18 @@ const Component = styled.div`
         
         }
     }}
+    /* ${props => props.$pageTouched && css`animation:${FadeOut} .3s ease`} */
 `;
 
 
 
-export default function FadeinComponent({position ,children , idx}){
+export default function FadeinComponent({board, position ,children , pageTouched ,idx}){
     const ref = useRef();
     const [ visible, setVisible ] = useState(false);
-
     const slideHandler = (entry) =>{
             entry[0].isIntersecting && setVisible(true) ;
     }
-
+    // console.log('pageTouched : ',pageTouched);
     // div 관찰
     useEffect(()=>{
         // if(!ref) return;
@@ -77,7 +88,7 @@ export default function FadeinComponent({position ,children , idx}){
         io.observe(view);
 
         return () => io.disconnect(view)
-    },[]);  
+    },[board]);  
 
     return(
         <Component $visible={visible} ref={ref} $position={position}>

@@ -8,6 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { DeleteIcon } from '../../../component/icon/Icon';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import { forwardRef } from 'react';
 
 const schema = Yup.object({
     password : Yup.string().required('비밀번호를 입력해주세요.')
@@ -30,7 +31,8 @@ const ReplyPicture = styled.div`
     background-size: cover;
 `
 
-export default function BoardReply({reply, selectIdx , setSelectIdx }){
+const BoardReply = forwardRef((props , ref )=>{
+    const { reply , selectIdx , setSelectIdx } = props;
     const { 
         user_icon,
         user_name,  idx ,  contents ,  date,
@@ -49,7 +51,8 @@ export default function BoardReply({reply, selectIdx , setSelectIdx }){
 
 
     const { mutateAsync}  = useMutation((formData)=>deleteFetch(formData),{
-        onSuccess : () =>{
+        onSuccess : (data) =>{
+            console.log(data);
             queryClient.invalidateQueries('board');
         }
     })
@@ -58,7 +61,6 @@ export default function BoardReply({reply, selectIdx , setSelectIdx }){
     const onSubmitHandler = async(data) =>{
 
         const password = data.password;
-
         const formData ={
             reply_Idx : idx,
             reply_password : password,
@@ -76,7 +78,7 @@ export default function BoardReply({reply, selectIdx , setSelectIdx }){
     }
 
     return(
-    <div className='BoardComment' key={idx}>
+    <div className='BoardComment' key={idx} ref={ref}>
         <ReplyPicture $pirture={user_icon} className="replyPicture"></ReplyPicture>
         <div className="replyContents">
         <div className="replyHeader">
@@ -86,6 +88,7 @@ export default function BoardReply({reply, selectIdx , setSelectIdx }){
         {!selectIdx && <button onClick={()=>setSelectIdx(idx)}>
             <HoverStyled>
                 <DeleteIcon size='20' color='#cdcdcd' />    
+                {idx}
             </HoverStyled>
         </button>}
         {selectIdx && (
@@ -123,4 +126,6 @@ export default function BoardReply({reply, selectIdx , setSelectIdx }){
         {errors.password && errors.password.message}
         </div>    
     )
-}
+})
+
+export default BoardReply;

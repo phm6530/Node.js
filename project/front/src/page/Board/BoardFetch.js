@@ -31,7 +31,7 @@ const fetchReply = async(formData) =>{
 
 // 초기 데이터 + 페이징
 const fetchData = async (page) => {
-    // console.log('page : ',page);
+    console.log('page : ',page);
     try {
         const response = await fetch(`http://localhost:8080/Board/${page}`);
         
