@@ -30,7 +30,8 @@ const alertSlice = createSlice({
     initialState : { 
         view : false ,
         message : '',
-        type : null
+        type : null,
+        TimerId : null
     },
     reducers : {
         alertViewOn(state , action){
@@ -40,6 +41,10 @@ const alertSlice = createSlice({
         },
         alertViewOff(state){
             state.view =  false;
+            state.TimerId = null;
+        },
+        alertTimerId(state ,action){
+            state.TimerId = action.payload.setTimerId;
         }
     }
 })

@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import BoardReply from './BoardReply';
 import Fadeup from '../../../FadeinComponent';
 import styled from 'styled-components';
-import useAlert from '../../../component/common/UseAlert';
 
 const BoardReplyWrap = styled.div`
   height: 750px;
@@ -28,7 +27,6 @@ const BoardReplyWrap = styled.div`
 export default function BoardView({ moreData , board ,setUserData,setLastPageIdx }){
     const [ selectIdx , setSelectIdx ] = useState(null);
     const refs = useRef([]);
-    const showAlert = useAlert();
     useEffect(()=>{
         if(!moreData) return ;
 
@@ -74,7 +72,6 @@ export default function BoardView({ moreData , board ,setUserData,setLastPageIdx
                             selectIdx={selectIdx === item.board_key}
                             setSelectIdx={setSelectIdx}
                             setUserData={setUserData}
-                            showAlert={showAlert}
                         />
                     </Fadeup>
                 } )

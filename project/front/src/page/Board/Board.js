@@ -6,7 +6,6 @@ import { fetchReply , fetchData } from './BoardFetch';
 
 import BoardReplyForm from './component/BoardReplyForm';
 import BoardView from './component/BoardVIew';
-import useAlert from '../../component/common/UseAlert';
 
 import * as Yup from 'yup';
 import styled from 'styled-components';
@@ -16,9 +15,10 @@ import styled from 'styled-components';
 
 import { useForm , FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup'; // Yup + form hook 연동
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import Gird from '../../component/ui/Grid';
+import alertThunk from '../../store/alertTrunk';
 
 const BoardStyle = styled.div`
     display: flex;
@@ -86,7 +86,6 @@ const PageTitleStyle = styled.div`
     color: transparent;
     -webkit-background-clip: text;
     letter-spacing: -1px;
-     
 `
 
 
@@ -114,15 +113,14 @@ const BoardDashBoard = styled.div`
     width: 50%;
 `
 
-const SubTitle = styled.div`
-    width: 200px;
-    height: 30px;
-    background: red;
-    border-radius: 5px;
-`
+// const SubTitle = styled.div`
+//     width: 200px;
+//     height: 30px;
+//     background: red;
+//     border-radius: 5px;
+// `
 
 export default function Board(){
-    const showAlert = useAlert(); // 팝업 커스텀 훅
     const location = useLocation();
     const { login } = useSelector(state => state.authSlice);
 
@@ -158,6 +156,7 @@ export default function Board(){
     const [ moreData , setMoreData ] = useState(true);
     const [ total ,setTotal ] = useState(0);
     const [ lastPageIdx , setLastPageIdx ] = useState(null);
+    const dispatch = useDispatch();
     // console.log(userData);
     // console.log('startIdx : ', lastPageIdx);
     
@@ -177,7 +176,7 @@ export default function Board(){
             },
             onError: (error) => {
                 console.log('실행');
-                // showAlert(error.message, 0);
+                dispatch(alertThunk(error.message, 0));
             } 
         }
     ); 
@@ -190,13 +189,12 @@ export default function Board(){
         onSuccess: (data) => {
             setUserData(prev => [...data.resData , ...prev]);
             setTotal(data.counter);
-            
-            // showAlert('댓글이 등록되었습니다.', 1);
             console.log('userMutation 실행');
+            dispatch(alertThunk('댓글 등록되었습니다.', true))
             formMethod.reset();
         },
         onError: (error) => {
-            // showAlert(error.message, 0);
+            dispatch(alertThunk(error.message, 0));
         }
     });
     
@@ -204,7 +202,7 @@ export default function Board(){
     const onSubmitHandlr = async(data) =>{
         // console.log(data);
         if(!findForBadword(data.contents)){
-            // showAlert('비속어는 입력 불가합니다..' , false );
+            dispatch(alertThunk('비속어는 입력 불가합니다...', false));
             return;
         }
 

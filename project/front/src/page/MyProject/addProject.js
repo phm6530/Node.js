@@ -11,10 +11,12 @@ import CustumDatePicker from './component/CustumDatePicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 // 
-import useAlert from '../../component/common/UseAlert';
+
 import { useNavigate } from 'react-router-dom';
 
 import { addProjectFetch } from './ProjectFetch';
+import { useDispatch } from 'react-redux';
+import alertThunk from '../../store/alertTrunk';
 
 
 
@@ -48,12 +50,10 @@ export default function AddProject(){
             description: ''
           }
     });
-
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     // 팝업
-    // const showAlert = useAlert();
-
     useAuthRedirect('/project'); //project 리턴
 
     // register: 폼 필드를 React Hook Form에 연결하는 함수입니다. 
@@ -80,13 +80,13 @@ export default function AddProject(){
 
             const result = await addProjectFetch(setObj);
             console.log(result);
-            // showAlert('프로젝트가 등록되었습니다.' ,1);
+            
             navigate('/project');
             reset(); // 서버 요청이 성공적일 때만 reset 호출
             
         } catch (error) {
             console.log(error);
-            // showAlert(error.message , 0);
+            dispatch(alertThunk(error.message , 0));
         }
     }
 

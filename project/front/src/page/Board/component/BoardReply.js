@@ -1,13 +1,14 @@
 import { deleteFetch } from '../BoardFetch';
-import useAlert from '../../../component/common/UseAlert';
 
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation} from 'react-query';
 import { Controller, useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { DeleteIcon } from '../../../component/icon/Icon';
 import styled from 'styled-components';
 import { forwardRef } from 'react';
+import { useDispatch } from 'react-redux';
+import alertThunk from '../../../store/alertTrunk';
 
 const schema = Yup.object({
     password : Yup.string().required('비밀번호를 입력해주세요.')
@@ -51,16 +52,13 @@ const FormStyle = styled.form`
 `
 
 const BoardReply = forwardRef((props , ref )=>{
-    const { reply , selectIdx , setSelectIdx , setUserData , showAlert  } = props;
+    const { reply , selectIdx , setSelectIdx , setUserData } = props;
     const { 
         user_icon,
-        user_name,  idx ,  contents ,  date,
+        user_name,   contents ,  date,
         board_key // 식별 board key
     } = reply;
-    
-    
-    const queryClient = useQueryClient();
-
+    const dispatch = useDispatch();
     const { handleSubmit , formState : { errors } , reset , control } = useForm({
         resolver : yupResolver(schema),
         defaultValues : {
@@ -70,8 +68,13 @@ const BoardReply = forwardRef((props , ref )=>{
 
 
     const { mutateAsync}  = useMutation((formData)=>deleteFetch(formData),{
-        onSuccess : () =>{
-            showAlert('삭제되었습니다.', 1);
+        onSuccess : (data) =>{
+            dispatch(alertThunk('삭제되었습니다.', true));
+            setUserData(prev => {
+                return prev.filter((e)=>{
+                    return e.board_key !== data.isDeleted_key
+                });
+            });
         }
     })
 
@@ -82,18 +85,12 @@ const BoardReply = forwardRef((props , ref )=>{
             reply_password : password,
             board_key : board_key,
         }
-        console.log('formData :' , formData);
+        // console.log('formData :' , formData);
         try{
-            await mutateAsync(formData)
-       
-            setUserData(prev => {
-                return prev.filter((e)=>{
-                    return e.board_key !== data.isDeleted_key
-                });
-            });
+            await mutateAsync(formData);
         }
         catch(error){
-            showAlert(error.message);
+            dispatch(alertThunk(error.message , false));
         }
     }
 

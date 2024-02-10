@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import useAlert from '../../common/UseAlert';
-import { useDispatch , useSelector } from 'react-redux';
+import { useDispatch  } from 'react-redux';
 import  { authAction } from '../../../store/appSlice';
 import styled from 'styled-components';
 
@@ -9,6 +8,7 @@ import styled from 'styled-components';
 
 // 인증로직
 import LoginInput from '../../ui/LoginInput';
+import alertThunk from '../../../store/alertTrunk';
 
 const LoginStyle = styled.form`
    input{
@@ -57,7 +57,7 @@ const LoginStyle = styled.form`
 
 export default function LoginForm(){
     const dispatch = useDispatch();
-    // const showAlert = useAlert();
+    
 
     const [ fromValid , setFormValid ] = useState(false);
     const [ loginData , setLoginData ] = useState(
@@ -112,7 +112,7 @@ export default function LoginForm(){
             dispatch(authAction.login());
 
             // 로그인 OK
-            // showAlert('로그인 되었습니다.' , 1 );
+            dispatch(alertThunk('로그인 되었습니다.' , 1));
 
             // 완료시에만 로그인 팝업 닫기
             // popupClose();       
@@ -120,8 +120,7 @@ export default function LoginForm(){
         }
         catch(error){
             console.error(error);
-            // showAlert(error.message);
-            // popupClose();
+            dispatch(alertThunk(error.message, 0));
         }
     }
     
