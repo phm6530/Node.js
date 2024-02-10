@@ -34,7 +34,7 @@ const schema = Yup.object().shape({
     
     startDate: Yup.date().required('시작일을 입력해주세요'),
     endDate: Yup.date().min(Yup.ref('startDate'), '종료일은 시작일 이후로 설정해주세요').required('종료일을 입력해주세요'),
-    description: Yup.string().required(MSG[1]).min(10, '10글자 이상써주세요')
+    description: Yup.string().required(MSG[1]).min(6, '6글자 이상써주세요..')
 });
 
 
@@ -52,7 +52,7 @@ export default function AddProject(){
     const navigate = useNavigate();
 
     // 팝업
-    const showAlert = useAlert();
+    // const showAlert = useAlert();
 
     useAuthRedirect('/project'); //project 리턴
 
@@ -80,13 +80,13 @@ export default function AddProject(){
 
             const result = await addProjectFetch(setObj);
             console.log(result);
-            showAlert('프로젝트가 등록되었습니다.' ,1);
+            // showAlert('프로젝트가 등록되었습니다.' ,1);
             navigate('/project');
             reset(); // 서버 요청이 성공적일 때만 reset 호출
             
         } catch (error) {
             console.log(error);
-            showAlert(error.message , 0);
+            // showAlert(error.message , 0);
         }
     }
 

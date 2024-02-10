@@ -28,15 +28,16 @@ export default function BoardPage({counter , setPageTouched}){
 
     return(
     <>
-          {
-                paging && paging.map((page , idx)=>{
-                  return <button 
-                    onClick={()=>changePage(idx+1)} 
-                    key={idx} 
-                  >
-                    {page}
-                  </button>
-                })}    
+        {
+          paging && paging.map((page , idx)=>{
+            return <button 
+              onClick={()=>changePage(idx+1)} 
+              key={idx} 
+            >
+              {page}
+            </button>
+          })
+          }    
     </>
     )
 }

@@ -1,6 +1,6 @@
 @font-face {
-  font-family: "S-CoreDream-3Light";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff") format("woff");
+  font-family: "IBMPlexSansKR-Regular";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-Regular.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
@@ -10,11 +10,21 @@
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: "SBAggroB";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroB.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Pretendard-Regular";
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
 body {
   font-family: "SUIT-Regular";
-}
-body input {
-  background: transparent;
+  font-family: "Pretendard-Regular";
 }
 
 .wrap {
@@ -23,26 +33,6 @@ body input {
 }
 
 /* DarkMode */
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-.App-header {
-  min-height: 100vh;
-  font-size: calc(10px + 2vmin);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: white;
-}
-
 .darkMode {
   background-color: #000;
   color: #fff;
@@ -143,9 +133,10 @@ nav ul li {
 .BoardComment {
   margin-bottom: 3px;
   /* border-radius: 1em; */
-  padding: 15px 20px;
+  padding: 10px 20px;
   display: flex;
   position: relative;
+  /* box-shadow: -4px -4px 15px rgba(255, 255, 255, 0.7), 4px 4px 15px rgba(36, 36, 36, 0.15);
   /* box-shadow: -4px -4px 15px rgba(255, 255, 255, 0.7), 4px 4px 15px rgba(36, 36, 36, 0.15);*/
 }
 .BoardComment .replyPicture {
@@ -160,6 +151,7 @@ nav ul li {
 .BoardComment .replyHeader {
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 .BoardComment .replyHeader .reply_UserName {
   font-weight: bold;
@@ -172,10 +164,7 @@ nav ul li {
 .BoardComment .replyDescription {
   margin-bottom: 10px;
   font-size: 14px;
-}
-.BoardComment .replyDelete {
-  position: absolute;
-  right: 20px;
+  word-break: break-all;
 }
 .BoardComment .replyContents {
   background-color: #fff;
@@ -204,22 +193,23 @@ nav ul li {
   display: inline-block;
   background: linear-gradient(to right, #e2e6ef, #c5cde0);
   background: #e5e9f2;
-  font-weight: bold;
+  /* font-weight: bold; */
   /* padding: 8px 19px 8px 25px; */
-  width: 100px;
-  height: 40px;
+  width: 150px;
+  height: 50px;
   display: flex;
+  color: #fff;
   border-radius: 5em;
-  color: rgba(38, 65, 125, 0.6);
+  /* color: rgba(38, 65, 125, 0.6); */
   font-size: 14px;
   cursor: pointer;
-  box-shadow: -3px -1px 13px rgb(255, 255, 255), 9px 4px 18px rgba(36, 36, 36, 0.15);
+  box-shadow: -3px -1px 13px rgb(255, 255, 255), 9px 4px 18px rgba(36, 36, 36, 0.95);
   position: relative;
-  box-shadow: -4px -4px 10px rgb(255, 255, 255), 4px 4px 10px rgba(36, 36, 36, 0.15);
+  box-shadow: -4px -4px 20px rgb(255, 255, 255), 4px 4px 17px rgba(36, 36, 36, 0.26);
   align-items: center;
   justify-content: center;
-  background: linear-gradient(to right, #d7dff0, #c5cde0);
-  border: 2px solid #fff;
+  background: linear-gradient(to right, #5e6c89, #35373b);
+  border: 5px solid rgba(255, 255, 255, 0.77);
 }
 .btnStyle_Type_1:active {
   box-shadow: 3px 1px 17px rgba(255, 255, 255, 0.8), 1px -1px 4px rgba(48, 59, 73, 0.24);
@@ -235,4 +225,20 @@ nav ul li {
   width: 100%;
   height: 350px;
   background-size: cover;
+}
+
+textarea {
+  resize: none;
+}
+
+textarea:focus {
+  outline: none;
+}
+
+textarea::-moz-placeholder, input::-moz-placeholder {
+  font-size: 12px;
+}
+
+textarea::placeholder, input::placeholder {
+  font-size: 12px;
 }/*# sourceMappingURL=app.css.map */

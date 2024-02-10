@@ -4,12 +4,12 @@ import useAlert from './UseAlert';
 
 const LogOut =() =>{
     const dispatch = useDispatch();
-    const showAlert = useAlert();
+    // const showAlert = useAlert();
     
     const logOutAction = () =>{
         localStorage.removeItem('token');
         dispatch(authAction.logOut());
-        showAlert('로그아웃 되었습니다.' , 1);
+        // showAlert('로그아웃 되었습니다.' , 1);
     }
     
     

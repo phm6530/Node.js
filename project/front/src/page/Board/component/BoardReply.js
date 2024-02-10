@@ -25,13 +25,33 @@ const HoverStyled = styled(HoverStyle)`
     }
 `;
 
+const ButtonSTyle = styled.button`
+    font-size: 12px;
+    
+    color: #fff;
+    border-radius: 5px;
+    padding: 2px 5px;
+
+`
+
 const ReplyPicture = styled.div`
     ${props => `background :url(/img/board/${props.$pirture}.png)`};
     background-size: cover;
 `
+const FormStyle = styled.form`
+    background:red;
+    box-sizing: border-box;
+    border: 2px solid red;
+    border-radius: 5em;
+    overflow: hidden;
+    input{
+        width: 80px;
+    }
+
+`
 
 const BoardReply = forwardRef((props , ref )=>{
-    const { reply , selectIdx , setSelectIdx , setUserData } = props;
+    const { reply , selectIdx , setSelectIdx , setUserData , showAlert  } = props;
     const { 
         user_icon,
         user_name,  idx ,  contents ,  date,
@@ -50,16 +70,12 @@ const BoardReply = forwardRef((props , ref )=>{
 
 
     const { mutateAsync}  = useMutation((formData)=>deleteFetch(formData),{
-        onSuccess : (data) =>{
-            setUserData(prev => {
-                return prev.filter((e)=>{
-                    return e.board_key !== data.isDeleted_key
-                });
-            });
+        onSuccess : () =>{
+            showAlert('삭제되었습니다.', 1);
         }
     })
 
-    const showAlert = useAlert();
+    
     const onSubmitHandler = async(data) =>{
         const password = data.password;
         const formData ={
@@ -69,7 +85,12 @@ const BoardReply = forwardRef((props , ref )=>{
         console.log('formData :' , formData);
         try{
             await mutateAsync(formData)
-            showAlert('삭제되었습니다.', 1);
+       
+            setUserData(prev => {
+                return prev.filter((e)=>{
+                    return e.board_key !== data.isDeleted_key
+                });
+            });
         }
         catch(error){
             showAlert(error.message);
@@ -87,11 +108,10 @@ const BoardReply = forwardRef((props , ref )=>{
         {!selectIdx && <button onClick={()=>setSelectIdx(board_key)}>
             <HoverStyled>
                 <DeleteIcon size='20' color='#cdcdcd' />    
-                {idx}
             </HoverStyled>
         </button>}
         {selectIdx && (
-            <form onSubmit={handleSubmit(onSubmitHandler)}>
+            <FormStyle onSubmit={handleSubmit(onSubmitHandler)}>
                 <Controller
                     name='password'
                     control={control}
@@ -105,13 +125,13 @@ const BoardReply = forwardRef((props , ref )=>{
                     }
                 />
 
-                <button type='submit'>확인</button>
+                <ButtonSTyle type='submit'>확인</ButtonSTyle>
 
-                <button type='button' onClick={()=>{
+                <ButtonSTyle type='button' onClick={()=>{
                     setSelectIdx(null);  
                     reset();
-                    }}>취소</button>
-            </form>
+                }}>취소</ButtonSTyle>
+            </FormStyle>
         )}
         </div>
        

@@ -26,19 +26,39 @@ const BoardStyle = styled.div`
 `
 
 const BoardReplyStyle = styled.div`
-    border: 3px solid #fff;
+border: 3px solid #fff;
     width: 50%;
     border-radius: 1em;
-    background:#e2e6ef;
+    background: #e2e6ef;
     overflow: hidden;
+    position: relative;
+    padding: 40px 0;
 `
 
 const ReplyWrapHeader = styled.div`
-     background: #2d2626;
-
+    background: -webkit-linear-gradient(to right, #000000, #2d3f60);
+    background: linear-gradient(to right, #000000, #2d3f60);
+    position: absolute;
+    width: 100%;
+    top: 0;
+    z-index: 1;
+    box-shadow: 0px 5px 20px rgb(67 27 16 / 18%);
+    display: flex;
+    border-bottom: 2px solid #fff;
+    justify-content: space-between;
+    align-items: center;
+    
      span{
         color: #fff;
-        font-size:12px;
+        font-size: 12px;
+        /* border: 1px solid #fff6; */
+        border-radius: 19px;
+        padding: 2px 12px;
+        margin-right: 20px;
+        background: #1e1e1e87;
+        margin: 5px;
+        margin-right: 20px;
+
      }
      
 `
@@ -46,17 +66,59 @@ const ReplyWrapHeader = styled.div`
 const PageText = styled.div`
     width: 90%;
     word-break: keep-all;
+    p{
+        line-height: 1.7em;
+    }
     p:first-child{
         font-weight: bold;
+        font-size: 20px;
+        letter-spacing: -.5px;
+        margin-bottom: 10px;
+    }
+    p:nth-child(2){
+        font-size: 16px;
+        line-height: 1.9em;
     }
 `
 
 const PageTitleStyle = styled.div`
-    color:#e2e6ef;
+    background: linear-gradient(to right top, #e2e6ef, #ffffff, #9db8e8);
+    color: transparent;
+    -webkit-background-clip: text;
+    letter-spacing: -1px;
+     
+`
+
+
+const ReplyHeaderPoint = styled.div`
+    margin-left: 20px;
+    div{
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 1em;
+        margin-right: 5px;
+    }
+    div:first-child{
+        background: #28c840;
+    }
+    div:nth-child(2){
+        background: #febc2e;
+    }
+    div:nth-child(3){
+        background: #ff5f57;
+    }
 `
 
 const BoardDashBoard = styled.div`
     width: 50%;
+`
+
+const SubTitle = styled.div`
+    width: 200px;
+    height: 30px;
+    background: red;
+    border-radius: 5px;
 `
 
 export default function Board(){
@@ -66,8 +128,8 @@ export default function Board(){
 
     const schama = Yup.object({
         userIcon : Yup.string().required('필수항목 입니다.'),
-        userName : Yup.string().required('필수항목 입니다.'),
-        contents : Yup.string().required('필수항목 입니다.').min(10, '최소 10글자 이상 적어주세요'),
+        userName : Yup.string().required('필수항목 입니다.').min(2, '최소 2글자 이상 적어주세요..').max(20,'최대 20글자 이하로 적어주세요'),
+        contents : Yup.string().required('필수항목 입니다.').min(4, '최소 4글자 이상 적어주세요..'),
         password : Yup.string().when([],()=>{
             return login
                 ? Yup.string().notRequired()
@@ -96,8 +158,8 @@ export default function Board(){
     const [ moreData , setMoreData ] = useState(true);
     const [ total ,setTotal ] = useState(0);
     const [ lastPageIdx , setLastPageIdx ] = useState(null);
-    console.log(userData);
-    console.log('startIdx : ', lastPageIdx);
+    // console.log(userData);
+    // console.log('startIdx : ', lastPageIdx);
     
     const { isLoading , isError } = useQuery(
         ['board', lastPageIdx], () => fetchData(lastPageIdx), {
@@ -115,7 +177,7 @@ export default function Board(){
             },
             onError: (error) => {
                 console.log('실행');
-                showAlert(error.message, 0);
+                // showAlert(error.message, 0);
             } 
         }
     ); 
@@ -127,12 +189,14 @@ export default function Board(){
     const mutation = useMutation(formData => fetchReply(formData), {
         onSuccess: (data) => {
             setUserData(prev => [...data.resData , ...prev]);
-            showAlert('댓글이 등록되었습니다.', 1);
+            setTotal(data.counter);
+            
+            // showAlert('댓글이 등록되었습니다.', 1);
             console.log('userMutation 실행');
             formMethod.reset();
         },
         onError: (error) => {
-            showAlert(error.message, 0);
+            // showAlert(error.message, 0);
         }
     });
     
@@ -140,7 +204,7 @@ export default function Board(){
     const onSubmitHandlr = async(data) =>{
         // console.log(data);
         if(!findForBadword(data.contents)){
-            showAlert('비속어는 입력 불가합니다..' , false );
+            // showAlert('비속어는 입력 불가합니다..' , false );
             return;
         }
 
@@ -164,8 +228,12 @@ export default function Board(){
                         <BoardDashBoard>
                         <PageTitleStyle className='pageTitle'>Guest Book</PageTitleStyle>
                         <PageText>
-                            <p>남기고 싶은 말씀을 적어주세요!</p>
-                            <p>Verfly으로 compare하는 형식으로 알고리즘으로 비밀번호를 변환하기에 제작자 또한 비밀번호를 알 수 없습니다.</p>
+                            <p>남기고 싶은 말씀을 적어주세요 !</p>
+                            <p>
+                                IntersectionObserver로 구현한 'Infinity Scroll' 형식의 방명록입니다.<br></br>
+                                단순 삭제용도의 비밀번호이며 Node.js의 <b>brycpt</b>를 이용하여 해싱을 하고 있습니다.<br></br>
+                                해싱된 비밀번호 이외 어떠한 정보도 수집하지 않습니다.
+                            </p>
                         </PageText>
                         {/* Form */}
                             <BoardReplyForm  
@@ -174,18 +242,30 @@ export default function Board(){
                         </BoardDashBoard>
 
                         <BoardReplyStyle>
+
                             <ReplyWrapHeader>
+                                <ReplyHeaderPoint>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </ReplyHeaderPoint>
+                 
                                 <span>Total {total}</span>
                             </ReplyWrapHeader>
+
                             {/* view or Page */}
-                            {userData && <BoardView
+                                {userData && 
+                                    <BoardView
                                         board={userData}
                                         moreData={moreData}
                                         setUserData={setUserData}
                                         setLastPageIdx={setLastPageIdx}
-                            /> }
+                                    /> }
                             {/* {isLoading && 'loading....'} */}
                             {(!isLoading && isError) && 'error'}
+                            {/* <ReplyWrapHeader>
+                                <span>Total {total}</span>
+                            </ReplyWrapHeader> */}
                         </BoardReplyStyle>
                     </BoardStyle>
                 </Gird>

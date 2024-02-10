@@ -2,9 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import BoardReply from './BoardReply';
 import Fadeup from '../../../FadeinComponent';
 import styled from 'styled-components';
+import useAlert from '../../../component/common/UseAlert';
 
 const BoardReplyWrap = styled.div`
-  height: 700px;
+  height: 750px;
   overflow-y: scroll;
 
    &::-webkit-scrollbar {
@@ -12,7 +13,7 @@ const BoardReplyWrap = styled.div`
     }
     &::-webkit-scrollbar-thumb {
         height: 20%; /* 스크롤바의 길이 */
-        background: rgb(120, 158, 228); /* 스크롤바의 색상 */
+        background: #355b75; /* 스크롤바의 색상 */
         overflow: hidden;
         border-radius: 10px;
         box-sizing: border-box;
@@ -27,10 +28,9 @@ const BoardReplyWrap = styled.div`
 export default function BoardView({ moreData , board ,setUserData,setLastPageIdx }){
     const [ selectIdx , setSelectIdx ] = useState(null);
     const refs = useRef([]);
-
+    const showAlert = useAlert();
     useEffect(()=>{
         if(!moreData) return ;
-
 
         
         const selectRefs = refs.current.slice(0, refs.current.length);
@@ -63,11 +63,10 @@ export default function BoardView({ moreData , board ,setUserData,setLastPageIdx
                     return <Fadeup key={item.board_key} >
                         <BoardReply 
                     ref={(e) => {
-                        
-                        refs.current[idx] = e;
-                        
                         if (e === null) {
                           refs.current = refs.current.slice(0, idx);
+                        }else{
+                            refs.current[idx] = e;
                         }
                       }}
                             reply={item}
@@ -75,6 +74,7 @@ export default function BoardView({ moreData , board ,setUserData,setLastPageIdx
                             selectIdx={selectIdx === item.board_key}
                             setSelectIdx={setSelectIdx}
                             setUserData={setUserData}
+                            showAlert={showAlert}
                         />
                     </Fadeup>
                 } )

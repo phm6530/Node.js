@@ -34,15 +34,15 @@ const isValidAdmin = async (id, password) => {
 
 
 
-const isDeleteReply = async({ replyIdx , reply_password , page , board_key }) =>{
+const isDeleteReply = async({ reply_password , board_key }) =>{
 
-    const limit = 10;
-    const offset = ((page || 1 ) - 1) * 10
+    // const limit = 10;
+    // const offset = ((page || 1 ) - 1) * 10
     try{
         let sql_ReplyFind = `select * from board where board_key = ? `;
         const boardRecord = await db.query(sql_ReplyFind, [board_key]);
         
-        if(!boardRecord){
+        if(!boardRecord || boardRecord.length === 0 ){
             throw new NotFoundError('이미 삭제되었거나 서버에 문제가 있습니다.');
         }
         const isMatch = await compare(reply_password , boardRecord[0].user_password);
@@ -51,19 +51,21 @@ const isDeleteReply = async({ replyIdx , reply_password , page , board_key }) =>
         }
 
             let sql_delete = `delete from board where board_key = ? `;
-            const isDelete = await db.query(sql_delete, [board_key]);
+            const deleteResult = await db.query(sql_delete, [board_key]);
+            const isDeleted = deleteResult.affectedRows > 0;
 
-
-            let sql_NewArry = `select idx, user_name , contents , board_key from board order by idx desc limit ? offset ?`;
-            const newArray = await db.query(sql_NewArry, [limit , offset]);
+            console.log('deleteResult', deleteResult);
+            console.log('isDelete', isDeleted);
+            // let sql_NewArry = `select idx, user_name , contents , board_key from board order by idx desc limit ? offset ?`;
+            // const newArray = await db.query(sql_NewArry, [limit , offset]);
 
             let sql_cnt = `select count(*) as cnt from board`;
             const counter = await db.query(sql_cnt);
 
-            console.log(newArray);
+            // console.log(newArray);
             return {
-                isValid  : isDelete ,
-                newArray : newArray,
+                isDeleted ,
+                isDeleted_key : board_key,
                 counter : counter[0].cnt
             }
         

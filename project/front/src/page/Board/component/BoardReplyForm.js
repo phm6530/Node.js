@@ -5,6 +5,7 @@ import styled, { keyframes } from 'styled-components';
 import { DarkMode } from '../../../context/DarkModeContext';
 import { useContext } from 'react';
 import { useSelector } from 'react-redux';
+import { QuestionMark } from '../../../component/icon/Icon';
 
 const Button = styled.button`
     margin-left: auto;
@@ -22,10 +23,10 @@ const checkAnimtaion = keyframes`
 `
 
 const BoardReplyStyle = styled.div`
-    padding: 40px 30px;
+    /* padding: 40px 30px; */
     border-radius: 2em;
-    margin-top: 50px;
-    box-shadow: -4px -4px 15px rgba(255, 255, 255, 0.7), 4px 4px 15px rgba(36, 36, 36, 0.15);
+    margin-top: 40px;
+    /* box-shadow: -4px -4px 15px rgba(255, 255, 255, 0.7), 4px 4px 15px rgba(36, 36, 36, 0.15); */
     width: 90%;
 `
 const FormStyle = styled.form`
@@ -36,10 +37,23 @@ const FormStyle = styled.form`
 
 const RadioStyle = styled.label`
     position: relative;
+    box-sizing: border-box;
+    transition: transform .2s ease;
     input{
         display: none;
     }
+    &:hover{
+        transform: scale(1.1);
+        
+    }
+    img{
+        border-radius: 7em;
+    }
+    border: 7px solid transparent;
+    
     &.checked{
+        border: 7px solid #fff;
+        border-radius: 7em;
         img{
             filter: none;
         }
@@ -60,6 +74,61 @@ const RadioStyle = styled.label`
         cursor: pointer;
         filter: grayscale(1);
     }
+`
+const RadioWrap = styled.div`
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    border-radius: 1em;
+    margin-bottom: 19px;
+    background: #ffffff3d;
+    border: 3px solid #ffffff4f;
+    box-sizing: border-box;
+`
+
+const Label = styled.span`
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    span{
+        position: relative;
+        svg{
+            margin-left: 5px;
+            cursor: pointer;
+        }
+        &::after{
+            content: "댓글에 입력될 캐릭터에요";
+            position: absolute;
+            display: none;
+            background: #fff;
+            font-size: 12px;
+            width: 140px;
+            top: -30px;
+            left: 20px;
+            border-radius: 13px;
+            padding: 5px;
+            text-align: center;
+        }
+        &::before{
+            position: absolute;
+            content: "";
+            display: block;
+            width: 10px;
+            height: 10px;
+            bottom: 18px;
+            z-index: 0;
+            left: 24px;
+            background: #fff;
+            transform: rotate(60deg);
+            display: none;
+        }
+
+        &:hover::after, &:hover::before {
+            display: block;
+        }
+    }
+    
 `
 
 
@@ -85,9 +154,12 @@ export default function BoardReplyForm({
                     defaultValue="person_1"
                     render={({field})=>
                         <>
-                        <div className="radioWrap">
-                            
+                        <Label>Crecter <span><QuestionMark color={'#0000005e'} size={'20'}/></span></Label>
+                        <RadioWrap>
+                        
                             {   
+
+                                
                                 [...Array(6)].map((_,idx)=> {
                                     const icon = `person_${idx + 1}`;
                                     return <RadioStyle key={icon} className={
@@ -105,32 +177,27 @@ export default function BoardReplyForm({
                                 } )
                             }   
                    
-                        </div>
+                        </RadioWrap>
                         {/* {console.log(field)} */}
                         </>
                     }
                 />
-                
-                {
 
-                    
-                }
-
-                    <Controller
-                        name='userName'
-                        control={control}
-                        render={({field})=>
-                            <InputReply 
-                                {...field}
-                                label='글쓴이'
-                                isAuth={login}
-                                type={'text'}
-                                error={errors[{...field}.name]}
-                            />
-                        }
-                    />
+                <Controller
+                    name='userName'
+                    control={control}
+                    render={({field})=>
+                        <InputReply 
+                            {...field}
+                            label='글쓴이'
+                            isAuth={login}
+                            placeholder={'이름을 입력해주세요.'}
+                            type={'text'}
+                            error={errors[{...field}.name]}
+                        />
+                    }
+                />
                 
-               
                 { !login && 
                         <Controller
                             name='password'
@@ -140,11 +207,13 @@ export default function BoardReplyForm({
                                     {...field}
                                     label='password'
                                     type={'password'}
+                                    placeholder={'4자 이상의 비밀번호를 입력해주세요.'}
                                     error={errors[{...field}.name]}
                                 />
                             }
                         />
                 }
+
                 <Controller
                     name='contents'
                     control={control}
@@ -152,13 +221,14 @@ export default function BoardReplyForm({
                         <InputReply 
                             {...field}
                             label='댓글'
-                            type={'text'}
+                            type={'textarea'}
+                            placeholder={'남기실 댓글 내용을 입력해주세요!'}
                             error={errors[{...field}.name]}
                         />
                     }
                 />
 
-                <Button type='submit' className='btnStyle_Type_1'>reply</Button>
+                <Button type='submit' className='btnStyle_Type_1'>Add</Button>
                 </FormStyle>
         </BoardReplyStyle>
     )

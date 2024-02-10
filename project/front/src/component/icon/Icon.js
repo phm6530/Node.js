@@ -2,6 +2,9 @@
 import { IoPersonCircleSharp } from "react-icons/io5";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { TiDelete } from "react-icons/ti";
+import { HiMiniQuestionMarkCircle } from "react-icons/hi2";
+import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
+import { RxQuestionMarkCircled } from "react-icons/rx";
 
 // icon
 import { BsFillMoonFill } from "react-icons/bs";
@@ -22,11 +25,15 @@ const Sun = ({size , color})=>{
     return <BsFillMoonFill size={size} />
 }
 
-
 // BoardIcon
-
 const DeleteIcon = ({size , color})=>{
     return <TiDelete size={size} color={color || "black"}/>
+}
+const SpeechBubble = ({size , color})=>{
+    return <IoChatbubbleEllipsesOutline size={size} color={color || "black"}/>
+}
+const QuestionMark = ({size , color})=>{
+    return <RxQuestionMarkCircled size={size} color={color || "black"}/>
 }
 
 
@@ -41,5 +48,8 @@ export {
     Sun,
 
     // Board
-    DeleteIcon
+    DeleteIcon,
+    QuestionMark,
+    SpeechBubble
+
 };

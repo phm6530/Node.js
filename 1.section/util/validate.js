@@ -6,6 +6,7 @@ const validation_Reply = (req, res, next) =>{
     const body = req.body;
     const schema = joi.object({
         idx : joi.string().required(),
+        userIcon : joi.string().required(),
         userName : joi.string().required(),
         contents : joi.string().required(),
         password : joi.string().min(4).required(),

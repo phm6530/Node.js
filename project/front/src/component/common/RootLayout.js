@@ -1,20 +1,20 @@
 import RootNav from './RootNav'
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import Popup from '../popup/Popup'
 import styled, { css } from 'styled-components';
 import LoginForm from '../popup/login/LoginForm';
+import Gird from '../ui/Grid';
+import Footer from './Footer';
+import Timer from './Timer';
 
 const PageChange = styled.div`
-    /* transition: background ease-in-out; */
-    /* background:  #000; */
     ${props => {
         switch(props.$path){
             case '/' : 
                 return css`
-                    /* background: red; */
                 `
             case '/project' : 
                 return css`
@@ -27,33 +27,6 @@ const PageChange = styled.div`
         }
     }}
 `
-
-const Timer = ({...props}) =>{
-    const [ time , setTime ] = useState(new Date());
-    useEffect(()=>{
-        const timer = setTimeout(()=>{
-            setTime(new Date());
-        },1000);    
-
-        return()=> clearTimeout(timer);
-    },[time]);   
-
-    return(
-        <>
-            <div {...props}>{time.toLocaleTimeString().replace('오전', 'AM').replace('오후', 'PM')}</div>
-        </>
-    )
-}
-
-const TimerStyle = styled(Timer)`
-    position: absolute;
-    z-index: 1;
-    font-weight: bold;
-    font-size: 40px;
-    background:#fff;
-
-`
-
 
 export default function RootLayout(){
     const [ viewPopup , setVIewPopup ] = useState(false);
@@ -91,10 +64,18 @@ export default function RootLayout(){
                 setViewPopup={setVIewPopup}
                 ChangePageHandler={ChangePageHandler}
             />
-            <TimerStyle/>
+            <Gird>
+                <Timer/>
+            </Gird>
+
             <PageChange ref={wrapRef} $path={path} className='loaded'>
                     <Outlet/>
             </PageChange>
+
+            {/* Footer */}
+            <Gird>
+                <Footer/>
+            </Gird>
         </>
     )
 

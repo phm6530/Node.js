@@ -11,7 +11,7 @@ const DarkMode = createContext()
         }   
         
         p,span, li{
-                color : ${props=>props.darkMode ? `#ffffff` : `#000`};
+                color : ${props=>props.darkMode ? `#ffffff` : `#333333`};
                 ${props => props.transition ? '' : `transition: color .6s 0.3s cubic-bezier(0, 0.88, 0, 1.03) `
             }
         }

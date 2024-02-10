@@ -57,7 +57,7 @@ const LoginStyle = styled.form`
 
 export default function LoginForm(){
     const dispatch = useDispatch();
-    const showAlert = useAlert();
+    // const showAlert = useAlert();
 
     const [ fromValid , setFormValid ] = useState(false);
     const [ loginData , setLoginData ] = useState(
@@ -112,7 +112,7 @@ export default function LoginForm(){
             dispatch(authAction.login());
 
             // 로그인 OK
-            showAlert('로그인 되었습니다.' , 1 );
+            // showAlert('로그인 되었습니다.' , 1 );
 
             // 완료시에만 로그인 팝업 닫기
             // popupClose();       
@@ -120,7 +120,7 @@ export default function LoginForm(){
         }
         catch(error){
             console.error(error);
-            showAlert(error.message);
+            // showAlert(error.message);
             // popupClose();
         }
     }

@@ -115,7 +115,7 @@ function App() {
 
 
   return (
-    
+      // darkMode - Context Api 
       <Mode>
           {/* redux */}
           <Provider store={store}>

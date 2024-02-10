@@ -34,11 +34,49 @@
                 transform: translateY(0px);
             }
         }
-   
+        .test{
+            background-color: aquamarine;
+            color: #000;
+            margin-bottom: 10px;
+        }
+        .active{
+            background: red;
+        }
     </style>
-    
+
 </head>
 <body>
+
+    <button onclick="test(5)">test</button>
+    <script>
+        function test(e){
+            console.log(e)
+        }
+    </script>
+    <div class="test">1</div>
+    <div class="test">2</div>
+    <div class="test">3</div>
+    <div class="test">4</div>
+    <div class="naming">asdfsadf</div>
+    <div class="naming">asdfsadf</div>
+    <div class="naming">asdfsadf</div>
+    <div class="naming">asdfsadf</div>
+    <div class="naming">asdfsadf</div>
+    <div class="naming">asdfsadf</div>
+    <div class="naming">asdfsadf</div>
+    <div class="naming">asdfsadf</div>
+    <div class="naming">asdfsadf</div>
+    <div class="naming">asdfsadf</div>
+    <div class="naming">asdfsadf</div>
+    <div class="naming">asdfsadf</div>
+    <div class="naming">asdfsadf</div>
+    <div class="naming">asdfsadf</div>
+    <div class="naming">asdfsadf</div>
+    <div class="naming">asdfsadf</div>
+    <div class="naming">asdfsadf</div>
+    <div class="naming">asdfsadf</div>
+    <div class="naming">asdfsadf</div>
+    <div class="naming">asdfsadf</div>
     <div class="slideContainer">
         <div class="slideWrap">
             <div class="slide">hi</div>
@@ -86,6 +124,21 @@
 </body>
 <script>
 
+    const divs = document.querySelectorAll('.test');
+
+    divs.forEach((target)=>{
+        target.addEventListener('click',()=>{
+            if(target.classList.contains('active')){
+                target.classList.remove('active');
+            }
+            else{
+                divs.forEach((div)=>{
+                    div.classList.remove('active');
+                });
+                target.classList.add('active');
+            }
+        });
+    });
 
     const slide = document.querySelectorAll('.slide');
     slide.forEach((e, idx)=>{
