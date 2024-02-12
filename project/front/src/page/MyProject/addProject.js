@@ -17,12 +17,10 @@ import { useNavigate } from 'react-router-dom';
 import { addProjectFetch } from './ProjectFetch';
 import { useDispatch } from 'react-redux';
 import alertThunk from '../../store/alertTrunk';
+import Gird from '../../component/ui/Grid';
+import DashBoard from '../../component/ui/DashBoard';
 
-
-
-
-// const initalList = [ '퍼블리싱' , '기획' , '개발' ]
-const projectStack = [ 'Node.js' , 'Next.js' , 'Css' , 'Html' , 'JavaSciprt' , 'PHP' , 'MySql', 'Scss'];
+const projectStack = [ 'Node' , 'Next' , 'Css' , 'Html' , 'JavaSciprt' , 'PHP' , 'MySql', 'Scss' , 'jquery'];
 
 const MSG = {
     1 : '필수 입력란 입니다.'
@@ -91,7 +89,11 @@ export default function AddProject(){
     }
 
     return(
-        <>
+        <>  
+        <DashBoard/>
+    
+        <Gird>
+     
             <form onSubmit={handleSubmit(onSubmitHandler)}>
                 <h1>Proejct - Add Page</h1>
 
@@ -146,6 +148,7 @@ export default function AddProject(){
                 <button type='submit'>등록</button>
                 <button type='button' onClick={()=>cancelEvent()}>취소</button>
             </form>
+        </Gird>
         </>
     )
 }

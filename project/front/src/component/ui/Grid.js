@@ -5,11 +5,8 @@ const GridStyle = styled.div`
     margin: 0 auto;
 `
 
-export default function Gird({style, children}){
-
+export default function Gird({children, ...props}){
     return(
-        <GridStyle style={style}>
-                {children}
-        </GridStyle>        
+        <GridStyle {...props}> {children} </GridStyle>        
     )
 }

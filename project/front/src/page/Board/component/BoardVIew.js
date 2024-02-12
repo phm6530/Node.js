@@ -4,7 +4,7 @@ import Fadeup from '../../../FadeinComponent';
 import styled from 'styled-components';
 
 const BoardReplyWrap = styled.div`
-  height: 750px;
+  height: 782px;
   overflow-y: scroll;
 
    &::-webkit-scrollbar {
@@ -20,29 +20,27 @@ const BoardReplyWrap = styled.div`
 
     &::-webkit-scrollbar-track {
         background: rgba(33, 122, 244, .1); 
-        
     }
 `
 
-export default function BoardView({ moreData , board ,setUserData,setLastPageIdx }){
+export default function BoardView({ moreData , board ,setUserData, setLastPageIdx }){
     const [ selectIdx , setSelectIdx ] = useState(null);
     const refs = useRef([]);
     useEffect(()=>{
         if(!moreData) return ;
-
         
         const selectRefs = refs.current.slice(0, refs.current.length);
         console.log(selectRefs.length);
         const lastRef = selectRefs[board.length - 1];
-        if(lastRef){
-            lastRef.style.backgroundColor = 'red';
-            //디버깅용 색칠하기
-        }
+        //디버깅용 색칠하기
+        // if(lastRef){
+        //     lastRef.style.backgroundColor = 'red';
+        // }
         const io = new IntersectionObserver((entry)=>{
             if(entry[0].isIntersecting && moreData ) {
                 setLastPageIdx(selectRefs.length);
             }
-        } , { threshold : .5})
+        } , { threshold : .1})
         if(lastRef){
             io.observe(lastRef);
         }

@@ -1,8 +1,8 @@
 import { alertAction } from './appSlice';
 
-const alertThunk = (message, type) => (dispatch , reduxState) => {
-    const {alertSlice : { TimerId } } = reduxState();
-    console.log('TimerId : ', TimerId);
+const alertThunk = (message, type) => (dispatch , getState) => {
+    const {alertSlice : { TimerId } } = getState();
+    
     if(TimerId){
         clearTimeout(TimerId);
         dispatch(alertAction.alertViewOff());
@@ -12,7 +12,7 @@ const alertThunk = (message, type) => (dispatch , reduxState) => {
     const setTimerId = setTimeout(()=>{
         dispatch(alertAction.alertViewOff());
     },3000);
-    console.log('setTimerId :' , setTimerId);
+    
     dispatch(alertAction.alertTimerId({setTimerId}));
 };
 

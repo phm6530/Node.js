@@ -154,31 +154,29 @@ export default function BoardReplyForm({
                     defaultValue="person_1"
                     render={({field})=>
                         <>
-                        <Label>Crecter <span><QuestionMark color={'#0000005e'} size={'20'}/></span></Label>
-                        <RadioWrap>
-                        
-                            {   
-
-                                
-                                [...Array(6)].map((_,idx)=> {
-                                    const icon = `person_${idx + 1}`;
-                                    return <RadioStyle key={icon} className={
-                                        icon === field.value ? 'checked' : undefined
-                                    }>
-                                        <img src={`/img/board/${icon}.png`} alt="" />
-                                        <input 
-                                            type="radio"
-                                            value={icon}
-                                            onChange={()=>field.onChange(icon)}
-                                            name={field.name}
-                                            checked={field.value  === icon}
-                                         />
-                                    </RadioStyle>
-                                } )
-                            }   
-                   
-                        </RadioWrap>
-                        {/* {console.log(field)} */}
+                            <Label>Crecter <span><QuestionMark color={'#0000005e'} size={'20'}/></span></Label>
+                            <RadioWrap>
+                                {   
+                                    
+                                    [...Array(6)].map((_,idx)=> {
+                                        const icon = `person_${idx + 1}`;
+                                        return <RadioStyle key={icon} className={
+                                            icon === field.value ? 'checked' : undefined
+                                        }>
+                                            <img src={`/img/board/${icon}.png`} alt="" />
+                                            <input 
+                                                type="radio"
+                                                value={icon}
+                                                onChange={()=>field.onChange(icon)}
+                                                name={field.name}
+                                                checked={field.value  === icon}
+                                            />
+                                        </RadioStyle>
+                                    } )
+                                }   
+                    
+                            </RadioWrap>
+                            {/* {console.log(field)} */}
                         </>
                     }
                 />

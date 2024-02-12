@@ -31,7 +31,8 @@
 body{
   // font-family: 'IBMPlexSansKR-Regular';
    font-family: 'SUIT-Regular';
-   font-family: 'Pretendard-Regular';
+  //  font-family: 'Pretendard-Regular';
+  //  font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", "맑은 고딕", helvetica, "Apple SD Gothic Neo", sans-serif;
   // input{
   //   background: transparent;
   // }
@@ -238,19 +239,7 @@ $error-Message-color : rgb(233, 97, 97);
   }
   
 
-  .pageTitle{
-    font-size: 100px;
-    font-weight: bold;
-  }
 
-
-  .pageDashBoard{
-    background: #212123;
-    width: 100%;
-    height: 350px;
-    // background-image : url('/img/board/banner.jpg');
-    background-size: cover;
-  }
 
   textarea{
     resize: none;

@@ -5,7 +5,7 @@ import { useEffect , useState} from 'react';
 const TimerStyle = styled.div`
     position: absolute;
     z-index: 1;
-    font-size: 40px;
+    font-size: 30px;
     color: #fff;
     top: 80px;
 `

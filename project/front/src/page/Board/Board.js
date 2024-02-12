@@ -19,10 +19,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import Gird from '../../component/ui/Grid';
 import alertThunk from '../../store/alertTrunk';
+import { RiDoubleQuotesL } from "react-icons/ri";
+
+import StackIcon from '../../component/icon/StackIcon';
+import DashBoard from '../../component/ui/DashBoard';
+import DashBoardTitle from '../../component/ui/DashBoardTitle';
 
 const BoardStyle = styled.div`
     display: flex;
-    transform: translateY(-111px);
+    transform: translateY(-120px);
 `
 
 const BoardReplyStyle = styled.div`
@@ -32,11 +37,12 @@ border: 3px solid #fff;
     background: #e2e6ef;
     overflow: hidden;
     position: relative;
-    padding: 40px 0;
+    padding: 40px 0 0;
 `
 
 const ReplyWrapHeader = styled.div`
     background: -webkit-linear-gradient(to right, #000000, #2d3f60);
+    
     background: linear-gradient(to right, #000000, #2d3f60);
     position: absolute;
     width: 100%;
@@ -76,18 +82,11 @@ const PageText = styled.div`
         margin-bottom: 10px;
     }
     p:nth-child(2){
-        font-size: 16px;
+        font-size: 14px;
         line-height: 1.9em;
+        margin-left: 25px;
     }
 `
-
-const PageTitleStyle = styled.div`
-    background: linear-gradient(to right top, #e2e6ef, #ffffff, #9db8e8);
-    color: transparent;
-    -webkit-background-clip: text;
-    letter-spacing: -1px;
-`
-
 
 const ReplyHeaderPoint = styled.div`
     margin-left: 20px;
@@ -219,24 +218,27 @@ export default function Board(){
         {/* formProvider */}
 
         
-        <FormProvider {...formMethod}>
-                <div className="pageDashBoard"></div>
+       
+                <DashBoard page={'board'}/>
                 <Gird>
                     <BoardStyle>
                         <BoardDashBoard>
-                        <PageTitleStyle className='pageTitle'>Guest Book</PageTitleStyle>
+                        <DashBoardTitle>Guest Book</DashBoardTitle>
                         <PageText>
-                            <p>남기고 싶은 말씀을 적어주세요 !</p>
+                            <p style={{display:'flex'}}><RiDoubleQuotesL style={{marginRight:'5px' , opacity:'.5'}}/> 남기고 싶은 말씀을 적어주세요 !</p>
                             <p>
-                                IntersectionObserver로 구현한 'Infinity Scroll' 형식의 방명록입니다.<br></br>
-                                단순 삭제용도의 비밀번호이며 Node.js의 <b>brycpt</b>를 이용하여 해싱을 하고 있습니다.<br></br>
-                                해싱된 비밀번호 이외 어떠한 정보도 수집하지 않습니다.
+                                <b>IntersectionObserver</b>로 구현한 <b>'Infinity Scroll'</b> 형식의 방명록입니다.<br></br>
+                               
+                                입력하시는 비밀번호는 단순 삭제용도의 비밀번호이며  <StackIcon.Node label={'Node.js'}/>의 <b>brycpt</b>를 이용하여 암호화 저장하고 있으며 해싱된 비밀번호 이외 어떠한 정보도 수집하지 않습니다.
                             </p>
                         </PageText>
+                        
                         {/* Form */}
+                        <FormProvider {...formMethod}>
                             <BoardReplyForm  
                                 onSubmitHandlr={onSubmitHandlr}
                             />
+                        </FormProvider>
                         </BoardDashBoard>
 
                         <BoardReplyStyle>
@@ -267,7 +269,7 @@ export default function Board(){
                         </BoardReplyStyle>
                     </BoardStyle>
                 </Gird>
-        </FormProvider>
+
 
         </>
     )

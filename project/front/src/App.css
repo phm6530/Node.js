@@ -24,7 +24,6 @@
 }
 body {
   font-family: "SUIT-Regular";
-  font-family: "Pretendard-Regular";
 }
 
 .wrap {
@@ -213,18 +212,6 @@ nav ul li {
 }
 .btnStyle_Type_1:active {
   box-shadow: 3px 1px 17px rgba(255, 255, 255, 0.8), 1px -1px 4px rgba(48, 59, 73, 0.24);
-}
-
-.pageTitle {
-  font-size: 100px;
-  font-weight: bold;
-}
-
-.pageDashBoard {
-  background: #212123;
-  width: 100%;
-  height: 350px;
-  background-size: cover;
 }
 
 textarea {

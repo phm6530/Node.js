@@ -17,6 +17,7 @@ const schema = Yup.object({
 const HoverStyle = ({ className, children }) => {
     return <span className={className}>{children}</span>;
 };
+
 const HoverStyled = styled(HoverStyle)`
     &:hover {
         // 아이콘에 대한 호버 스타일 정의
