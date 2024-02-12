@@ -3,7 +3,7 @@ import styled , { css } from 'styled-components';
 const DashBoardStyle = styled.div`
     /* background: #212123; */
     width: 100%;
-    height: 450px;
+    height: 350px;
     background-size: cover;
     ${props => {
         switch(props.$page){

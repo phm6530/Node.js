@@ -76,7 +76,7 @@ $error-Message-color : rgb(233, 97, 97);
   @keyframes load{
     0%{
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(-20px);
     }
     100%{
       opacity: 1;
@@ -90,7 +90,7 @@ $error-Message-color : rgb(233, 97, 97);
     }
     100%{
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(-20px);
     }
   }
   
@@ -243,6 +243,7 @@ $error-Message-color : rgb(233, 97, 97);
 
   textarea{
     resize: none;
+    white-space: pre-line;
   }
   textarea:focus{
     outline: none;

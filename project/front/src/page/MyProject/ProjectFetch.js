@@ -1,5 +1,5 @@
 
-
+// 초기데이터 
 const projectFetch = async() =>{
     try{
         const response = await fetch('http://localhost:8080/project');
@@ -16,10 +16,10 @@ const projectFetch = async() =>{
     }
 }
 
-
-const addProjectFetch = async (formData) =>{
+// 생성
+const addProjectFetch = async (formData , Type) =>{
     try{
-        const response = await fetch('http://localhost:8080/project/add',
+        const response = await fetch(Type !== 'edit' ? 'http://localhost:8080/project/add' : `http://localhost:8080/project/editProject`,
             {
                 method : 'POST',
                 headers : {'Content-Type' : 'application/json'},
@@ -37,7 +37,52 @@ const addProjectFetch = async (formData) =>{
         throw error;
     }
 }
+
+
+// 수정
+const projectEdit = async(key) =>{
+    console.log(key);
+    try{
+        const response = await fetch('http://localhost:8080/project/edit' , {
+            method : 'POST',
+            headers : {'Content-Type' : 'application/json'},
+            body : JSON.stringify({key})
+        });
+
+        if(!response.ok){
+            const errorResult = await response.json();
+            console.log(errorResult);
+            throw new Error( errorResult.message || '에러');
+        }
+        const result = await response.json();
+        return result;
+    }
+    catch(error){
+        throw error;
+    }
+}
+
+//삭제
+const projectDelete = async(key) =>{
+    try{
+        const response = await fetch(`http://localhost:8080/project/delete/${key}`,{
+            method : 'delete'
+        });
+        if(!response.ok){
+            const errorResult = await response.json();
+            throw new Error(errorResult.message || '정상적으로 처리 되지 않았습니다.');
+        }
+        const result = await response.json();
+        return result;
+
+    }catch(error){
+        throw error;
+    }
+}
+
 export{
     addProjectFetch,
-    projectFetch
+    projectFetch,
+    projectEdit,
+    projectDelete
 };

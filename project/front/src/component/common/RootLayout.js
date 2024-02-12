@@ -16,9 +16,9 @@ const PageChange = styled.div`
             case '/' : 
                 return css`
                 `
-            case '/project' : 
+            case '/Board' : 
                 return css`
-                    
+                    /* background: red; */
                 `
             default :
                 return css`
@@ -30,8 +30,8 @@ const PageChange = styled.div`
 
 export default function RootLayout(){
     const [ viewPopup , setVIewPopup ] = useState(false);
-    const [ path ,setPath ] = useState(null);
     const { pathname } = useLocation();
+    const [ path ,setPath ] = useState(pathname);
 
     // 라우터 시에 최상단으로 이동
     useEffect(()=>{
@@ -47,12 +47,13 @@ export default function RootLayout(){
         if(pathname !== path){
             wrapRef.current.classList.replace('loaded', 'unloaded');
         }
+
        
         setTimeout(()=>{
             navigate(path);
             wrapRef.current.classList.replace('unloaded', 'loaded');
             setPath(path);
-        },390);
+        },400);
     }
     
     return(

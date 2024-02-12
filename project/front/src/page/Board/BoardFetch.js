@@ -13,7 +13,6 @@ const fetchReply = async(formData) =>{
         if (!response.ok) {
             if (response.headers.get('Content-Type')?.includes('application/json')) {
                 const errorResponse = await response.json();
-                
                 throw new Error(errorResponse.message || `요청이 실패하였습니다. errorCode :  ${response.status}`);
             } else {
                 throw new Error(`요청이 실패하였습니다. errorCode : ${response.status}`);

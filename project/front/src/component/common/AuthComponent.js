@@ -5,7 +5,6 @@ import useAlert from './UseAlert';
 import alertThunk from '../../store/alertTrunk';
 import { useDispatch } from 'react-redux'; 
 
-
 export default  function AuthComponent({Component , redirectPath}){
     const { Auth } = useLoaderData(); // 서버 인증확인
     const isAuth = useSelector(state => state.authSlice); // 클라이언트 인증확인
@@ -20,5 +19,4 @@ export default  function AuthComponent({Component , redirectPath}){
     }, [isAuth, Auth, navigate, redirectPath , dispatch ]);
 
     return (isAuth && Auth) ? <Component/> : null;
-    
 }

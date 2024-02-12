@@ -59,7 +59,7 @@ body {
 @keyframes load {
   0% {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(-20px);
   }
   100% {
     opacity: 1;
@@ -73,7 +73,7 @@ body {
   }
   100% {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(-20px);
   }
 }
 label {
@@ -216,6 +216,7 @@ nav ul li {
 
 textarea {
   resize: none;
+  white-space: pre-line;
 }
 
 textarea:focus {

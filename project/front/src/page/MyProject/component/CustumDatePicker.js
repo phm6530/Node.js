@@ -6,6 +6,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const CustumDatePicker = ({control , errors , label , startDateName , endDateName }) => {
     const [ startDate , setStartDate ] = useState(false);
+    const [ endDate , setEndDate ] = useState(false);
+    console.log(startDate);
     return (
       <div className='custumDatePicker'>
             {label}
@@ -19,22 +21,27 @@ const CustumDatePicker = ({control , errors , label , startDateName , endDateNam
                             setStartDate(startDate);
                             onChange(startDate)
                         }}
+                        showMonthDropdown={true}
                         selected={value}
                         placeholderText='시작일을 입력해주세요.'
                         dateFormat='yyyy-MM-dd'
+                        maxDate={endDate}
                     />
                 }
             />
             {errors[startDateName] && <p className='errorMessage'>{errors[startDateName].message}</p>}
 
-            {startDate &&  (
+         
                 <>
                 <Controller
                     name={endDateName}
                     control={control}
                     render={({field : { onChange , value }})=>
                         <DatePicker
-                            onChange={(today)=>onChange(today)}
+                            onChange={(endDay)=>{
+                                setEndDate(endDay);
+                                onChange(endDay);
+                            }}
                             selected={value}
                             placeholderText='종료일을 입력해주세요.'
                             dateFormat='yyyy-MM-dd'
@@ -44,8 +51,8 @@ const CustumDatePicker = ({control , errors , label , startDateName , endDateNam
                 />
                 {errors[endDateName] && <p className='errorMessage'>{errors[endDateName].message}</p>}
                 </>
-            )
-        }
+         
+       
       </div>
     );
 };

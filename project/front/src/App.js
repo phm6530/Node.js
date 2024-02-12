@@ -14,6 +14,7 @@ import store from './store/appSlice';
 
 // Home
 import HomeComponent from './page/Home/HomeComponent';
+import { projectChangeLoader } from './page/MyProject/ProjectFetch'; //add Loader
 
 // MyProject
 import MyProject from './page/MyProject/MyProject';

@@ -44,11 +44,19 @@ const IconStyle = styled.span`
     }
 `
 
+const Mysql = ({label}) =>{
+    const ctx = useContext(DarkMode); 
+    return( <IconStyle $stack={'mysql'} $darkMode={ctx.darkMode}> <img src="/img/stackIcon/mysql.png" alt={label} /> {label}</IconStyle>)
+}
+const Scss = ({label}) =>{
+    const ctx = useContext(DarkMode); 
+    return( <IconStyle $stack={'scss'} $darkMode={ctx.darkMode}> <img src="/img/stackIcon/scss.png" alt={label} /> {label}</IconStyle>)
+}
+
 const Jquery = ({label}) =>{
     const ctx = useContext(DarkMode); 
     return( <IconStyle $stack={'jquery'} $darkMode={ctx.darkMode}> <img src="/img/stackIcon/jquery.png" alt={label} /> {label}</IconStyle>)
 }
-
 
 const Html = ({label}) =>{
     const ctx = useContext(DarkMode);  
@@ -66,7 +74,6 @@ const Js = ({label}) =>{
 }
 const React = ({label}) =>{
     const ctx = useContext(DarkMode); 
-    console.log('ctx ::' ,ctx.darkMode);
     return( <IconStyle $stack={'react'} $darkMode={ctx.darkMode}> <img src="/img/stackIcon/react.png" alt={label} />{label}</IconStyle>)
 }
 
@@ -78,18 +85,12 @@ const Ts = ({label}) =>{
 
 const Php = ({label}) =>{
     const ctx = useContext(DarkMode); 
-    return( 
-        <IconStyle $stack={'php'} $darkMode={ctx.darkMode}>
-            <img src="/img/stackIcon/php.png" alt={label} />
-            {label}</IconStyle>)
+    return( <IconStyle $stack={'php'} $darkMode={ctx.darkMode}><img src="/img/stackIcon/php.png" alt={label} />{label}</IconStyle>)
 }
 
 const Node = ({label}) =>{
     const ctx = useContext(DarkMode); 
-    return( 
-        <IconStyle $stack={'node'} $darkMode={ctx.darkMode}>
-            <img src="/img/stackIcon/node.png" alt={label} />
-            {label}</IconStyle>)
+    return( <IconStyle $stack={'node'} $darkMode={ctx.darkMode}><img src="/img/stackIcon/node.png" alt={label} />{label}</IconStyle>)
 }
 
 
@@ -105,5 +106,7 @@ StackIcon.Node = Node;
 StackIcon.Html = Html;
 StackIcon.Php = Php;
 StackIcon.Jquery = Jquery;
+StackIcon.Mysql = Mysql;
+StackIcon.Scss = Scss;
 
 export default StackIcon;

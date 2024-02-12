@@ -72,7 +72,7 @@ const Component = styled.div`
 
 
 
-export default function FadeinComponent({board, position ,children , pageTouched ,idx}){
+export default function FadeinComponent({board, position ,children , ...props}){
     const ref = useRef();
     const [ visible, setVisible ] = useState(false);
     const slideHandler = (entry) =>{
@@ -91,7 +91,7 @@ export default function FadeinComponent({board, position ,children , pageTouched
     },[board]);  
 
     return(
-        <Component $visible={visible} ref={ref} $position={position}>
+        <Component {...props} $visible={visible} ref={ref} $position={position}>
             {children}
         </Component>
     )

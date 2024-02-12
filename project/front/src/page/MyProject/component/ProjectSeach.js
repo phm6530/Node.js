@@ -1,12 +1,8 @@
 import { useState } from 'react';
 import { useNavigate , useLocation } from 'react-router-dom';
 
-export default function ProjectSeach({
-    realData,
-    setProject
-}){
+export default function ProjectSeach(){
     const [ input , setInput ] = useState('');
-    const { resData } = realData;
     const navigate = useNavigate();
     const location = useLocation();
     
@@ -14,15 +10,12 @@ export default function ProjectSeach({
         e.preventDefault();
 
         if(input.trim() === ''){
-            setProject(resData);
+            navigate('/project');
             return;
         }
-        setProject(
-            resData.filter((arr)=>{
-                return arr.title.includes(input);
-            }
-        ));
+        navigate(`${location.pathname}?seach=${input}`)
     }
+    
     const nav = (path) =>{
         navigate(location.pathname + path);
     }
