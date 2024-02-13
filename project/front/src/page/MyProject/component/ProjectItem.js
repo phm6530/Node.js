@@ -2,9 +2,13 @@ import styled from 'styled-components'
 import StackIcon from '../../../component/icon/StackIcon'
 import { CiCalendar } from "react-icons/ci";
 import Fadein from '../../../FadeinComponent';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import { projectDelete } from '../ProjectFetch';
 import { useMutation, useQueryClient } from 'react-query';
+import { useDispatch, useSelector } from 'react-redux';
+import alertTrunk from '../../../store/alertTrunk';
+import { modalAction } from '../../../store/appSlice';
+import Popup from '../../../component/popup/Popup';
 
 const SKILL_ICON = {
     Html : <StackIcon.Html label={'Html'}/>,
@@ -68,33 +72,50 @@ const ProjectControlBtnWrap = styled.div`
 
 export default function ProjectItem(project){
     const navigate = useNavigate();
+    const { login } = useSelector(state => state.authSlice);
+    const dispatch = useDispatch();
+    const AuthCheck = (text) => {
+        if (!login) {
+            dispatch(alertTrunk(`${text} 권한이 없습니다.`), 0);
+            return false;
+        }
+        return true;
+    };
 
     const projectView = (url) =>{
             window.open(url , '_blank');
     }
+
     const projectChange = (key) =>{
+        if (!AuthCheck('수정')) {
+            return; 
+        }
         console.log(key);
         navigate(`/project/add?type=edit&key=${key}`);
     }
     
     const queryClient = useQueryClient();
-    const { mutate } = useMutation((deleteKey)=>projectDelete(deleteKey) ,  {
+    const { mutateAsync } = useMutation((deleteKey)=>projectDelete(deleteKey) ,  {
         onSuccess : () =>{
             queryClient.invalidateQueries('project')
         }
     });
 
-    const projectMutation = async(deleteKey) =>{
-        await mutate(deleteKey);
-    }
+    const projectMutation = async (deleteKey) => {
+        if (!AuthCheck('삭제')) {
+            return; 
+        }
+        dispatch(modalAction.modalOpen({content : 'confirm'}));
+        // await mutateAsync(deleteKey);
+    };
 
     return(
         <>
+            
             <ProjectFadeinStyle>
                 {/* <img src="/img/project/jkl.jpg" alt="" /> */}
                 <ProjectTitle>
                         {project.title}       
-
                         <ProjectControlBtnWrap>
                             {/* edit */}
                             <button onClick={()=>projectChange(project.project_key)}>수정</button>

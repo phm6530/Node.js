@@ -29,7 +29,7 @@ const ProjectItemWrap = styled.div`
 export default function MyProject(){
     const [ param ] = useSearchParams();
     const [ project , setProject ] = useState([]);
-    const { data , isLoading , isFetching , isError } = useQuery('project' , projectFetch,{
+    const { isLoading , isFetching , isError } = useQuery('project' , projectFetch,{
         onSuccess : (data)=>{
             const responseData = data?.resData || [];        
             setProject(responseData);
@@ -42,10 +42,9 @@ export default function MyProject(){
         return e.title.includes(SeachValue);
     });
     
-    const test = SeachValue ? SeachArr : project;
+    const ProjectArr = SeachValue ? SeachArr : project;
     return(
         <>  
-
         <DashBoard page={'project'}>
             <Grid></Grid>
         </DashBoard>
@@ -60,7 +59,7 @@ export default function MyProject(){
                     <>
                         {project.length === 0 && '등록된 프로젝트가 없습니다..'}
                         {
-                            test.map((project)=> <ProjectItem {...project} key={project.project_key + SeachValue}/> )                        
+                            ProjectArr.map((project)=> <ProjectItem {...project} key={project.project_key + SeachValue}/> )                        
                         }
                         {/* 검색창 */}
                         <ProjectSeach />

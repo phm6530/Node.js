@@ -1,14 +1,20 @@
 import classes from './Popup.module.css';
 import ReactDOM from 'react-dom';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import PopupStyle from './PopupStyle';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { modalAction } from '../../store/appSlice';
+// import LoginForm from './login/LoginForm';
+// import Confirm from '../ui/Confirm';
 
-
-export default function Popup({popupClose , children}){
-    const [ close , setClose ] = useState(false);
+export default function Popup({close , children}){
+    
     const isAuth = useSelector(state => state.authSlice.login);
+    const { openComponent , animationState } = useSelector(state => state.modalSlice);
+
+    const dispatch = useDispatch();
+
 
     // background
     const Backdrop = ({popupClose}) =>{
@@ -16,42 +22,35 @@ export default function Popup({popupClose , children}){
     }
 
     // 닫기 애니메이션
-    const ClosePopup = () =>{
-        setClose(true);
+    const ClosePopup = useCallback(() =>{
+        dispatch(modalAction.modalAnimation(true));
         setTimeout(()=>{
-            popupClose();
-            setClose(false);
+            dispatch(modalAction.modalAnimation(false));
+            close();
         },400);
-    }
+    },[dispatch , close]);
 
-    
-    useEffect(()=>{
-        if(isAuth){
+    useEffect(() => {
+        if (isAuth) {
             ClosePopup();
+            return;
         }
-    },[isAuth]);
-
+    }, [isAuth, openComponent, ClosePopup]);
 
     return(
         <>
             {
                 ReactDOM.createPortal(
-                    <Backdrop 
-                        // popupClose={popupClose}
-                    />,
+                    <Backdrop/>,
                     document.getElementById('backdrop-root')
                 )
             }
 
             {
                 ReactDOM.createPortal(
-                    <PopupStyle $close={close}>
+                    <PopupStyle $close={animationState}>
                         <div>
-
                             {children}
-                            {/* <LoginForm popupClose={ClosePopup} /> */}
-
-                            
                             <button onClick={ClosePopup} className='close'>
                                 <span>Close</span>
                             </button>

@@ -5,16 +5,19 @@ import LogOut from './LogOut';
 import styled from 'styled-components';
 
 // redux 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // icon 
 import { Moon } from '../icon/Icon';
 
 // Component
 import Alert from '../popup/Alert';
+import Popup from '../popup/Popup';
 
 import DarkModeBtn from '../ui/DarkModeBtn';
 import { useLocation } from 'react-router-dom';
+import { alertAction , modalAction } from '../../store/appSlice';
+import LoginForm from '../popup/login/LoginForm';
 
 
 // Nav 선택
@@ -35,15 +38,14 @@ const Header = styled.header`
 `
 
 
-export default function RootNav({setViewPopup, ChangePageHandler}){
+export default function RootNav({ChangePageHandler}){
     const { view } = useSelector(state => state.alertSlice);
     const { login } = useSelector(state => state.authSlice);
     const { pathname } = useLocation();
-    // console.log('pathName:', pathname);
+    const [ loginModal , setLoginModal] = useState(false);
     const [ active, setActive ] = useState(pathname);
-
     const logOut =  LogOut();
-
+    
     //Dark Mode
     const ctx = useContext(DarkMode); 
     const NavPageObject = [
@@ -54,11 +56,20 @@ export default function RootNav({setViewPopup, ChangePageHandler}){
         { path : '/admin' , pathName : 'Admin' , AuthPage : true },
     ]
 
+    const loginHandelr = () =>{
+        setLoginModal(true);
+    }
+
+    const openLoginPopup = () => setLoginModal(true);
+    const closeLoginPopup = () => setLoginModal(false);
+
     return(
         <>  
             {/* Alert */}
             { view && <Alert/>}
-        <Header>
+            {loginModal && <Popup close={closeLoginPopup}><LoginForm/></Popup>}
+
+            <Header>
             <div className="wrap">
                 <nav>
                     <DarkModeBtn  onClick={ctx.toggleMode} $darkMode={ctx.darkMode}> 
@@ -91,10 +102,10 @@ export default function RootNav({setViewPopup, ChangePageHandler}){
                             })
                         }
                         
-            
+                        
                         {/* login Component */}
                         {!login && (
-                            <li onClick={()=>setViewPopup(true)}>
+                            <li onClick={openLoginPopup}>
                                 로그인
                             </li>
                         )}

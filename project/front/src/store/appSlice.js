@@ -50,13 +50,39 @@ const alertSlice = createSlice({
 })
 
 
+const modalSlice = createSlice({
+    name: 'modal',
+    initialState:{
+        view : false,
+        openComponent : null,
+        animationState : false
+    },
+    reducers : {
+        modalOpen(state , action){
+            state.view = true;
+            state.openComponent = action.payload.content;
+        },
+        modalClose(state){
+            state.view = false;
+            state.openComponent = null;
+            state.animationState = false;
+        },
+        modalAnimation(state , action){
+            state.animationState = action.payload;
+        }
+    }
+})
+
 const store = configureStore({
     reducer : {
         alertSlice : alertSlice.reducer,
-        authSlice : authSlice.reducer
+        authSlice : authSlice.reducer,
+        modalSlice : modalSlice.reducer
+
     }
 })
 
 export const authAction = authSlice.actions;
 export const alertAction = alertSlice.actions;
+export const modalAction = modalSlice.actions;
 export default store;

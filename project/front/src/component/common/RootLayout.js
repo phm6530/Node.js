@@ -3,7 +3,6 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 
-import Popup from '../popup/Popup'
 import styled, { css } from 'styled-components';
 import LoginForm from '../popup/login/LoginForm';
 import Gird from '../ui/Grid';
@@ -29,7 +28,7 @@ const PageChange = styled.div`
 `
 
 export default function RootLayout(){
-    const [ viewPopup , setVIewPopup ] = useState(false);
+
     const { pathname } = useLocation();
     const [ path ,setPath ] = useState(pathname);
 
@@ -40,7 +39,6 @@ export default function RootLayout(){
 
     const wrapRef = useRef();
     const navigate = useNavigate();
-    const closePopup = () => setVIewPopup(false);
 
     const ChangePageHandler = (path) =>{    
         if(pathname === path) return 
@@ -61,13 +59,10 @@ export default function RootLayout(){
 
             {/* 로그인 팝업 */}
             {/* 24/1/13 - 하위컴포넌트 랜더링 문제가 있어서 변경함 */}
-            { viewPopup &&  <Popup popupClose={closePopup} >
-                    <LoginForm/>
-                </Popup>}
-
+            
+         
             {/* Common Nav */}
             <RootNav 
-                setViewPopup={setVIewPopup}
                 ChangePageHandler={ChangePageHandler}
             />
             <Gird>
