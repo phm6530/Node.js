@@ -56,9 +56,6 @@ export default function RootNav({ChangePageHandler}){
         { path : '/admin' , pathName : 'Admin' , AuthPage : true },
     ]
 
-    const loginHandelr = () =>{
-        setLoginModal(true);
-    }
 
     const openLoginPopup = () => setLoginModal(true);
     const closeLoginPopup = () => setLoginModal(false);

@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import alertTrunk from '../../../store/alertTrunk';
 import { modalAction } from '../../../store/appSlice';
 import Popup from '../../../component/popup/Popup';
+import { useState } from 'react';
+import Confirm from '../../../component/ui/Confirm';
 
 const SKILL_ICON = {
     Html : <StackIcon.Html label={'Html'}/>,
@@ -73,6 +75,7 @@ const ProjectControlBtnWrap = styled.div`
 export default function ProjectItem(project){
     const navigate = useNavigate();
     const { login } = useSelector(state => state.authSlice);
+    const [ confirm , setConfirm ] = useState();
     const dispatch = useDispatch();
     const AuthCheck = (text) => {
         if (!login) {
@@ -93,7 +96,9 @@ export default function ProjectItem(project){
         console.log(key);
         navigate(`/project/add?type=edit&key=${key}`);
     }
-    
+    const openPopup = () => setConfirm(true);
+    const closePopup = () => setConfirm(false);
+
     const queryClient = useQueryClient();
     const { mutateAsync } = useMutation((deleteKey)=>projectDelete(deleteKey) ,  {
         onSuccess : () =>{
@@ -105,13 +110,13 @@ export default function ProjectItem(project){
         if (!AuthCheck('삭제')) {
             return; 
         }
-        dispatch(modalAction.modalOpen({content : 'confirm'}));
+        openPopup();
         // await mutateAsync(deleteKey);
     };
 
     return(
         <>
-            
+            {confirm && <Popup close={closePopup}><Confirm closePopup={closePopup}/></Popup>}
             <ProjectFadeinStyle>
                 {/* <img src="/img/project/jkl.jpg" alt="" /> */}
                 <ProjectTitle>

@@ -30,12 +30,12 @@ export default function Popup({close , children}){
         },400);
     },[dispatch , close]);
 
-    useEffect(() => {
-        if (isAuth) {
-            ClosePopup();
-            return;
-        }
-    }, [isAuth, openComponent, ClosePopup]);
+    // useEffect(() => {
+    //     if (isAuth) {
+    //         ClosePopup();
+    //         return;
+    //     }
+    // }, [isAuth, ClosePopup]);
 
     return(
         <>
