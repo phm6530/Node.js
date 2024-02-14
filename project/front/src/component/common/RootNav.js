@@ -58,13 +58,11 @@ export default function RootNav({ChangePageHandler}){
 
 
     const openLoginPopup = () => setLoginModal(true);
-    const closeLoginPopup = () => setLoginModal(false);
-
     return(
         <>  
             {/* Alert */}
             { view && <Alert/>}
-            {loginModal && <Popup close={closeLoginPopup}><LoginForm/></Popup>}
+            {loginModal && <Popup closePopup={()=>setLoginModal(false)} ><LoginForm/></Popup>}
 
             <Header>
             <div className="wrap">

@@ -41,7 +41,6 @@ export default function MyProject(){
     const SeachArr = project.filter((e)=>{
         return e.title.includes(SeachValue);
     });
-    
     const ProjectArr = SeachValue ? SeachArr : project;
     return(
         <>  

@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import alertTrunk from '../../../store/alertTrunk';
 import { modalAction } from '../../../store/appSlice';
 import Popup from '../../../component/popup/Popup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Confirm from '../../../component/ui/Confirm';
 
 const SKILL_ICON = {
@@ -75,7 +75,9 @@ const ProjectControlBtnWrap = styled.div`
 export default function ProjectItem(project){
     const navigate = useNavigate();
     const { login } = useSelector(state => state.authSlice);
-    const [ confirm , setConfirm ] = useState();
+    const [ modal , setModal] = useState(false);
+    const [ confirm , setConfirm ] = useState(false);
+    console.log(confirm)
     const dispatch = useDispatch();
     const AuthCheck = (text) => {
         if (!login) {
@@ -93,30 +95,34 @@ export default function ProjectItem(project){
         if (!AuthCheck('수정')) {
             return; 
         }
-        console.log(key);
+        setModal(true);
         navigate(`/project/add?type=edit&key=${key}`);
     }
-    const openPopup = () => setConfirm(true);
-    const closePopup = () => setConfirm(false);
 
     const queryClient = useQueryClient();
     const { mutateAsync } = useMutation((deleteKey)=>projectDelete(deleteKey) ,  {
         onSuccess : () =>{
-            queryClient.invalidateQueries('project')
+            queryClient.invalidateQueries('project');
+            dispatch(alertTrunk('삭제되었습니다.',1))
         }
     });
 
+
     const projectMutation = async (deleteKey) => {
+        //권한 확인
         if (!AuthCheck('삭제')) {
             return; 
         }
-        openPopup();
-        // await mutateAsync(deleteKey);
+        setModal(true);
     };
 
     return(
         <>
-            {confirm && <Popup close={closePopup}><Confirm closePopup={closePopup}/></Popup>}
+            {modal && <Popup closePopup={()=>setModal(false)}>
+                <Confirm confirm={()=>{
+                    setConfirm(true)
+                    mutateAsync(project.project_key);
+                    }}/></Popup>}
             <ProjectFadeinStyle>
                 {/* <img src="/img/project/jkl.jpg" alt="" /> */}
                 <ProjectTitle>

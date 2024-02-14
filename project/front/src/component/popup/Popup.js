@@ -1,15 +1,11 @@
 import classes from './Popup.module.css';
 import ReactDOM from 'react-dom';
-
-import { useCallback, useEffect } from 'react';
+import React , { useCallback, useEffect, useState} from 'react';
 import PopupStyle from './PopupStyle';
 import { useDispatch, useSelector } from 'react-redux';
 import { modalAction } from '../../store/appSlice';
-// import LoginForm from './login/LoginForm';
-// import Confirm from '../ui/Confirm';
 
-export default function Popup({close , children}){
-    
+export default function Popup({closePopup, children}){
     const isAuth = useSelector(state => state.authSlice.login);
     const { openComponent , animationState } = useSelector(state => state.modalSlice);
 
@@ -26,21 +22,24 @@ export default function Popup({close , children}){
         dispatch(modalAction.modalAnimation(true));
         setTimeout(()=>{
             dispatch(modalAction.modalAnimation(false));
-            close();
+            closePopup();
         },400);
-    },[dispatch , close]);
+    },[dispatch , closePopup]);
+
+    // console.log('isAuth : ',isAuth);
+    // console.log('openComponent : ',openComponent);
 
     // useEffect(() => {
-    //     if (isAuth) {
+    //     if (isAuth && openComponent ==='login') {
     //         ClosePopup();
     //         return;
     //     }
-    // }, [isAuth, ClosePopup]);
+    // }, [isAuth, openComponent, ClosePopup]);
 
     return(
         <>
             {
-                ReactDOM.createPortal(
+               ReactDOM.createPortal(
                     <Backdrop/>,
                     document.getElementById('backdrop-root')
                 )
@@ -50,7 +49,7 @@ export default function Popup({close , children}){
                 ReactDOM.createPortal(
                     <PopupStyle $close={animationState}>
                         <div>
-                            {children}
+                            {React.cloneElement(children , {ClosePopup})}
                             <button onClick={ClosePopup} className='close'>
                                 <span>Close</span>
                             </button>
