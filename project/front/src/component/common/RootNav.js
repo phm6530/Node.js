@@ -7,8 +7,6 @@ import styled from 'styled-components';
 // redux 
 import { useDispatch, useSelector } from 'react-redux';
 
-// icon 
-import { Moon } from '../icon/Icon';
 
 // Component
 import Alert from '../popup/Alert';
@@ -35,6 +33,9 @@ const Header = styled.header`
     position: fixed;
     z-index: 1;
     width: 100%;
+    /* background: #ffffff14; */
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
 `
 
 
@@ -67,11 +68,10 @@ export default function RootNav({ChangePageHandler}){
             <Header>
             <div className="wrap">
                 <nav>
-                    <DarkModeBtn  onClick={ctx.toggleMode} $darkMode={ctx.darkMode}> 
-                        <Moon size={'15'}/>
-                        <Moon size={'15'}/>
-                    </DarkModeBtn>
 
+                    <DarkModeBtn  onClick={ctx.toggleMode} darkMode={ctx.darkMode}/> 
+                        
+           
                     {/* Nav */}
                     <ul>
 

@@ -11,6 +11,11 @@ const DashBoardTitleStyle = styled.div`
     letter-spacing: -4px;
     font-size: 110px;
     font-weight: bold;
+    /* padding-top: 200px; */
+    b{
+        
+    }
+
 `
 
 export default function DashBoardTitle({children}) {

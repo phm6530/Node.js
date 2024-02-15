@@ -27,7 +27,8 @@ import DashBoardTitle from '../../component/ui/DashBoardTitle';
 
 const BoardStyle = styled.div`
     display: flex;
-    transform: translateY(-120px);
+    /* padding-top: 200px; */
+    /* transform: translateY(-120px); */
 `
 
 const BoardReplyStyle = styled.div`
@@ -72,11 +73,14 @@ const ReplyWrapHeader = styled.div`
 const PageText = styled.div`
     width: 90%;
     word-break: keep-all;
+    margin-top: 20px;
+    margin-bottom: 70px;
+
     p{
         line-height: 1.7em;
+        color:#fff;
     }
     p:first-child{
-        font-weight: bold;
         font-size: 20px;
         letter-spacing: -.5px;
         margin-bottom: 10px;
@@ -212,7 +216,9 @@ export default function Board(){
         }
         mutation.mutate(formData); 
     }   
-    
+    const BoardGrid = styled(Gird)`
+        padding-top: 200px;
+    `
     return(
         <>  
         {/* formProvider */}
@@ -220,7 +226,7 @@ export default function Board(){
         
        
                 <DashBoard page={'board'}/>
-                <Gird>
+                <BoardGrid>
                     <BoardStyle>
                         <BoardDashBoard>
                         <DashBoardTitle>Guest Book</DashBoardTitle>
@@ -229,7 +235,7 @@ export default function Board(){
                             <p>
                                 <b>IntersectionObserver</b>로 구현한 <b>'Infinity Scroll'</b> 형식의 방명록입니다.<br></br>
                                
-                                입력하시는 비밀번호는 단순 삭제용도의 비밀번호이며  <StackIcon.Node label={'Node.js'}/>의 <b>brycpt</b>를 이용하여 암호화 저장하고 있으며 해싱된 비밀번호 이외 어떠한 정보도 수집하지 않습니다.
+                                입력하시는 비밀번호는 단순 삭제용도의 비밀번호이며  <StackIcon.Node style={{backgroundColor: "#fff"}} label={'Node.js'}/>의 <b>brycpt</b>를 이용하여 암호화 저장하고 있으며 해싱된 비밀번호 이외 어떠한 정보도 수집하지 않습니다.
                             </p>
                         </PageText>
                         
@@ -268,7 +274,7 @@ export default function Board(){
                             </ReplyWrapHeader> */}
                         </BoardReplyStyle>
                     </BoardStyle>
-                </Gird>
+                </BoardGrid>
 
 
         </>

@@ -22,7 +22,7 @@ import { useEffect } from 'react';
 
 import { projectEdit } from './ProjectFetch';
 
-const projectStack = [ 'Node' , 'Next' , 'Css' , 'Html' , 'JavaSciprt' , 'PHP' , 'MySql', 'Scss' , 'jquery'];
+const projectStack = [ 'Node' , 'Next' , 'Css' , 'Html' , 'JavaSciprt' , 'React', 'PHP' , 'MySql', 'Scss' , 'jquery'];
 
 const schema = Yup.object().shape({
     title: Yup.string().required('필수 입력란 입니다.'),

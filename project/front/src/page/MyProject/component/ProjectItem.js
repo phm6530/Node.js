@@ -1,16 +1,19 @@
 import styled from 'styled-components'
 import StackIcon from '../../../component/icon/StackIcon'
-import { CiCalendar } from "react-icons/ci";
 import Fadein from '../../../FadeinComponent';
+import { CiCalendar } from "react-icons/ci";
 import { useNavigate} from 'react-router-dom';
 import { projectDelete } from '../ProjectFetch';
 import { useMutation, useQueryClient } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
+import {  useState } from 'react';
 import alertTrunk from '../../../store/alertTrunk';
-import { modalAction } from '../../../store/appSlice';
 import Popup from '../../../component/popup/Popup';
-import { useEffect, useState } from 'react';
 import Confirm from '../../../component/ui/Confirm';
+import { FaLink } from "react-icons/fa";
+import { HiOutlineDotsVertical } from "react-icons/hi";
+import { FaTrashAlt } from "react-icons/fa";
+import { MdModeEdit } from "react-icons/md";
 
 const SKILL_ICON = {
     Html : <StackIcon.Html label={'Html'}/>,
@@ -21,42 +24,88 @@ const SKILL_ICON = {
     PHP : <StackIcon.Php label={'Php'}/>,
     jquery : <StackIcon.Jquery label={'jQuery'}/>,
     Scss : <StackIcon.Scss label={'Scss'}/>,
-    MySql : <StackIcon.Mysql label={'Mysql'}/>
+    MySql : <StackIcon.Mysql label={'Mysql'}/>,
+    Next : <StackIcon.Next label={'Next'}/>
 }
 
-
+const ProjectEditWrap = styled.div`
+    position: relative;
+    button{
+        position: absolute;
+    }
+    button:first-child{
+        right: -20px;
+    }
+`
 
 // 공통 CSS
 const ProjectContentStyle = styled.div`
     display: flex;
-    font-size: 14px;
-`
-// const ProjectLinkStyle = styled(ProjectContentStyle)`
-//     color: #4b80c3;
-//     font-style: italic;
-//     &:hover{
-//         color: #0071ff;
-//         text-decoration: underline;
-//     }
-// `
-
-const ProjectViewStyle = styled.button`
-    border: 1px solid rgba(0,0,0,0.2);
-    padding: 5px 20px;
-    border-radius: 2em;
+    align-items: center;
+    font-size: 13px;
 `
 
 const ProjectFadeinStyle = styled(Fadein)`
-        box-shadow: -4px -4px 15px rgba(255, 255, 255, 0.7), 4px 4px 15px rgba(36, 36, 36, 0.15);
-        padding: 20px;
-        border-radius: 1em;
-        margin-bottom: 20px;
+    border-radius: 1em;
+    margin-bottom: 20px;
+    padding: 30px 40px;
+    margin: .5%;
+    box-shadow: -14px -14px 30px rgb(255 255 255 / 0%), 14px 14px 20px rgb(34 48 65 / 7%);
+    background: #fff;
+    background-size: 150%;
+    background-repeat: no-repeat;
+    position: relative;
+    overflow: hidden;
+    flex-grow: 1;
+    &::after{
+        position: absolute;
+        content: "";
+        width:60px;
+        height: 60px;
+        background: #ebebeb;
+        left: -30px;
+        top: -30px;
+        transform: rotate(45deg);
+    }
+    &:hover{
+        transform: rotateX('angle');
+    }
+
 `
+const ProjectImg = styled.div`
+    width: 50%;
+`
+
+const ProjectInfo = styled.div`
+
+`
+
+const ProjectSubTitle = styled.p`
+    font-weight: bold;
+    margin-top: 24px;
+    font-size: 14px;
+`
+
 const ProjectTitle = styled.div`
     font-weight: bold;
-    font-size: 20px;
+    font-size: 16px;
     display: flex;
+    letter-spacing: -.5px;
     justify-content: space-between;
+    align-items: center;
+    position: relative;
+    button{
+        background: rgba(0,0,0,0.1);
+        padding: 7px;
+        border-radius: 100%;
+    }
+
+`
+const ProjectCompany = styled.div`
+    font-size: 12px;
+    opacity: .5;
+    border-bottom: 1px solid rgba(0,0,0,0.12);
+    margin-bottom: 20px;
 `
 
 const ProjectDescription = styled.div`
@@ -71,13 +120,19 @@ const ProjectControlBtnWrap = styled.div`
     }
 `
 
+const IconCustum = styled(HiOutlineDotsVertical)`
+    cursor: pointer;
+`
+
+
+
 
 export default function ProjectItem(project){
     const navigate = useNavigate();
     const { login } = useSelector(state => state.authSlice);
     const [ modal , setModal] = useState(false);
     const [ confirm , setConfirm ] = useState(false);
-    console.log(confirm)
+    const [ edit , setEdit ] = useState(false);
     const dispatch = useDispatch();
     const AuthCheck = (text) => {
         if (!login) {
@@ -119,37 +174,46 @@ export default function ProjectItem(project){
     return(
         <>
             {modal && <Popup closePopup={()=>setModal(false)}>
-                <Confirm confirm={()=>{
+            <Confirm confirm={()=>{
                     setConfirm(true)
                     mutateAsync(project.project_key);
                     }}/></Popup>}
             <ProjectFadeinStyle>
-                {/* <img src="/img/project/jkl.jpg" alt="" /> */}
-                <ProjectTitle>
-                        {project.title}       
-                        <ProjectControlBtnWrap>
-                            {/* edit */}
-                            <button onClick={()=>projectChange(project.project_key)}>수정</button>
-                            <button onClick={()=>projectMutation(project.project_key)}>삭제</button>
-                        </ProjectControlBtnWrap>
-                </ProjectTitle>
-                <div>
-                {   
-                    project.skill &&  project.skill.map((e, idx)=>{
-                        //<StackIcon.Css/>   
-                        return <span key={idx}>{SKILL_ICON[`${e}`] || e}</span>
-                    })
-                }
-                </div>
-          
-         
-                <ProjectContentStyle>
-                    <CiCalendar/>
-                    {project.startProject} - {project.endProject}
-                </ProjectContentStyle>
-                <ProjectDescription>{project.description}</ProjectDescription>
-                {/* <a href={project.project_url} rel="noopener noreferrer" target='_blank'><IoIosLink/></a> */}
-                <ProjectViewStyle onClick={()=>projectView(project.project_url)}>VIEW</ProjectViewStyle>
+    
+                <ProjectInfo>
+                        <ProjectTitle>
+                                {project.title}     <FaLink size={'14'} style={{marginRight: 'auto' , marginLeft:"10px"}}/>  
+                                <ProjectEditWrap>
+                                <IconCustum onClick={()=>setEdit(prev => !prev)}/>
+                                {edit && (<>
+                                    <button onClick={()=>projectChange(project.project_key)}><MdModeEdit/></button>
+                                    <button onClick={()=>projectMutation(project.project_key)}><FaTrashAlt/></button>
+                                </>)}
+                                </ProjectEditWrap>
+                             
+                       
+                        </ProjectTitle>
+                        <ProjectCompany>{project.company}</ProjectCompany>
+                        <div>
+
+                        <ProjectSubTitle>기술스택</ProjectSubTitle>
+                        {   
+                            project.skill &&  project.skill.map((e, idx)=>{
+                                //<StackIcon.Css/>   
+                                return <span key={idx}>{SKILL_ICON[`${e}`] || e}</span>
+                            })
+                        }
+                        </div>
+                
+                        <ProjectSubTitle>프로젝트 기간</ProjectSubTitle>
+                        <ProjectContentStyle>
+                            
+                            <CiCalendar/>
+                            {project.startProject} - {project.endProject}
+                        </ProjectContentStyle>
+                        <ProjectDescription>{project.description}</ProjectDescription>
+                        {/* <ProjectViewStyle onClick={()=>projectView(project.project_url)}>자세히보기</ProjectViewStyle> */}
+                </ProjectInfo>
             </ProjectFadeinStyle>
         </>
     )

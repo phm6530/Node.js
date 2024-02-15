@@ -1,10 +1,12 @@
 import styled , { css } from 'styled-components';
 
 const DashBoardStyle = styled.div`
-    /* background: #212123; */
     width: 100%;
-    height: 350px;
+    height: 550px;
     background-size: cover;
+    /* background: #212123; */
+    position: absolute;
+    z-index: -1;
     ${props => {
         switch(props.$page){
             case 'project' :

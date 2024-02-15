@@ -27,6 +27,7 @@ const PageChange = styled.div`
     }}
 `
 
+
 export default function RootLayout(){
 
     const { pathname } = useLocation();

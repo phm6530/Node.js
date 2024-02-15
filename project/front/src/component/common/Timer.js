@@ -1,13 +1,12 @@
 import styled from 'styled-components';
 import { useEffect , useState} from 'react';
 
-
 const TimerStyle = styled.div`
     position: absolute;
     z-index: 1;
     font-size: 30px;
     color: #fff;
-    top: 80px;
+    top: 100px;
 `
 
 export default function Timer(){
