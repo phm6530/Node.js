@@ -21,6 +21,14 @@ import DashBoard from '../../component/ui/DashBoard';
 import { useEffect } from 'react';
 
 import { projectEdit } from './ProjectFetch';
+import DashBoardTitle from '../../component/ui/DashBoardTitle';
+import styled from 'styled-components';
+import Grid from '../../component/ui/Grid';
+
+const AdminGrid = styled(Grid)`
+    /* transform: translateY(-120px); */
+    padding-top: 150px;
+`
 
 const projectStack = [ 'Node' , 'Next' , 'Css' , 'Html' , 'JavaSciprt' , 'React', 'PHP' , 'MySql', 'Scss' , 'jquery'];
 
@@ -110,8 +118,13 @@ export default function AddProject(){
 
     return(
         <>  
-        <DashBoard/>
-    
+       <DashBoard page={'project'}>
+            <Grid></Grid>
+        </DashBoard>
+        
+        <AdminGrid>
+        <DashBoardTitle><b>PROJECT</b></DashBoardTitle>
+      
         <Gird>
             <form onSubmit={handleSubmit(onSubmitHandler)}>
                 <h1>Proejct - Add Page</h1>
@@ -168,6 +181,7 @@ export default function AddProject(){
                 <button type='button' onClick={()=>cancelEvent()}>취소</button>
             </form>
         </Gird>
+        </AdminGrid>
         </>
     )
 }

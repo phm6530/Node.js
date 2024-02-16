@@ -7,7 +7,6 @@ const IconStyle = styled.span`
     font-weight: bold;
     padding: 6px 0;
     display: inline;
-    text-shadow: 0 0 rgba(0,0,0,0.5);
     align-items: center;
     border-radius: 4px;
     padding-right: 10px;

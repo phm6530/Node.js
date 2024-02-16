@@ -28,7 +28,6 @@ const ProjectItemWrap = styled.div`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    background: #0000000d;
     border-radius: 1em;
 `
 
@@ -52,7 +51,8 @@ const Tester = styled.div`
 const PageSubText = styled.div`
     color:#fff;
     font-size: 20px;
-    margin-bottom: 40px;
+    margin-bottom: 70px;
+    text-shadow: 0px 5px 5px rgba(0,0,0,.4);
     p{
         font-size: 15px;
         color: #fff;
@@ -60,6 +60,20 @@ const PageSubText = styled.div`
     }
 `
 
+const PagePoint = styled.div`
+    background: rgba(0,0,0,0.2);
+    display: flex;
+    align-content: center;
+    padding: 10px 10px;
+    align-items: center;
+    width: 150px;
+    border-radius: 1em;
+    color: #fff;
+    img{
+        width: 30px;
+        margin-right: 10px;
+    }
+`
 export default function MyProject(){
     const [ param ] = useSearchParams();
     const [ project , setProject ] = useState([]);
@@ -85,10 +99,16 @@ export default function MyProject(){
         </DashBoard>
 
         <ProjectGrid>
+            
+            <PagePoint>
+                <img src="img/developer.png" alt="developer" />
+                My Project
+            </PagePoint>
+
             <DashBoardTitle><b>PROJECT</b></DashBoardTitle>
             <PageSubText>
                 
-            웹 퍼블리셔 4년차입니다. "Css", "JQuery"를 주로 다뤘으며, 더 넓은 지식을 위해 React, Node.js를 학습 중에 있습니다.<br></br>
+            웹 퍼블리셔 4년차, 프로젝트 활동을 기록합니다. <br></br>더 넓은 지식을 위해 React, Node.js를 학습 중에 있습니다.<br></br>
             <p>*전 회사의 공개 가능한 프로젝트 / 개인 작업물만 공유합니다.</p>
             </PageSubText>
                 <ProjectItemWrap>

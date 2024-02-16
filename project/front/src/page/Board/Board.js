@@ -32,13 +32,14 @@ const BoardStyle = styled.div`
 `
 
 const BoardReplyStyle = styled.div`
-border: 3px solid #fff;
+/* border: 3px solid #fff; */
     width: 50%;
     border-radius: 1em;
     background: #e2e6ef;
     overflow: hidden;
     position: relative;
     padding: 40px 0 0;
+    box-shadow: 0px 5px 20px rgb(67 27 16 / 18%);
 `
 
 const ReplyWrapHeader = styled.div`
@@ -74,7 +75,7 @@ const PageText = styled.div`
     width: 90%;
     word-break: keep-all;
     margin-top: 20px;
-    margin-bottom: 70px;
+    margin-bottom: 50px;
 
     p{
         line-height: 1.7em;
@@ -84,11 +85,16 @@ const PageText = styled.div`
         font-size: 20px;
         letter-spacing: -.5px;
         margin-bottom: 10px;
+        /* font-weight: bold; */
+        color: #cfdaf3;
+        text-shadow: 0px 5px 5px rgba(0,0,0,.9);
     }
     p:nth-child(2){
         font-size: 14px;
         line-height: 1.9em;
         margin-left: 25px;
+        text-shadow: 0px 5px 5px rgba(0,0,0,.4);
+        color: #dae5ff;
     }
 `
 
@@ -217,7 +223,7 @@ export default function Board(){
         mutation.mutate(formData); 
     }   
     const BoardGrid = styled(Gird)`
-        padding-top: 200px;
+        padding-top: 150px;
     `
     return(
         <>  

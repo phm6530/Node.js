@@ -23,11 +23,12 @@ const checkAnimtaion = keyframes`
 `
 
 const BoardReplyStyle = styled.div`
-    /* padding: 40px 30px; */
     border-radius: 2em;
     margin-top: 40px;
-    /* box-shadow: -4px -4px 15px rgba(255, 255, 255, 0.7), 4px 4px 15px rgba(36, 36, 36, 0.15); */
     width: 90%;
+    background: #e2e6ef;
+    padding: 30px;
+    box-shadow: 14px 14px 15px rgb(36 ,36 ,36, .2);
 `
 const FormStyle = styled.form`
     .radioWrap{

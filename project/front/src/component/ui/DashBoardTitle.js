@@ -9,7 +9,7 @@ const DashBoardTitleStyle = styled.div`
     background-clip: text;
     -webkit-background-clip: text;
     letter-spacing: -4px;
-    font-size: 110px;
+    font-size: 100px;
     font-weight: bold;
     /* padding-top: 200px; */
     b{

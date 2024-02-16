@@ -16,6 +16,8 @@ const SeachArea = styled.div`
         border: 1px solid rgba(255,255,255,0.1);
         box-sizing: border-box;
         color: #fff;
+        text-indent: .7em;
+        background: rgba(0,0,0,0.2);
         &:focus{
             background: rgba(0,0,0,0.3);
         }

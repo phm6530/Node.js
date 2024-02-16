@@ -7,6 +7,7 @@ const TimerStyle = styled.div`
     font-size: 30px;
     color: #fff;
     top: 100px;
+    right: 0;
 `
 
 export default function Timer(){

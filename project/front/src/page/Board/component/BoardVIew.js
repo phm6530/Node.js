@@ -4,7 +4,7 @@ import Fadeup from '../../../FadeinComponent';
 import styled from 'styled-components';
 
 const BoardReplyWrap = styled.div`
-  height: 782px;
+    height: 813px;
   overflow-y: scroll;
 
    &::-webkit-scrollbar {

@@ -14,6 +14,7 @@ import { FaLink } from "react-icons/fa";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { FaTrashAlt } from "react-icons/fa";
 import { MdModeEdit } from "react-icons/md";
+import { Button } from '../../../component/ui/Button';
 
 const SKILL_ICON = {
     Html : <StackIcon.Html label={'Html'}/>,
@@ -30,11 +31,26 @@ const SKILL_ICON = {
 
 const ProjectEditWrap = styled.div`
     position: relative;
+    margin-left: auto;
     button{
         position: absolute;
+        background: rgba(0,0,0,0.2);
+        padding: 7px;
+        border-radius: 1em;
+        border: 2px solid #fff;
+        box-sizing: border-box;
+        top: 0;
+        svg{
+            font-size: 14px;
+            color:rgba(0,0,0,0.7);
+        }
     }
     button:first-child{
-        right: -20px;
+        right: 20px;
+        
+    }
+    button:nth-child(2){
+        left: -40px;
     }
 `
 
@@ -48,7 +64,7 @@ const ProjectContentStyle = styled.div`
 const ProjectFadeinStyle = styled(Fadein)`
     border-radius: 1em;
     margin-bottom: 20px;
-    padding: 30px 40px;
+    padding: 25px 20px;
     margin: .5%;
     box-shadow: -14px -14px 30px rgb(255 255 255 / 0%), 14px 14px 20px rgb(34 48 65 / 7%);
     background: #fff;
@@ -57,6 +73,7 @@ const ProjectFadeinStyle = styled(Fadein)`
     position: relative;
     overflow: hidden;
     flex-grow: 1;
+    border: 5px solid #fff;
     &::after{
         position: absolute;
         content: "";
@@ -65,6 +82,7 @@ const ProjectFadeinStyle = styled(Fadein)`
         background: #ebebeb;
         left: -30px;
         top: -30px;
+        background: linear-gradient(to right, #6f6f6f6e, #fdfdfd);
         transform: rotate(45deg);
     }
     &:hover{
@@ -88,12 +106,15 @@ const ProjectSubTitle = styled.p`
 
 const ProjectTitle = styled.div`
     font-weight: bold;
-    font-size: 16px;
+    font-size: 18px;
     display: flex;
     letter-spacing: -.5px;
     justify-content: space-between;
     align-items: center;
     position: relative;
+    background: linear-gradient(to right top, #2d3d61, #303a51, #466295);
+    color: transparent;
+    background-clip: text;
     button{
         background: rgba(0,0,0,0.1);
         padding: 7px;
@@ -104,7 +125,6 @@ const ProjectTitle = styled.div`
 const ProjectCompany = styled.div`
     font-size: 12px;
     opacity: .5;
-    border-bottom: 1px solid rgba(0,0,0,0.12);
     margin-bottom: 20px;
 `
 
@@ -112,6 +132,8 @@ const ProjectDescription = styled.div`
     font-size: 14px;
     white-space: pre-line;
     margin: 20px 0;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0,0,0,0.12);
 `
 
 const ProjectControlBtnWrap = styled.div`
@@ -123,7 +145,10 @@ const ProjectControlBtnWrap = styled.div`
 const IconCustum = styled(HiOutlineDotsVertical)`
     cursor: pointer;
 `
-
+const ProjectTitleArea = styled.div`
+    display: flex;
+    align-items: center;
+`
 
 
 
@@ -181,21 +206,21 @@ export default function ProjectItem(project){
             <ProjectFadeinStyle>
     
                 <ProjectInfo>
+                    <ProjectTitleArea>
                         <ProjectTitle>
                                 {project.title}     <FaLink size={'14'} style={{marginRight: 'auto' , marginLeft:"10px"}}/>  
-                                <ProjectEditWrap>
+                        </ProjectTitle>
+                        <ProjectEditWrap>
                                 <IconCustum onClick={()=>setEdit(prev => !prev)}/>
                                 {edit && (<>
                                     <button onClick={()=>projectChange(project.project_key)}><MdModeEdit/></button>
                                     <button onClick={()=>projectMutation(project.project_key)}><FaTrashAlt/></button>
                                 </>)}
-                                </ProjectEditWrap>
-                             
-                       
-                        </ProjectTitle>
+                        </ProjectEditWrap>
+                    </ProjectTitleArea>
                         <ProjectCompany>{project.company}</ProjectCompany>
                         <div>
-
+                        <ProjectDescription>{project.description}</ProjectDescription>
                         <ProjectSubTitle>기술스택</ProjectSubTitle>
                         {   
                             project.skill &&  project.skill.map((e, idx)=>{
@@ -211,8 +236,7 @@ export default function ProjectItem(project){
                             <CiCalendar/>
                             {project.startProject} - {project.endProject}
                         </ProjectContentStyle>
-                        <ProjectDescription>{project.description}</ProjectDescription>
-                        {/* <ProjectViewStyle onClick={()=>projectView(project.project_url)}>자세히보기</ProjectViewStyle> */}
+                        <Button.Type onClick={()=>projectView(project.project_url)}>VIEW</Button.Type>
                 </ProjectInfo>
             </ProjectFadeinStyle>
         </>
