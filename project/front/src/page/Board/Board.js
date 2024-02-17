@@ -10,14 +10,14 @@ import BoardView from './component/BoardVIew';
 import * as Yup from 'yup';
 import styled from 'styled-components';
 
-
+import BannerCommon from '../../component/ui/BannerCommon';
 // import { dateFormating } from '../../component/common/DateFormat';
 
 import { useForm , FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup'; // Yup + form hook 연동
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-import Gird from '../../component/ui/Grid';
+import Grid from '../../component/ui/Grid';
 import alertThunk from '../../store/alertTrunk';
 import { RiDoubleQuotesL } from "react-icons/ri";
 
@@ -27,13 +27,14 @@ import DashBoardTitle from '../../component/ui/DashBoardTitle';
 
 const BoardStyle = styled.div`
     display: flex;
+    justify-content: space-between;
     /* padding-top: 200px; */
     /* transform: translateY(-120px); */
 `
 
 const BoardReplyStyle = styled.div`
 /* border: 3px solid #fff; */
-    width: 50%;
+    width: 45%;
     border-radius: 1em;
     background: #e2e6ef;
     overflow: hidden;
@@ -52,7 +53,6 @@ const ReplyWrapHeader = styled.div`
     z-index: 1;
     box-shadow: 0px 5px 20px rgb(67 27 16 / 18%);
     display: flex;
-    border-bottom: 2px solid #fff;
     justify-content: space-between;
     align-items: center;
     
@@ -85,15 +85,14 @@ const PageText = styled.div`
         font-size: 20px;
         letter-spacing: -.5px;
         margin-bottom: 10px;
-        /* font-weight: bold; */
-        color: #cfdaf3;
-        text-shadow: 0px 5px 5px rgba(0,0,0,.9);
+        color: #f3f3f3;
+        text-shadow: 0px 2px 5px rgb(0 0 0);
     }
     p:nth-child(2){
-        font-size: 14px;
+        font-size: 16px;
         line-height: 1.9em;
         margin-left: 25px;
-        text-shadow: 0px 5px 5px rgba(0,0,0,.4);
+        letter-spacing: -.2px;
         color: #dae5ff;
     }
 `
@@ -119,15 +118,12 @@ const ReplyHeaderPoint = styled.div`
 `
 
 const BoardDashBoard = styled.div`
-    width: 50%;
+    width: 55%;
 `
 
-// const SubTitle = styled.div`
-//     width: 200px;
-//     height: 30px;
-//     background: red;
-//     border-radius: 5px;
-// `
+const BoardGrid = styled(Grid)`
+    padding-top: 150px;
+`
 
 export default function Board(){
     const location = useLocation();
@@ -209,7 +205,6 @@ export default function Board(){
     
     // submit
     const onSubmitHandlr = async(data) =>{
-        // console.log(data);
         if(!findForBadword(data.contents)){
             dispatch(alertThunk('비속어는 입력 불가합니다...', false));
             return;
@@ -222,9 +217,7 @@ export default function Board(){
         }
         mutation.mutate(formData); 
     }   
-    const BoardGrid = styled(Gird)`
-        padding-top: 150px;
-    `
+
     return(
         <>  
         {/* formProvider */}
@@ -235,6 +228,12 @@ export default function Board(){
                 <BoardGrid>
                     <BoardStyle>
                         <BoardDashBoard>
+
+                        <BannerCommon.BannerPoint>
+                            <img src="img/board.png" alt="board" />
+                            MY Board
+                        </BannerCommon.BannerPoint>
+                        
                         <DashBoardTitle>Guest Book</DashBoardTitle>
                         <PageText>
                             <p style={{display:'flex'}}><RiDoubleQuotesL style={{marginRight:'5px' , opacity:'.5'}}/> 남기고 싶은 말씀을 적어주세요 !</p>

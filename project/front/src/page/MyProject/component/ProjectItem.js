@@ -34,24 +34,27 @@ const ProjectEditWrap = styled.div`
     margin-left: auto;
     button{
         position: absolute;
-        background: rgba(0,0,0,0.2);
+        background: rgb(0 0 0 / 7%);
         padding: 7px;
         border-radius: 1em;
         border: 2px solid #fff;
+        box-shadow: 0px 5px 15px rgb(0 0 0 / 28%);
         box-sizing: border-box;
-        top: 0;
+        top: -6px;
         svg{
             font-size: 14px;
             color:rgba(0,0,0,0.7);
         }
+        &:first-child{
+            right: -50px;
+            background: red;
+        }
+        &:nth-child(2){
+            left: -60px;
+        }
     }
-    button:first-child{
-        right: 20px;
-        
-    }
-    button:nth-child(2){
-        left: -40px;
-    }
+    
+
 `
 
 // 공통 CSS

@@ -5,7 +5,7 @@ import LogOut from './LogOut';
 import styled from 'styled-components';
 
 // redux 
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 
 // Component
@@ -14,7 +14,6 @@ import Popup from '../popup/Popup';
 
 import DarkModeBtn from '../ui/DarkModeBtn';
 import { useLocation } from 'react-router-dom';
-import { alertAction , modalAction } from '../../store/appSlice';
 import LoginForm from '../popup/login/LoginForm';
 
 

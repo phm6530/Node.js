@@ -8,7 +8,7 @@ const DarkmodeButton = styled.div`
     border-radius: 1em;
     background: transparent;
     border: 0;
-    background: #000;
+    background: transparent;
     color: #fff;
     display: inline-flex;
     justify-content: space-between;

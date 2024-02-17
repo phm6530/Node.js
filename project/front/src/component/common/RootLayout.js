@@ -29,9 +29,9 @@ const PageChange = styled.div`
 
 
 export default function RootLayout(){
-
     const { pathname } = useLocation();
     const [ path ,setPath ] = useState(pathname);
+    const [ IDtimeOut , setIDTimeout] = useState(false);
 
     // 라우터 시에 최상단으로 이동
     useEffect(()=>{
@@ -42,17 +42,19 @@ export default function RootLayout(){
     const navigate = useNavigate();
 
     const ChangePageHandler = (path) =>{    
-        if(pathname === path) return 
+        if(IDtimeOut) clearTimeout(IDtimeOut);
         if(pathname !== path){
             wrapRef.current.classList.replace('loaded', 'unloaded');
         }
 
-       
-        setTimeout(()=>{
+        const ID = setTimeout(()=>{
             navigate(path);
             wrapRef.current.classList.replace('unloaded', 'loaded');
             setPath(path);
+            setIDTimeout(false);
         },400);
+        
+        setIDTimeout(ID);
     }
     
     return(

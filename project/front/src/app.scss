@@ -268,36 +268,6 @@ $error-Message-color : rgb(233, 97, 97);
 
   }
 
-  .btnStyle_Type_1{
-    display: inline-block;
-    background: linear-gradient(to right, #e2e6ef, #c5cde0);
-    background: #e5e9f2;
-    /* font-weight: bold; */
-    /* padding: 8px 19px 8px 25px; */
-    width: 150px;
-    height: 50px;
-    display: flex;
-    color: #fff;
-    border-radius: 5em;
-    /* color: rgba(38, 65, 125, 0.6); */
-    font-size: 14px;
-    cursor: pointer;
-    box-shadow: -3px -1px 13px rgb(255, 255, 255), 9px 4px 18px rgba(36, 36, 36, 0.95);
-    position: relative;
-    box-shadow: -4px -4px 20px rgb(255, 255, 255), 4px 4px 17px rgba(36, 36, 36, 0.26);
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(to right, #5e6c89, #35373b);
-    border: 5px solid rgb(255 255 255 / 77%);
-      &:active{
-          box-shadow: 3px 1px 17px rgba(255, 255, 255, 0.8), 1px -1px 4px rgba(48, 59, 73, 0.24);
-      
-      }
-  }
-  
-
-
-
   textarea{
     resize: none;
     white-space: pre-line;

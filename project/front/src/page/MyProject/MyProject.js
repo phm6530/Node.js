@@ -13,11 +13,8 @@ import Grid from '../../component/ui/Grid';
 import DashBoardTitle from '../../component/ui/DashBoardTitle';
 import { useSearchParams } from 'react-router-dom';
 import FadeinComponent from '../../FadeinComponent';
-// const Loading = styled.div`
-//     width:100px;
-//     height: 1200px;
-//     background: red;
-// `
+
+import BannerCommon from '../../component/ui/BannerCommon';
 
 const ProjectGrid = styled(Grid)`
     /* transform: translateY(-120px); */
@@ -41,12 +38,7 @@ const NoSeachingData = styled(FadeinComponent)`
     justify-content: center;
     border-radius: 1em;
 `
-const Tester = styled.div`
-    width: 100px;
-    height: 50px;
-    background: #fff;
-    border-radius:1em;
-`
+
 
 const PageSubText = styled.div`
     color:#fff;
@@ -54,26 +46,14 @@ const PageSubText = styled.div`
     margin-bottom: 70px;
     text-shadow: 0px 5px 5px rgba(0,0,0,.4);
     p{
-        font-size: 15px;
+        font-size: 14px;
         color: #fff;
         opacity: .7;
+        padding-top: 20px;
     }
 `
 
-const PagePoint = styled.div`
-    background: rgba(0,0,0,0.2);
-    display: flex;
-    align-content: center;
-    padding: 10px 10px;
-    align-items: center;
-    width: 150px;
-    border-radius: 1em;
-    color: #fff;
-    img{
-        width: 30px;
-        margin-right: 10px;
-    }
-`
+
 export default function MyProject(){
     const [ param ] = useSearchParams();
     const [ project , setProject ] = useState([]);
@@ -85,7 +65,7 @@ export default function MyProject(){
         refetchOnWindowFocus: false
     }); 
 
-    console.log(project);
+    console.log('isLoading', isLoading);
     
     const SeachValue = param.get('seach');
     const SeachArr = project.filter((e)=>{
@@ -100,10 +80,10 @@ export default function MyProject(){
 
         <ProjectGrid>
             
-            <PagePoint>
+            <BannerCommon.BannerPoint>
                 <img src="img/developer.png" alt="developer" />
                 My Project
-            </PagePoint>
+            </BannerCommon.BannerPoint>
 
             <DashBoardTitle><b>PROJECT</b></DashBoardTitle>
             <PageSubText>
@@ -116,7 +96,7 @@ export default function MyProject(){
 
                 <ProjectSeach />
          
-                {/* {isLoading && <Loading></Loading>} */}
+                {isLoading && <NoSeachingData>Loading...</NoSeachingData>}
                 {(!isLoading && isError) && 'error'}
                 {(SeachValue && SeachArr.length === 0) && <NoSeachingData>검색과 일치하는 항목이 없음</NoSeachingData>}
                 {(!isLoading && !isFetching && !isError )&& (

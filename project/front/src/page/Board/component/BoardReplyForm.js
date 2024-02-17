@@ -6,10 +6,8 @@ import { DarkMode } from '../../../context/DarkModeContext';
 import { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { QuestionMark } from '../../../component/icon/Icon';
+import { Button } from '../../../component/ui/Button';
 
-const Button = styled.button`
-    margin-left: auto;
-`
 
 const checkAnimtaion = keyframes`
     from{
@@ -28,8 +26,9 @@ const BoardReplyStyle = styled.div`
     width: 90%;
     background: #e2e6ef;
     padding: 30px;
-    box-shadow: 14px 14px 15px rgb(36 ,36 ,36, .2);
-`
+    box-shadow: 14px 14px 15px rgb(36 36 36 / 5%);
+    `
+
 const FormStyle = styled.form`
     .radioWrap{
         display: flex;
@@ -92,6 +91,7 @@ const Label = styled.span`
     display: flex;
     align-items: center;
     font-size: 20px;
+    margin-bottom: 10px;
     span{
         position: relative;
         svg{
@@ -227,7 +227,7 @@ export default function BoardReplyForm({
                     }
                 />
 
-                <Button type='submit' className='btnStyle_Type_1'>Add</Button>
+                <Button.Submit style={{marginLeft: 'auto'}}>Add</Button.Submit>
                 </FormStyle>
         </BoardReplyStyle>
     )

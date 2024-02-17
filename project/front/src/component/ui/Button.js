@@ -7,11 +7,41 @@ const ButtonType = styled.button`
     padding: 5px 10px;
     border-radius: 4em;
 `
+const ButtonTypeSubmit = styled.button`
+    background: linear-gradient(to right, #e2e6ef, #c5cde0);
+    background: #e5e9f2;
+    width: 150px;
+    height: 50px;
+    display: flex;
+    color: #fff;
+    border-radius: 5em;
+    font-size: 14px;
+    cursor: pointer;
+    position: relative;
+    box-shadow: -4px -4px 20px rgb(255, 255, 255), 4px 4px 17px rgba(36, 36, 36, 0.26);
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to right, #5e6c89, #35373b);
+    border: 5px solid rgb(255 255 255 / 77%);
+    &:active{
+        box-shadow: 3px 1px 17px rgba(255, 255, 255, 0.8), 1px -1px 4px rgba(48, 59, 73, 0.24);
+    
+    }
 
+  `
 const Type = ({children , ...props}) =>{
     return(
         <ButtonType {...props}>{children}</ButtonType>
     )
+}
+
+const Submit = ({children , ...props})=>{
+    return(
+        <ButtonTypeSubmit {...props}>
+            {children}
+        </ButtonTypeSubmit>
+    )
+
 }
 
 export function Button({children}){
@@ -23,4 +53,4 @@ export function Button({children}){
 }
 
 Button.Type = Type;
-
+Button.Submit = Submit;

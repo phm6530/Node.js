@@ -21,7 +21,17 @@ const DashBoardStyle = styled.div`
                         return css`background: url(/img/project/bg.jpg);`
                     }
             case 'board' :
-                return css`background: linear-gradient(to right, #5d7197, #2d3f60);`
+                if(props.$DarkMode){
+                        return css`background: url(/img/project/bg_darkmode.jpg);`
+                    }else{
+                        return css`background: url(/img/board/bg_board.jpg);`
+                    }
+            case 'Calendar' :
+                if(props.$DarkMode){
+                        return css`background: url(/img/calendar/bg_calendar.jpg);`
+                    }else{
+                        return css`background: url(/img/calendar/bg_calendar.jpg);`
+                    }
             default :
                 return ''
         }
