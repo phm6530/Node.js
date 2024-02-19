@@ -77,7 +77,7 @@ export default function MyProject(){
         <DashBoard page={'project'}>
             <Grid></Grid>
         </DashBoard>
-
+        
         <ProjectGrid>
             
             <BannerCommon.BannerPoint>

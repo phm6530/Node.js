@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const CalendarWrap = styled.div`
@@ -20,11 +20,14 @@ const RenderCellWrap = styled.div`
 `
 
 const CalendarDay = styled.div`
-    flex: 0 0 14.28%; 
+    flex: 1 1 14.28%; 
     box-sizing: border-box;
     text-align: center; 
     padding: 10px; 
     border: 1px solid #ddd; 
+    &.active{
+      background: rgba(0,0,0,0.2);
+    }
 `;
 
 const RenderPrevStyle = styled(CalendarDay)`
@@ -33,12 +36,12 @@ const RenderPrevStyle = styled(CalendarDay)`
 
 
 // cell 뿌리기
-const RenderCell = ({ currentYear, currentMonth }) => {
+const RenderCell = ({ currentYear, currentMonth , selectIdx,  onClickSelector}) => {
 
     //이번달 Div 구하기
     const getLastDayOfMonth =(year, month)=> {    
         const ThisMonthDate = new Date(year, month, 0).getDate();
-        const getDayArr = Array.from({length : ThisMonthDate}, (_, idx) => idx + 1);
+        const getDayArr = Array.from({length : ThisMonthDate}, (_, idx) => `${idx + 1}`);
         return getDayArr.sort((a,b)=> a - b);
     }
 
@@ -69,10 +72,20 @@ const RenderCell = ({ currentYear, currentMonth }) => {
     // 일자 갯수 구하기
     return (
         <RenderCellWrap>
-            {RenderPrevDate && RenderPrevDate.map(day => <RenderPrevStyle key={`prev-${day}`}> {day}일</RenderPrevStyle>)}
-            {RenderDate.map(day => (
-                <CalendarDay key={day}>{day}일</CalendarDay>
-            ))}
+            {RenderPrevDate && RenderPrevDate.map(day => <RenderPrevStyle  key={`prev-${day}`}> {day}일</RenderPrevStyle>)}
+            {RenderDate.map(day => 
+                {
+                    const confirmDay = `${currentYear}-${currentMonth}-${day}`;
+                    return <CalendarDay  
+                        className={selectIdx === confirmDay && 'active'} 
+                        onClick={()=>onClickSelector(`${currentYear}-${currentMonth}-${day}`)} 
+                        key={`this-${day}`}>
+                            {day}일
+                    </CalendarDay>
+                }
+                
+            
+            )}
             {RenderLastDate && RenderLastDate.map(day => <RenderPrevStyle key={`next-${day}`}> {day}일</RenderPrevStyle>)}
         </RenderCellWrap>  
     );
@@ -95,8 +108,6 @@ const RenderNav = ({
     // 월 변경 핸들러
     const handleMonthChange = (type) => {
 
-        let Month = '';
-        let Year = '';
 
         if (type === 'next') {
             if (currentMonth === 12) {
@@ -125,16 +136,35 @@ const RenderNav = ({
     )
 }
 
-export default function Calendar() {
+export default function Calendar({className , setSelectDay}) {
     const date = new Date();
     const [currentMonth, setCurrentMonth] = useState(date.getMonth() + 1);
     const [currentYear, setCurrentYear] = useState(date.getFullYear());
+    const [ selectIdx , setSelectIdx ] = useState(null);
+    
+
+    const TodayCalculater = () =>{
+        const date = new Date();    
+        const Day = date.getDate();
+        const Year = date.getFullYear();
+        const Month = date.getMonth();
+        return `${Year}-${Month + 1 }-${Day}`
+    } 
+
+    //초기 Today 설정
+    useEffect(()=>{
+        const today = TodayCalculater();
+        setSelectDay(today);
+        setSelectIdx(today);
+    },[setSelectDay]);
+
+    const onClickSelector = (day) =>{
+        setSelectDay(day);
+        setSelectIdx(day);
+    }
 
     return (
-        <>
-            {/* 헤더 */}
-            <CalendarWrap>
-
+            <CalendarWrap className={className}>
                 {/* Clanedar Nav */}
                 <RenderNav
                     currentMonth={currentMonth}
@@ -150,8 +180,11 @@ export default function Calendar() {
                 <RenderCell
                     currentYear={currentYear}
                     currentMonth={currentMonth}
+                    selectIdx={selectIdx}
+                    onClickSelector={onClickSelector}
                 />
+                
             </CalendarWrap>
-        </>
+      
     );
 }

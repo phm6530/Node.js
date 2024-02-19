@@ -11,7 +11,7 @@ const alertThunk = (message, type) => (dispatch , getState) => {
     dispatch(alertAction.alertViewOn({message,type}));
     const setTimerId = setTimeout(()=>{
         dispatch(alertAction.alertViewOff());
-    },3000);
+    },5000);
     
     dispatch(alertAction.alertTimerId({setTimerId}));
 };
