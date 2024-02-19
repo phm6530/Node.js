@@ -4,6 +4,7 @@ const cors = require('cors'); // cors 검토
 // Notice
 const boardRouter = require('./page/notcie'); // Board
 const projectRouter = require('./page/project'); //프로젝트
+const scheduleRouter = require('./page/schedule'); //스케줄
 const authRouter = require('./page/authRouter'); //login logout 로직
 
 
@@ -18,6 +19,7 @@ app.use(cors());
 // 게시판 로직
 app.use('/board' , boardRouter);
 app.use('/project' , projectRouter);
+app.use('/schedule' ,scheduleRouter);
 app.use(authRouter);
 
 

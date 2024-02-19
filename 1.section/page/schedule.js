@@ -1,0 +1,81 @@
+const express = require('express');
+const router = express.Router();
+const { NotFoundError } = require('../util/error'); // 에러 인스턴스 설정
+
+// DB연결
+const db = require('../util/config');
+const util = require('util'); //Util 
+
+db.query = util.promisify(db.query);
+
+// 데이터 가져오기
+router.get('/' , async(req,res, next ) =>{   
+    try{
+        const sql = `SELECT id , work , complete , schedule_key , DATE_FORMAT(schedule_date, '%Y-%m-%d') AS formatted_date 
+        FROM schedules WHERE schedule_date >= '2024-02-01' AND schedule_date < '2024-03-01'`
+        const response = await db.query(sql);
+        
+        const restResponseData = {}
+        for(const item in response){
+            const data = response[item].formatted_date;
+            if(!restResponseData[data]){
+                restResponseData[data] = []
+            }
+            restResponseData[data].push(response[item]);
+        }
+        
+        res.json({message : '성공' , restResponseData});
+    }catch(error){
+        const err = new NotFoundError('에러입니다.');
+        next(err);
+    }
+});
+
+// insert 
+router.post('/add' , async(req,res, next ) =>{   
+    const {schedule_date , work , schedule_key} = req.body;
+    try{
+        const sql = `insert into schedules(schedule_date , work , schedule_key) 
+        value(?,?, ? )`;
+        const response = await db.query(sql , [schedule_date , work , schedule_key]);
+        res.json({message : 'success' , databaseInsert : response.affectedRows});
+    }catch(error){
+        const err = new NotFoundError('에러입니다.');
+        next(err)
+    }
+});
+
+// upDate
+router.post('/edit' , async(req,res, next ) =>{   
+    const {work , schedule_key} = req.body;
+    try{
+        const sql = `update schedules set work = ? where schedule_key = ?`;
+        const response = await db.query(sql , [work , schedule_key]);
+        res.json({message : 'success' , databaseInsert : response.affectedRows});
+    }catch(error){
+        const err = new NotFoundError('에러입니다.');
+        next(err)
+    }
+});
+
+// delete
+router.post('/delete' , async(req,res, next ) =>{   
+    try{
+        const { schedule_key } = req.body;
+        console.log(schedule_key);
+        const sql = `delete from schedules where schedule_key = ?`;
+        const response = await db.query(sql , [schedule_key]);
+        if(response.affectedRows === 0){
+            throw new Error('삭제되지 않았습니다 재시도 해주세요.');
+        }
+        res.json({message : 'success' , databaseInsert : response.affectedRows});
+    }catch(error){
+        const err = new NotFoundError(error.message);
+        next(err)
+    }
+});
+
+
+
+
+module.exports = router;
