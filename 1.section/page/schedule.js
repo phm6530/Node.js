@@ -11,8 +11,9 @@ db.query = util.promisify(db.query);
 // 데이터 가져오기
 router.get('/' , async(req,res, next ) =>{   
     try{
-        const sql = `SELECT id , work , complete , schedule_key , DATE_FORMAT(schedule_date, '%Y-%m-%d') AS formatted_date 
-        FROM schedules WHERE schedule_date >= '2024-02-01' AND schedule_date < '2024-03-01'`
+        const sql = `SELECT id , work , complete , schedule_key , 
+        DATE_FORMAT(schedule_date, '%Y-%m-%d') AS formatted_date FROM schedules 
+        WHERE schedule_date >= '2024-02-01' AND schedule_date < '2024-03-01'`
         const response = await db.query(sql);
         
         const restResponseData = {}
@@ -75,7 +76,20 @@ router.post('/delete' , async(req,res, next ) =>{
     }
 });
 
-
-
+// Complete Toggle
+router.post('/complete' , async(req,res, next ) =>{   
+    try{
+        const { schedule_key } = req.body;
+        const sql = `update schedules set complete = Not complete where schedule_key = ?`;
+        const response = await db.query(sql , [schedule_key]);
+        if(response.affectedRows === 0){
+            throw new Error('변경되지 않았습니다 재시도 해주세요.');
+        }
+        res.json({message : 'success' , databaseInsert : response.affectedRows});
+    }catch(error){
+        const err = new NotFoundError(error.message);
+        next(err)
+    }
+});
 
 module.exports = router;
