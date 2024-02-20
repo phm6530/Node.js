@@ -1,6 +1,7 @@
 
 // 초기데이터 로더
 const scheduleFetch = async(url) =>{
+    
     try{
         const response = await fetch(`http://localhost:8080/schedule`);
         if(!response.ok){
@@ -81,10 +82,33 @@ const fetchDeleteSchedule = async(formData) =>{
     }
 }
 
+// Complete Toggle 
+const fetchToggleComplete = async(formData) =>{
+    try{
+        const response = await fetch('http://localhost:8080/schedule/complete',{
+            method : 'post',
+            headers : {
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify({schedule_key :formData})
+        })
+        if(!response.ok){
+            const errorResponse = await response.json();
+            throw new Error(errorResponse.message);
+        }
+        const result =  await response.json();
+        console.log(result);
+        return result;
+    }catch(error){
+        throw error;
+    }
+}
+
 
 export {
     scheduleFetch,
     fetchAddSchedule,
     fetchEditSchedule,
-    fetchDeleteSchedule
+    fetchDeleteSchedule,
+    fetchToggleComplete
 }

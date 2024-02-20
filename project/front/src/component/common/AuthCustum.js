@@ -18,3 +18,4 @@ export default function useAuthRedirect(redirectPath){
         }
     },[ dispatch ,redirectPath ,navigate ,isAuth , Auth]);  //서버 , 클라이언트에서 모두 체킹
 }
+

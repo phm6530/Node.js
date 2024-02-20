@@ -1,10 +1,10 @@
 import { useForm } from 'react-hook-form'
-import {  useQueryClient , useMutation } from 'react-query';
-import { useDispatch } from 'react-redux';
-import { fetchAddSchedule } from '../ScheduleFetch';
 import { v4 as uuidv4 } from 'uuid';
+import { useDispatch } from 'react-redux';
+import { useAuthCheck } from '../../../component/common/AuthClientCheck';
+import { useQueryClient , useMutation } from 'react-query';
+import { fetchAddSchedule } from '../ScheduleFetch';
 import alertThunk from '../../../store/alertTrunk';
-
 import styled from 'styled-components';
 
 const AddScheduleFormStyle = styled.form`
@@ -25,9 +25,11 @@ const AddSchedule = ({selectDay}) =>{
             Schedule_title : ''
         }
     });
-
+    const { clientAuthCheck }= useAuthCheck();
     const dispatch = useDispatch();
     const queryclient = useQueryClient();
+
+
     const mutation = useMutation((data)=>fetchAddSchedule(data),{
         onSuccess : () =>{
             dispatch(alertThunk('일정이 등록 되었습니다.' , 1));
@@ -40,12 +42,14 @@ const AddSchedule = ({selectDay}) =>{
     });
 
     const AddScheduleHandler = async(formData) => {
+        console.log(formData);
         const rquestData = {
             schedule_date : selectDay,
             work: formData.Schedule_title,
             schedule_key : uuidv4()
         }
-        console.log(rquestData);
+        if(!clientAuthCheck('입력')) return;
+        
         mutation.mutate(rquestData);
     }
 

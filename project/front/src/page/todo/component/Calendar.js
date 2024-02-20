@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+
 
 const CalendarWrap = styled.div`
     display: flex;
@@ -36,7 +37,7 @@ const RenderPrevStyle = styled(CalendarDay)`
 
 
 // cell 뿌리기
-const RenderCell = ({ currentYear, currentMonth , selectIdx,  onClickSelector}) => {
+const RenderCell = ({ currentYear, currentMonth , selectDay, listData ,  onClickSelector}) => {
 
     //이번달 Div 구하기
     const getLastDayOfMonth =(year, month)=> {    
@@ -61,13 +62,19 @@ const RenderCell = ({ currentYear, currentMonth , selectIdx,  onClickSelector}) 
             return null;
         }
         return Array.from({length : 6 - LastDay}, (_,idx)=> idx + 1);
-        
     }
 
     // 랜더
     const RenderPrevDate = getPrevDayofElement(currentYear, currentMonth);
     const RenderDate = getLastDayOfMonth(currentYear, currentMonth);
     const RenderLastDate = getNextDayofElement(currentYear, currentMonth);
+
+    const ListKeys = listData && Object.keys(listData);
+
+    const Dateformetting = (date) =>{
+        const formetting = new Date(date).toDateString();
+        return formetting;
+    }
 
     // 일자 갯수 구하기
     return (
@@ -76,15 +83,20 @@ const RenderCell = ({ currentYear, currentMonth , selectIdx,  onClickSelector}) 
             {RenderDate.map(day => 
                 {
                     const confirmDay = `${currentYear}-${currentMonth}-${day}`;
-                    return <CalendarDay  
-                        className={selectIdx === confirmDay && 'active'} 
-                        onClick={()=>onClickSelector(`${currentYear}-${currentMonth}-${day}`)} 
-                        key={`this-${day}`}>
-                            {day}일
-                    </CalendarDay>
+                    return (
+                        <CalendarDay  
+                            className={selectDay === confirmDay && 'active'} 
+                            onClick={()=>onClickSelector(`${currentYear}-${currentMonth}-${day}`)} 
+                            key={`this-${day}`}>
+                                <span>{day}일</span>
+                                {
+                                    ListKeys && ListKeys.map((e)=>{
+                                        return  Dateformetting(e) ===  Dateformetting(confirmDay) ? 'c' : null
+                                    })
+                                }
+                        </CalendarDay>
+                    )
                 }
-                
-            
             )}
             {RenderLastDate && RenderLastDate.map(day => <RenderPrevStyle key={`next-${day}`}> {day}일</RenderPrevStyle>)}
         </RenderCellWrap>  
@@ -103,27 +115,34 @@ const RenderHeader = () =>{
 
 const RenderNav = ({
    currentMonth, setCurrentMonth,
-    currentYear, setCurrentYear
+    currentYear, setCurrentYear 
 }) =>{
+    const navigate =useNavigate();
+    const {pathname} =useLocation();
+
     // 월 변경 핸들러
     const handleMonthChange = (type) => {
 
-
         if (type === 'next') {
             if (currentMonth === 12) {
-                setCurrentYear(currentYear + 1);
+                setCurrentYear(+currentYear + 1);
                 setCurrentMonth(1);
+                navigate(`${pathname}?year=${+currentYear + 1}&month=${1}`);
             } else {
-                setCurrentMonth(currentMonth + 1);
+                navigate(`${pathname}?year=${+currentYear}&month=${+currentMonth + 1}`);
+                setCurrentMonth(+currentMonth + 1);
             }
         } else {
             if (currentMonth === 1) {
-                setCurrentYear(currentYear - 1);
+                setCurrentYear(+currentYear - 1);
                 setCurrentMonth(12);
+                navigate(`${pathname}?year=${+currentYear - 1}&month=${12}`);
             } else {
-                setCurrentMonth(currentMonth - 1);
+                setCurrentMonth(+currentMonth - 1);
+                navigate(`${pathname}?year=${+currentYear}&month=${+currentMonth - 1}`);
             }
         }
+       
     };
 
     return(
@@ -136,35 +155,27 @@ const RenderNav = ({
     )
 }
 
-export default function Calendar({className , setSelectDay}) {
-    const date = new Date();
-    const [currentMonth, setCurrentMonth] = useState(date.getMonth() + 1);
-    const [currentYear, setCurrentYear] = useState(date.getFullYear());
-    const [ selectIdx , setSelectIdx ] = useState(null);
-    
+export default function Calendar({
+    className , 
+    selectDay , 
+    listData , 
+    setSelectDay,
+    currentYear,
+    setCurrentMonth,
+    currentMonth,
+    setCurrentYear
+}) {
 
-    const TodayCalculater = () =>{
-        const date = new Date();    
-        const Day = date.getDate();
-        const Year = date.getFullYear();
-        const Month = date.getMonth();
-        return `${Year}-${Month + 1 }-${Day}`
-    } 
 
-    //초기 Today 설정
-    useEffect(()=>{
-        const today = TodayCalculater();
-        setSelectDay(today);
-        setSelectIdx(today);
-    },[setSelectDay]);
 
     const onClickSelector = (day) =>{
         setSelectDay(day);
-        setSelectIdx(day);
     }
+
 
     return (
             <CalendarWrap className={className}>
+
                 {/* Clanedar Nav */}
                 <RenderNav
                     currentMonth={currentMonth}
@@ -174,15 +185,19 @@ export default function Calendar({className , setSelectDay}) {
                 />
 
                 {/* Calenader Header */}
-                <RenderHeader/>
+                <RenderHeader
+                    selectDay={selectDay}
+                />
 
                 {/* Calenader Body */}
                 <RenderCell
                     currentYear={currentYear}
                     currentMonth={currentMonth}
-                    selectIdx={selectIdx}
                     onClickSelector={onClickSelector}
+                    selectDay={selectDay}
+                    listData={listData}
                 />
+             
                 
             </CalendarWrap>
       

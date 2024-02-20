@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useLoaderData, useNavigate } from 'react-router-dom';
-import useAlert from './UseAlert';
 import alertThunk from '../../store/alertTrunk';
 import { useDispatch } from 'react-redux'; 
 

@@ -5,12 +5,15 @@ import BannerCommon from '../../component/ui/BannerCommon';
 import DashBoardTitle from '../../component/ui/DashBoardTitle';
 import Calendar from './component/Calendar';
 import Schedule from './component/Schedule';
-import { useState } from 'react';
-import { useQuery } from 'react-query';
-import { useDispatch } from 'react-redux';
-import { scheduleFetch } from './ScheduleFetch';
 import alertThunk from '../../store/alertTrunk';
 import FadeinComponent from '../../FadeinComponent';
+
+import { useState , useEffect } from 'react';
+import { useQuery } from 'react-query';
+import { useDispatch } from 'react-redux';
+import { useSearchParams , useLocation, useNavigate } from 'react-router-dom';
+import { scheduleFetch } from './ScheduleFetch';
+import { TodaySeletor } from './component/TodaySeletor';
 
 const CalenaderGrid = styled(Gird)`
     padding-top: 150px;
@@ -38,10 +41,44 @@ const CalendarStyle = styled(Calendar)`
 
 export default function Todolist(){
     const [ selectDay , setSelectDay ] = useState();
+    const [currentMonth, setCurrentMonth] = useState();
+    const [currentYear, setCurrentYear] = useState();
+    const { pathname } = useLocation();
+    const [ param , setParam ] = useSearchParams(new URL(window.location).searchParams);
+    const navigate = useNavigate();
+
+
+    const getYear = param.get('year');
+    console.log('getYear: ',getYear);
+    
+    // useEffect(()=>{
+    //     console.log(param);
+    //     if(!param.size){
+    //         navigate(`${pathname}?year=${currentYear}&month=${currentMonth}`);
+    //     }
+        
+    // },[currentMonth , navigate , pathname ,  currentYear]);
+
+    
+    //초기 Today 및 버튼 설정
+    useEffect(()=>{
+        const today = TodaySeletor();
+        setSelectDay(today());
+        if(!param.size){
+            setCurrentYear(today().split('-')[0])
+            setCurrentMonth(today().split('-')[1])
+            return;
+        }
+        setCurrentYear(param.get('year'))
+        setCurrentMonth(param.get('month'))
+    },[setSelectDay]);
+
+
+    //FetchData
     const [ listData , setListData ] = useState();    
     const dispatch = useDispatch();
-
-    const { isLoading } = useQuery(['Schedule'], ()=>scheduleFetch(selectDay),{
+    
+    const { data } = useQuery(['Schedule' , currentMonth ], ()=>scheduleFetch(currentMonth , currentMonth),{
         refetchOnWindowFocus:false,
         onSuccess : (data) =>{
             setListData(data.restResponseData);
@@ -50,6 +87,10 @@ export default function Todolist(){
             dispatch(alertThunk(error.message , 0));
         }
     });
+
+    const onParamHandler = () =>{
+        setParam({year : '2025' , month : '2'});
+    }
 
     return(
         <>
@@ -69,16 +110,25 @@ export default function Todolist(){
                 </PageSubText> 
                 <FadeinComponent>
                     <ContentsWrap>
-                        
+                        <button onClick={()=>onParamHandler()}>gasdgsagadg</button>
                         {/* body */}
                         <CalendarStyle 
                             setSelectDay={setSelectDay}
+                            listData={listData}
+                            selectDay={selectDay}
+                            currentYear={currentYear}
+                            setCurrentMonth={setCurrentMonth}
+                            currentMonth={currentMonth}
+                            setCurrentYear={setCurrentYear}    
                         />
 
                         {/* Schedule */}
                         <Schedule
                             selectDay={selectDay}
                             listData={listData}
+                            setSelectDay={setSelectDay}
+                            setCurrentMonth={setCurrentMonth}
+                            setCurrentYear={setCurrentYear} 
                         />
                     </ContentsWrap>
                 </FadeinComponent>
