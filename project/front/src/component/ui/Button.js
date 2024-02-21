@@ -29,6 +29,24 @@ const ButtonTypeSubmit = styled.button`
     }
 
   `
+
+  const ForsquareBtnStyle = styled.button`
+    border-radius: 2rem;
+    font-size: 14px;
+    letter-spacing: -.5px;
+    padding: 2px 15px;
+    border: 2px solid rgba(255,255,255,0.5);
+    margin-right: 5px;
+    &:hover{
+        border: 2px solid rgba(255,255,255,0.7);
+        box-shadow: 0px 15px 15px rgba(0,0,0,0.1);
+    }
+    &:active{
+        box-shadow: 0px 15px 15px rgba(0,0,0,0.0);
+    }
+
+
+  `
 const Type = ({children , ...props}) =>{
     return(
         <ButtonType {...props}>{children}</ButtonType>
@@ -41,8 +59,16 @@ const Submit = ({children , ...props})=>{
             {children}
         </ButtonTypeSubmit>
     )
-
 }
+
+const ForsquareBtn = ({children , ...props})=>{
+    return(
+        <ForsquareBtnStyle {...props}>
+            {children}
+        </ForsquareBtnStyle>
+    )
+}
+
 
 export function Button({children}){
     return(
@@ -54,3 +80,4 @@ export function Button({children}){
 
 Button.Type = Type;
 Button.Submit = Submit;
+Button.ForsquareBtn = ForsquareBtn;

@@ -1,11 +1,14 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-
+import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
+import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 
 const CalendarWrap = styled.div`
     display: flex;
     flex-direction: column;
     background: #fff;
+    padding: 20px;
+    border-radius: 1rem;
 `;
 
 const CalendarHeader = styled.div`
@@ -21,18 +24,92 @@ const RenderCellWrap = styled.div`
 `
 
 const CalendarDay = styled.div`
-    flex: 1 1 14.28%; 
+    flex: 1 1 14.28%;
     box-sizing: border-box;
-    text-align: center; 
-    padding: 10px; 
-    border: 1px solid #ddd; 
+    text-align: center;
+    padding: 1.0rem 0rem;
+    font-size: 14px;
+    cursor: pointer;
+    &.hasSchedule{
+        span{
+            position: relative;
+            &::after{
+                background: red;
+                position: absolute;
+                display: block;
+                content: "";
+                width: 3px;
+                height: 3px;
+                border-radius: 1em;
+                left: 50%;
+                transform: translate(-50%);
+            }
+        }
+     
+    }
     &.active{
-      background: rgba(0,0,0,0.2);
+        background: rgba(0,0,0,0.02);
+        border-radius: 5em;
+        font-weight: bold;
     }
 `;
 
+const CalendarDate = styled.div`
+    flex: 1 1 14.28%;
+    box-sizing: border-box;
+    text-align: center;
+    
+    font-size: 14px;
+    ${props => {
+            switch(props.$headeridx){
+                case 0 :
+                    return 'color: #dd8a8a' 
+                case 6 :
+                    return 'color: #6a9dff' 
+                default : 
+                    return null;
+            }
+    } }
+
+`
+
+const CalendarDateWrap = styled.div`
+        box-shadow: 0px 15px 65px rgba(0,0,0,0.04);
+        border-radius: 1em;
+`
+
 const RenderPrevStyle = styled(CalendarDay)`
     opacity: .2;
+`
+
+const CalendarNavWarp = styled.div`
+    display: flex;
+    justify-content: space-around;
+    padding: 20px 0;
+    .ThisMonthWrap{
+        padding-bottom: 30px;
+        p{
+            opacity: .5;
+            text-align: center;
+        }
+    }
+
+    button svg{
+        font-size: 30px;
+    }
+`
+
+const MonthNav = styled.div`
+    font-size: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    p{
+        font-size: 16px;
+        opacity: .5;
+    }
+    
 `
 
 
@@ -79,39 +156,49 @@ const RenderCell = ({ paramYear, paramMonth , selectDay, listData ,  onClickSele
     // 일자 갯수 구하기
     return (
         <RenderCellWrap>
-            {RenderPrevDate && RenderPrevDate.map(day => <RenderPrevStyle  key={`prev-${day}`}> {day}일</RenderPrevStyle>)}
+            {RenderPrevDate && RenderPrevDate.map(day => <RenderPrevStyle  key={`prev-${day}`}> {day}</RenderPrevStyle>)}
             {RenderDate.map(day => 
                 {
                     const confirmDay = `${paramYear}-${paramMonth}-${day}`;
+                    const hasSchedule = (confirmDay) =>{
+                        //Some은 element index array로 매개변수로 순회하며 하나라도 있으면 true false 반환
+                        return ListKeys?.some((e)=> Dateformetting(e) === Dateformetting(confirmDay))
+                    }
                     return (
                         <CalendarDay  
-                            className={selectDay === confirmDay && 'active'} 
+                            className={`${selectDay === confirmDay && 'active'} ${hasSchedule(confirmDay) && 'hasSchedule'}`} 
                             onClick={()=>onClickSelector(`${paramYear}-${paramMonth}-${day}`)} 
                             key={`this-${day}`}>
-                                <span>{day}일</span>
+                                <span>{day}</span>
                                 {
-                                    ListKeys && ListKeys.map((e)=>{
-                                        return  Dateformetting(e) ===  Dateformetting(confirmDay) ? 'c' : null
-                                    })
+                                   
                                 }
                         </CalendarDay>
                     )
                 }
             )}
-            {RenderLastDate && RenderLastDate.map(day => <RenderPrevStyle key={`next-${day}`}> {day}일</RenderPrevStyle>)}
+            {RenderLastDate && RenderLastDate.map(day => <RenderPrevStyle key={`next-${day}`}> {day}</RenderPrevStyle>)}
         </RenderCellWrap>  
     );
 };
+
 
 // Header 컴포넌트
 const RenderHeader = () =>{
     const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     return(
           <CalendarHeader>
-                {DAYS.map((day, idx) => <CalendarDay key={idx}>{day}</CalendarDay>)}
+                {DAYS.map((day, idx) => <CalendarDate key={idx} $headeridx={idx}>{day}</CalendarDate>)}
         </CalendarHeader>
     )
 }
+
+
+
+const NavWrap = styled.div`
+
+`
+
 
 const RenderNav = ({
    paramMonth, paramYear
@@ -135,18 +222,31 @@ const RenderNav = ({
                 navigate(`${pathname}?year=${+paramYear}&month=${+paramMonth - 1}`);
             }
         }
-       
     };
 
+    // 월
+    const monthArr = ['January' , 'February', 'March' , 'April' , 'May' ,'June', 'July' , 'August' ,'September' ,'October' , 'November' ,'December'];
+    console.log(+paramMonth - 1);
     return(
-        <>
-               {paramYear}년
-                <button onClick={() => handleMonthChange('prev')}>prev</button>
-                <button onClick={() => handleMonthChange('next')}>next</button>
-            <h1>{paramMonth}월</h1>
-        </>
+                <CalendarNavWarp>
+                        <button onClick={() => handleMonthChange('prev')}>
+                            <MdOutlineKeyboardArrowLeft/></button>
+
+                    <MonthNav>
+                        <span>{monthArr[+paramMonth - 1]}</span>
+                        <p>{paramYear}</p>
+                    </MonthNav>
+
+                        <button onClick={() => handleMonthChange('next')}><MdOutlineKeyboardArrowRight/></button>
+                  
+                    
+                    
+                </CalendarNavWarp>
+                
     )
 }
+
+
 
 export default function Calendar({
     className , 
@@ -170,21 +270,22 @@ export default function Calendar({
                     paramMonth={paramMonth}
                     paramYear={paramYear}
                 />
+                
+                <CalendarDateWrap>
+                    {/* Calenader Header */}
+                    <RenderHeader
+                        selectDay={selectDay}
+                    />
 
-                {/* Calenader Header */}
-                <RenderHeader
-                    selectDay={selectDay}
-                />
-
-                {/* Calenader Body */}
-                <RenderCell
-                    onClickSelector={onClickSelector}
-                    selectDay={selectDay}
-                    listData={listData}
-                    paramYear={paramYear}
-                    paramMonth={paramMonth}
-                />
-             
+                    {/* Calenader Body */}
+                    <RenderCell
+                        onClickSelector={onClickSelector}
+                        selectDay={selectDay}
+                        listData={listData}
+                        paramYear={paramYear}
+                        paramMonth={paramMonth}
+                    />
+                </CalendarDateWrap>
                 
             </CalendarWrap>
       

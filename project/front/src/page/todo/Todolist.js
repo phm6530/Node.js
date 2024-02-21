@@ -36,7 +36,7 @@ const ContentsWrap = styled.div`
 `
 
 const CalendarStyle = styled(Calendar)`
-    width: 50%;
+    width: 30%;
 `
 
 export default function Todolist(){

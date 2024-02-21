@@ -1,24 +1,27 @@
 import styled from 'styled-components';
-import FadeinComponent from '../../../FadeinComponent';
 import AddSchedule from './AddSchedule';
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { useMutation , useQueryClient} from 'react-query';
-import { fetchEditSchedule , fetchDeleteSchedule, fetchToggleComplete } from '../ScheduleFetch';
 import { useDispatch } from 'react-redux';
-import { useAuthCheck } from '../../../component/common/AuthClientCheck';
 import { TodaySeletor } from './TodaySeletor'; 
 import { useSearchParams } from 'react-router-dom';
+
+// 커스텀훅 or 팝업창 or redux-Trunk
+import FadeinComponent from '../../../FadeinComponent';
 import alertThunk from '../../../store/alertTrunk';
 import Popup from '../../../component/popup/Popup';
+import Confirm from '../../../component/ui/Confirm';
+import { fetchEditSchedule , fetchDeleteSchedule, fetchToggleComplete } from '../ScheduleFetch';
+import { useAuthCheck } from '../../../component/common/AuthClientCheck';
+import { Button } from '../../../component/ui/Button';
 
 // icon
 import { FaTrashAlt } from "react-icons/fa";
 import { MdModeEdit } from "react-icons/md";
-import Confirm from '../../../component/ui/Confirm';
+
 
 const ScheduleWrap = styled.div`
-    background: #fff;
     width: 50%;
     overflow: hidden;
 `
@@ -27,11 +30,12 @@ const IsComplete = styled.div`
     display: flex;
     /* justify-content: space-between; */
     align-items: flex-start;
-    
+    transition: color .2s ease;
+    padding: .3rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
     svg{
         opacity: .8;
     }
-    transition: color .2s ease;
     ${props => {
         return props.$complete && 'color: rgba(0,0,0,0.4)';
     }}    
@@ -42,6 +46,7 @@ const FormStyle = styled.form`
     flex-grow: 1;
     textarea{
         flex-grow: 1;
+        background: transparent
     }
 `
 
@@ -54,6 +59,13 @@ const CompleteHandler = styled.button`
 
 const TextArea = styled.textarea`
     font-size: 14px;
+`
+
+const ButtonNavWrap = styled.div`
+    
+
+    border-radius: 1em;
+    color: #fff;
 `
 
 const ListHandler = ({ idx ,selectWork , setSelectWork , ScheduleItem}) =>{
@@ -232,7 +244,9 @@ export default function Schedule({
 
     return (
         <ScheduleWrap>
-            <button onClick={()=>todayButton()}>Today</button>
+            <ButtonNavWrap>
+                <Button.ForsquareBtn onClick={()=>todayButton()}>ToDay</Button.ForsquareBtn>
+            </ButtonNavWrap>
             <ScheduleList
                 listData={listData}
                 selectDay={selectDay} //업로드해야할 날짜

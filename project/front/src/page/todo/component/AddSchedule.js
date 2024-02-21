@@ -7,18 +7,19 @@ import { fetchAddSchedule } from '../ScheduleFetch';
 import alertThunk from '../../../store/alertTrunk';
 import styled from 'styled-components';
 import { TextAreaStyle } from '../../../component/ui/TextArea';
+import { Button } from '../../../component/ui/Button';
 
 const AddScheduleFormStyle = styled.form`
     padding: 10px;
-    /* background: #000; */
     display: flex;
+    flex-direction: column;
+    align-items: flex-end;
     button{
         color: #fff;
-        background: #000;
+        margin-top: 10px;
         word-break: keep-all;
         padding: 0px 10px;
-        margin-left: 5px;
-        border-radius: 1em;
+        /* border-radius: 1em; */
     }
     textarea{
         width: 100%;
@@ -74,7 +75,7 @@ const AddSchedule = ({selectDay}) =>{
                             message : '250자를 초과해서 등록 할 수 없습니다.'
                         }
                     })}/>
-                <button>입력하기</button>
+                <Button.Submit>입력하기</Button.Submit>
             </AddScheduleFormStyle>
             {errors.Schedule_title && <ErrorStyle>{errors.Schedule_title.message}</ErrorStyle>}
         </>
