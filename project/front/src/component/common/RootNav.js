@@ -56,13 +56,20 @@ export default function RootNav({ChangePageHandler}){
         { path : '/admin' , pathName : 'Admin' , AuthPage : true },
     ]
 
-
     const openLoginPopup = () => setLoginModal(true);
+
     return(
         <>  
             {/* Alert */}
             { view && <Alert/>}
-            {loginModal && <Popup closePopup={()=>setLoginModal(false)} ><LoginForm/></Popup>}
+            {loginModal && (
+                <Popup 
+                    type={'Login'} 
+                    closePopup={()=>setLoginModal(false)} 
+                >
+                    <LoginForm/>
+                </Popup>)
+            }
 
             <Header>
             <div className="wrap">

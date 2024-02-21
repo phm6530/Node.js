@@ -52,7 +52,7 @@ const FormStyle = styled.form`
 
 `
 
-const BoardReply = forwardRef((props , ref )=>{
+const BoardReply = forwardRef((props , ref)=>{
     const { reply , selectIdx , setSelectIdx , setUserData } = props;
     const { 
         user_icon,

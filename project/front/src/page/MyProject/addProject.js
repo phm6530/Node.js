@@ -106,7 +106,7 @@ export default function AddProject(){
             }
             await addProjectFetch(setObj , Type);
             
-            dispatch(alertThunk(Type !== 'edit' ? '댓글이 등록되었습니다.' : '댓글이 수정되었습니다.', true));
+            dispatch(alertThunk(Type !== 'edit' ? '프로젝트가 등록되었습니다.' : '프로젝트가 수정되었습니다.', true));
             navigate('/project');
             reset(); // 서버 요청이 성공적일 때만 reset 호출
             

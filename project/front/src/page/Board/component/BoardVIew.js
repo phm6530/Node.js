@@ -4,9 +4,8 @@ import Fadeup from '../../../FadeinComponent';
 import styled from 'styled-components';
 
 const BoardReplyWrap = styled.div`
-    height: 813px;
   overflow-y: scroll;
-
+    height: 100%;
    &::-webkit-scrollbar {
         width: 4px;  /* 스크롤바의 너비 */
     }
@@ -30,12 +29,13 @@ export default function BoardView({ moreData , board ,setUserData, setLastPageId
         if(!moreData) return ;
         
         const selectRefs = refs.current.slice(0, refs.current.length);
-        console.log(selectRefs.length);
+        // console.log(selectRefs.length);
         const lastRef = selectRefs[board.length - 1];
+
         //디버깅용 색칠하기
-        // if(lastRef){
-        //     lastRef.style.backgroundColor = 'red';
-        // }
+        if(lastRef){
+            lastRef.style.backgroundColor = 'red';
+        }
         const io = new IntersectionObserver((entry)=>{
             if(entry[0].isIntersecting && moreData ) {
                 setLastPageIdx(selectRefs.length);
@@ -56,15 +56,11 @@ export default function BoardView({ moreData , board ,setUserData, setLastPageId
             {board.length === 0 &&  <p> 등록된 게시물이 없습니다. </p>}
             {
                 board && board.map((item, idx)=> {
+                    
                     return <Fadeup key={item.board_key} >
+                        
                         <BoardReply 
-                    ref={(e) => {
-                        if (e === null) {
-                          refs.current = refs.current.slice(0, idx);
-                        }else{
-                            refs.current[idx] = e;
-                        }
-                      }}
+                            ref={(dom) => refs.current[idx] = dom}
                             reply={item}
                             idx={item.idx}
                             selectIdx={selectIdx === item.board_key}

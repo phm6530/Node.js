@@ -33,15 +33,6 @@ const PopupStyle = styled.div`
     top: 50%;
     transform: translate(-50%,-50%);
 
-    div{
-        padding: 20px;
-        border-radius: 1em;
-        background: #fff;
-        animation: ${onPopup} 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-        ${props => props.$close && css`animation: ${offPopup} 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards`};
-
-        box-shadow: 15px 55px 55px rgba(0,0,0,.9);
-    }
     .close{
         text-align: center;
         width: 100%;
@@ -63,5 +54,17 @@ const PopupStyle = styled.div`
         }
     }
 `
+const PopupWrap = styled.div`
+    padding: 20px;
+    border-radius: 1em;
+    background: #fff;
+    animation: ${onPopup} 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+    ${props => props.$close && css`animation: ${offPopup} 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards`};
+    box-shadow: 15px 55px 55px rgba(0,0,0,.9);
+    
+`
 
-export default PopupStyle;
+export {
+    PopupWrap,
+    PopupStyle
+}

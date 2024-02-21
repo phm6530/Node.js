@@ -8,27 +8,61 @@ import { fetchEditSchedule , fetchDeleteSchedule, fetchToggleComplete } from '..
 import { useDispatch } from 'react-redux';
 import { useAuthCheck } from '../../../component/common/AuthClientCheck';
 import { TodaySeletor } from './TodaySeletor'; 
+import { useSearchParams } from 'react-router-dom';
 import alertThunk from '../../../store/alertTrunk';
+import Popup from '../../../component/popup/Popup';
+
+// icon
+import { FaTrashAlt } from "react-icons/fa";
+import { MdModeEdit } from "react-icons/md";
+import Confirm from '../../../component/ui/Confirm';
 
 const ScheduleWrap = styled.div`
     background: #fff;
     width: 50%;
+    overflow: hidden;
 `
 
 const IsComplete = styled.div`
     display: flex;
-    ${props => {
-        return props.$complete && 'color:red';
-
-    }}
+    /* justify-content: space-between; */
+    align-items: flex-start;
     
+    svg{
+        opacity: .8;
+    }
+    transition: color .2s ease;
+    ${props => {
+        return props.$complete && 'color: rgba(0,0,0,0.4)';
+    }}    
 `
 
-const ListHandler = ({selectWork , setSelectWork , ScheduleItem}) =>{
+const FormStyle = styled.form`
+    display: flex;
+    flex-grow: 1;
+    textarea{
+        flex-grow: 1;
+    }
+`
+
+const CompleteHandler = styled.button`
+    width: 25px;
+    border-radius: 5em;
+    font-size: 14px;
+    font-weight: bold;
+`
+
+const TextArea = styled.textarea`
+    font-size: 14px;
+`
+
+const ListHandler = ({ idx ,selectWork , setSelectWork , ScheduleItem}) =>{
     const { register , handleSubmit , setValue } = useForm();
     const { clientAuthCheck } =  useAuthCheck();
+    const [ modal , setModal ] = useState(false);
+    const [ deleteKey , setDeleteKey ] = useState(null);
+    const [ textAreaHeight , setTextArerHeight ] = useState(ScheduleItem.work.split(/\r\n|\r|\n/).length);
     const { schedule_key , complete } = ScheduleItem;
-
     const dispatch = useDispatch();
     const queryClient = useQueryClient();
 
@@ -74,7 +108,6 @@ const ListHandler = ({selectWork , setSelectWork , ScheduleItem}) =>{
     });
 
 
-
     const onEditHandler = async(data) =>{
         const requstData = {
             work : data.work,
@@ -87,47 +120,66 @@ const ListHandler = ({selectWork , setSelectWork , ScheduleItem}) =>{
         if(!clientAuthCheck('수정')) return;
         setSelectWork(idx);
     }
-    const onBlurHandler = () =>{
-        setSelectWork(null);
-    }
+    // const onBlurHandler = () =>{
+    //     setSelectWork(null);
+    // }
 
     const deleteSchedule = (key) =>{
-        if(!clientAuthCheck('삭제')) return;
-        deleteMutation.mutate(key);
+        setModal(true);
+        setDeleteKey(key);
     }
 
     const onToggleHandler = (key) =>{
         if(!clientAuthCheck('변경 권한')) return;
         toggleMutation.mutate(key);
     }
+    
+    const closePopup = () =>{
+        setModal(false)
+    }
+
     return(
+        <>
+        {modal && (
+            <Popup  closePopup={closePopup}>
+                <Confirm confirm={()=>{
+                     if(!clientAuthCheck('삭제')) return;
+                    deleteMutation.mutate(deleteKey);
+                }} />
+            </Popup>
+            )
+        }
+
         <IsComplete
             $complete={complete}
         >  
-            <button onClick={()=>onToggleHandler(schedule_key)}>tTEST</button>
-
-            <form onSubmit={handleSubmit(onEditHandler)}>
-                <input 
-                    {...register('work' , 
-                        { required : '빈칸은 입력 불가합니다.' })
-                    } 
+            <CompleteHandler onClick={()=>onToggleHandler(schedule_key)}>{idx + 1}.</CompleteHandler>
+            
+            <FormStyle onSubmit={handleSubmit(onEditHandler)}>
+            
+                <TextArea 
+                    rows={textAreaHeight}
+                    {...register('work' , { required : '빈칸은 입력 불가합니다.' })} 
                     readOnly={ScheduleItem.schedule_key !== selectWork}
-                    autoFocus={ScheduleItem.schedule_key === selectWork}
-                    onBlur={()=>onBlurHandler()}
+                    onChange={(e)=>setTextArerHeight(e.target.value.split(/\r\n|\r|\n/).length)}
                 />
-                {ScheduleItem.schedule_key === selectWork && <button type='submit'>확인</button>}
-            </form>
 
-            <button onClick={()=>readOnlyHandler(ScheduleItem.schedule_key)}>수정</button>
-            <button onClick={()=>deleteSchedule(ScheduleItem.schedule_key)}>삭제</button>
+                {ScheduleItem.schedule_key === selectWork && <button type='submit'>확인</button>}
+            </FormStyle>
+
+            {/* 수정 */}
+            <button onClick={()=>readOnlyHandler(ScheduleItem.schedule_key)}><MdModeEdit size={'17'}/></button>
+
+            {/* 삭제 */}
+            <button onClick={()=>deleteSchedule(ScheduleItem.schedule_key)}><FaTrashAlt size={'13'}/></button>
          </IsComplete>
+         </>
     )
 }
 
 const ScheduleList = ({selectDay , listData}) =>{
-   
-    const [ selectWork , setSelectWork ] = useState(null);
 
+    const [ selectWork , setSelectWork ] = useState(null);
     const filterArr = [];
     for(const date in listData){
         const formattedSelectDay = new Date(selectDay).toDateString();
@@ -140,11 +192,18 @@ const ScheduleList = ({selectDay , listData}) =>{
 
     return(
         <>  
-            {filterArr.length === 0 && <FadeinComponent position={'right'} key={selectDay}>{selectDay && selectDay.replaceAll('-','. ')}은 일정이 없습니다.</FadeinComponent>}
+            {filterArr.length === 0 && (
+                 <FadeinComponent 
+                    position={'right'} 
+                    key={selectDay}>
+                        {selectDay && selectDay.replaceAll('-','. ')}은 일정이 없습니다.
+                </FadeinComponent>
+            )}
 
-            {filterArr.map((Schedule)=>{
+            {filterArr.map((Schedule,idx)=>{
                 return <FadeinComponent position={'right'} key={Schedule.schedule_key}>
                         <ListHandler
+                            idx={idx}
                             ScheduleItem={Schedule}
                             setSelectWork={setSelectWork}
                             selectWork={selectWork}
@@ -159,15 +218,16 @@ export default function Schedule({
     selectDay , 
     listData , 
     setSelectDay ,
-    setCurrentMonth , 
-    setCurrentYear 
 }) {
+    const [ , setSeachParam ]  = useSearchParams();
+    const today = TodaySeletor();
 
     const todayButton = () =>{
-        const today = TodaySeletor();
         setSelectDay(today());
-        setCurrentMonth(today().split("-")[1])
-        setCurrentYear(today().split("-")[0])
+        setSeachParam({
+            year : today().split('-')[0],
+            month : today().split('-')[1]
+        })
     }
 
     return (

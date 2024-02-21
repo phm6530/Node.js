@@ -2,7 +2,7 @@ import { forwardRef, useContext, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { DarkMode } from '../../../context/DarkModeContext';
 import { useFormContext } from 'react-hook-form';
-
+import { InputStyle , TextAreaStyle } from '../../../component/ui/TextArea'; 
 
 const errorAnimation = keyframes`
     from{
@@ -49,14 +49,7 @@ const FormInputDiv = styled.div`
     display: flex;
     position: relative;
     flex-direction: column;
-    input,textarea{
-        padding: 5px 10px;
-        border-radius: 14px;
-        background: #f9fafb;
-        border: 1px solid #99999966;
-        box-shadow: inset -4px -4px 3px rgb(255 255 255 / 23%), inset 4px 4px 2px rgb(147 147 147 / 13%);
-        ${props => props.$error && `border: 1px solid #ff6f6f;`}
-    }
+
     textarea{
         min-height: 150px;
     }
@@ -101,12 +94,7 @@ const InputReply = forwardRef((fields ,ref)=>{
                 {
                     
                     fields.type === 'textarea' ?
-                    <textarea {...props}></textarea>
-                    :
-                    <input
-                    {...props}
-                    ref={ref}
-            
+                    <TextAreaStyle {...props}/> : <InputStyle {...props} ref={ref}
                     type={fields.name === 'password' ? 'password' : 'text'}
                     autoComplete='off'
                     

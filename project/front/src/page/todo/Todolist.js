@@ -8,10 +8,10 @@ import Schedule from './component/Schedule';
 import alertThunk from '../../store/alertTrunk';
 import FadeinComponent from '../../FadeinComponent';
 
-import { useState , useEffect } from 'react';
+import { useState  } from 'react';
 import { useQuery } from 'react-query';
 import { useDispatch } from 'react-redux';
-import { useSearchParams , useLocation, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { scheduleFetch } from './ScheduleFetch';
 import { TodaySeletor } from './component/TodaySeletor';
 
@@ -40,45 +40,22 @@ const CalendarStyle = styled(Calendar)`
 `
 
 export default function Todolist(){
-    const [ selectDay , setSelectDay ] = useState();
-    const [currentMonth, setCurrentMonth] = useState();
-    const [currentYear, setCurrentYear] = useState();
-    const { pathname } = useLocation();
-    const [ param , setParam ] = useSearchParams(new URL(window.location).searchParams);
-    const navigate = useNavigate();
+    const today = TodaySeletor();//오늘날짜 계산
+    const [ selectDay , setSelectDay ] = useState(today());
+    const [ param ] = useSearchParams(new URL(window.location).searchParams);
 
 
-    const getYear = param.get('year');
-    console.log('getYear: ',getYear);
+    const getYear = param.get('year') || today().split('-')[0];
+    const getMonth = param.get('month') || today().split('-')[1];
+    // const getDay = param.get('Day') || today().split('-')[2];
     
-    // useEffect(()=>{
-    //     console.log(param);
-    //     if(!param.size){
-    //         navigate(`${pathname}?year=${currentYear}&month=${currentMonth}`);
-    //     }
-        
-    // },[currentMonth , navigate , pathname ,  currentYear]);
-
-    
-    //초기 Today 및 버튼 설정
-    useEffect(()=>{
-        const today = TodaySeletor();
-        setSelectDay(today());
-        if(!param.size){
-            setCurrentYear(today().split('-')[0])
-            setCurrentMonth(today().split('-')[1])
-            return;
-        }
-        setCurrentYear(param.get('year'))
-        setCurrentMonth(param.get('month'))
-    },[setSelectDay]);
 
 
     //FetchData
     const [ listData , setListData ] = useState();    
     const dispatch = useDispatch();
     
-    const { data } = useQuery(['Schedule' , currentMonth ], ()=>scheduleFetch(currentMonth , currentMonth),{
+    useQuery(['Schedule' , getMonth ], ()=>scheduleFetch(getYear , getMonth),{
         refetchOnWindowFocus:false,
         onSuccess : (data) =>{
             setListData(data.restResponseData);
@@ -87,10 +64,6 @@ export default function Todolist(){
             dispatch(alertThunk(error.message , 0));
         }
     });
-
-    const onParamHandler = () =>{
-        setParam({year : '2025' , month : '2'});
-    }
 
     return(
         <>
@@ -110,16 +83,13 @@ export default function Todolist(){
                 </PageSubText> 
                 <FadeinComponent>
                     <ContentsWrap>
-                        <button onClick={()=>onParamHandler()}>gasdgsagadg</button>
                         {/* body */}
                         <CalendarStyle 
                             setSelectDay={setSelectDay}
                             listData={listData}
                             selectDay={selectDay}
-                            currentYear={currentYear}
-                            setCurrentMonth={setCurrentMonth}
-                            currentMonth={currentMonth}
-                            setCurrentYear={setCurrentYear}    
+                            paramYear={getYear}
+                            paramMonth={getMonth}
                         />
 
                         {/* Schedule */}
@@ -127,8 +97,6 @@ export default function Todolist(){
                             selectDay={selectDay}
                             listData={listData}
                             setSelectDay={setSelectDay}
-                            setCurrentMonth={setCurrentMonth}
-                            setCurrentYear={setCurrentYear} 
                         />
                     </ContentsWrap>
                 </FadeinComponent>

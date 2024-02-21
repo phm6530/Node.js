@@ -28,8 +28,8 @@ const authSlice = createSlice({
 const alertSlice = createSlice({
     name : 'alert',
     initialState : { 
-        view : false ,
         message : '',
+        view : false ,
         type : null,
         TimerId : null
     },
@@ -54,21 +54,13 @@ const modalSlice = createSlice({
     name: 'modal',
     initialState:{
         view : false,
-        openComponent : null,
-        animationState : false
     },
     reducers : {
         modalOpen(state , action){
             state.view = true;
-            state.openComponent = action.payload.content;
         },
         modalClose(state){
             state.view = false;
-            state.openComponent = null;
-            state.animationState = false;
-        },
-        modalAnimation(state , action){
-            state.animationState = action.payload;
         }
     }
 })

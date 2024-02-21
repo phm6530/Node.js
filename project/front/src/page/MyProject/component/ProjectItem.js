@@ -93,9 +93,7 @@ const ProjectFadeinStyle = styled(Fadein)`
     }
 
 `
-const ProjectImg = styled.div`
-    width: 50%;
-`
+
 
 const ProjectInfo = styled.div`
 
@@ -139,11 +137,6 @@ const ProjectDescription = styled.div`
     border-bottom: 1px solid rgba(0,0,0,0.12);
 `
 
-const ProjectControlBtnWrap = styled.div`
-    button{
-        font-size: 13px;
-    }
-`
 
 const IconCustum = styled(HiOutlineDotsVertical)`
     cursor: pointer;
@@ -159,7 +152,6 @@ export default function ProjectItem(project){
     const navigate = useNavigate();
     const { login } = useSelector(state => state.authSlice);
     const [ modal , setModal] = useState(false);
-    const [ confirm , setConfirm ] = useState(false);
     const [ edit , setEdit ] = useState(false);
     const dispatch = useDispatch();
     const AuthCheck = (text) => {
@@ -184,9 +176,11 @@ export default function ProjectItem(project){
 
     const queryClient = useQueryClient();
     const { mutateAsync } = useMutation((deleteKey)=>projectDelete(deleteKey) ,  {
-        onSuccess : () =>{
-            queryClient.invalidateQueries('project');
+        onSuccess : (data) =>{
+            console.log(data);
             dispatch(alertTrunk('삭제되었습니다.',1))
+            setModal(false)
+            queryClient.invalidateQueries('project');
         }
     });
 
@@ -201,11 +195,14 @@ export default function ProjectItem(project){
 
     return(
         <>
-            {modal && <Popup closePopup={()=>setModal(false)}>
-            <Confirm confirm={()=>{
-                    setConfirm(true)
-                    mutateAsync(project.project_key);
-                    }}/></Popup>}
+            {modal && (
+                <Popup closePopup={()=>setModal(false)}>
+                    <Confirm confirm={()=>{
+                            mutateAsync(project.project_key);
+                    }}/>
+                </Popup>
+            )}
+
             <ProjectFadeinStyle>
     
                 <ProjectInfo>

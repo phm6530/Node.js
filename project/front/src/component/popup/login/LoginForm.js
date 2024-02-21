@@ -1,53 +1,45 @@
-import { useEffect, useState } from 'react';
 import { useDispatch  } from 'react-redux';
 import  { authAction } from '../../../store/appSlice';
+import { Button } from '../../ui/Button';
+import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
+import * as Yup from 'yup';
 
-
-// import { LoginUser , LoginPassword } from '../../icon/Icon'; 
+import { LoginUser , LoginPassword } from '../../icon/Icon'; 
 
 // 인증로직
-import LoginInput from '../../ui/LoginInput';
 import alertThunk from '../../../store/alertTrunk';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+
+const LoginHeaderStyle = styled.div`
+    padding-bottom: 30px;
+    padding-top:20px;
+    text-align: left;
+    font-size: 40px;
+    font-weight: bold;
+    text-shadow: 25px 0px 20px rgba(0,0,0,0.3);
+    p{
+        font-size:14px;
+        font-weight: normal;
+        opacity: .5;
+    }
+`
+
+const LoginHeader = () =>{
+    return(
+        <LoginHeaderStyle>
+            Login
+            <p>
+                My Portpolio Admin Login<br></br>
+            </p>
+        </LoginHeaderStyle>
+    )
+}
 
 const LoginStyle = styled.form`
-   input{
-        width: 100%;
-        border: 1px solid #c6c6c6;
-        border-radius: 3px;
-        padding: 10px;
-        font-size:14px;
-    }
-
-    label{
-        position: relative;
-        margin-bottom: 20px;
-        &::after{
-            position: absolute;
-            left: 5px;
-            top: -10px;
-            padding: 0px 5px;
-            font-size: 12px;
-            background:#fff;
-            font-weight: bold;
-        }
-    }
-
-    label:first-child{
-        &::after{
-            content: "Admin ID";
-        }
-    }
-
-    label:nth-child(2){
-        &::after{
-            content: "password";
-        }
-    }
-
     button{
         width: 100%;
-        background: #000;
         color: #fff;
         padding: 10px;
         border-radius: 5em;
@@ -55,46 +47,99 @@ const LoginStyle = styled.form`
     }
 `
 
+const LabelStyle = styled.label`
+    position: relative;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+
+    flex-direction: row;
+    flex-wrap: wrap;
+    &::after{
+        position: absolute;
+        left: 5px;
+        top: -10px;
+        padding: 0px 5px;
+        font-size: 12px;
+        background:#fff;
+        font-weight: bold;
+    }
+
+    &:first-child{
+        &::after{
+            content: "Admin ID";
+        }
+    }
+
+    &:nth-child(2){
+        &::after{
+            content: "password";
+        }
+    }
+
+`
+
+const LoginInputStyle = styled.input`   
+    padding-left: 10px;
+    padding: 10px;
+    font-size:14px;
+    flex-grow: 1;    
+`
+
+const LabelWrap = styled.div`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.1);
+
+    svg{
+        margin-left: 10px;
+        opacity: .5;
+    }
+    ${props=> props.$error && `border : 1px solid #ff0000ad;`}
+`
+const ErrorMessage = styled.div`
+    color: red;
+    margin-top: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    opacity: .8;
+`
+
+
+const schema = Yup.object({
+    user_id : Yup.string().required('아이디를 적어주세요.'),
+    user_password : Yup.string().required('비밀번호를 적어주세요.')
+})
+
 export default function LoginForm(){
     const dispatch = useDispatch();
-    
-
-    const [ fromValid , setFormValid ] = useState(false);
-    const [ loginData , setLoginData ] = useState(
-        {   
-            id : { value : '' , isValid : false , touched : false },
-            pw : { value : '' , isValid : false , touched : false }
-        }    
-    );  
-    
-    const isIdValid =  !loginData.id.isValid && loginData.id.touched;
-    const isPwValid =  !loginData.pw.isValid && loginData.pw.touched;
-
-
+    const { handleSubmit , register , formState : { errors } } = useForm({
+        resolver : yupResolver(schema),
+    });
     // 디바운싱
-    useEffect(()=>{
-        const debounce = setTimeout(()=>{
-            setFormValid(loginData.id.isValid && loginData.pw.isValid);
-        },500);
+    // useEffect(()=>{
+    //     const debounce = setTimeout(()=>{
+    //         setFormValid(loginData.id.isValid && loginData.pw.isValid);
+    //     },500);
 
-        return()=>{
-            clearTimeout(debounce);
-        }
-    },[loginData]);
+    //     return()=>{
+    //         clearTimeout(debounce);
+    //     }
+    // },[loginData]);
         
     // 로그인 로직
-    const onSubmitHandler = async (e) =>{
-        e.preventDefault();
+    const onSubmitHandler = async (formData) =>{
+        
         try{
             const response = await fetch('http://localhost:8080/login', {
                 method : "POST",
                 headers : {
                     'ConTent-Type' : 'application/json'
                 },
-                body : JSON.stringify({
-                    user_id : loginData.id.value,
-                    user_password : loginData.pw.value
-                })
+                body : JSON.stringify(formData)
             });
             const resultData = await response.json();
     
@@ -126,34 +171,35 @@ export default function LoginForm(){
     
     return(
         <>
-           <LoginStyle onSubmit={onSubmitHandler}>
-                <label>
-                    {/* <LoginUser size={30}/> */}
-                    <LoginInput
-                        type = 'text'
-                        dataType = 'id'
-                        holder = '아이디'
-                        setFormData = {setLoginData}
-                        FormData = {loginData}
-                    />
-                    {isIdValid && 'error'}
-                </label>
+           <LoginStyle onSubmit={handleSubmit(onSubmitHandler)}>
+                <LoginHeader/>
+                <LabelStyle>
+                    <LabelWrap $error = {errors.user_id}>
+                        <LoginUser size={22}/>
+                        <LoginInputStyle 
+                       
+                            {...register('user_id')}
+                            placeholder='Admin Id'
+                        />
+                        
+                    </LabelWrap>
+                    {errors.user_id && <ErrorMessage>{errors.user_id.message}</ErrorMessage>}
+                </LabelStyle>
+               
 
-                <label>     
-                    {/* <LoginPassword size={30}/> */}
-                    <LoginInput
-                         type = 'password'
-                         dataType = 'pw'
-                         holder = 'password'
-                         setFormData = {setLoginData}
-                         FormData = {loginData}
-                    />
-                    {isPwValid && 'error'}
-                </label>
-
-                <button
-                    disabled={!fromValid}
-                >login</button>
+                <LabelStyle>     
+                    <LabelWrap $error = {errors.user_password}>
+                        <LoginPassword size={22}/>
+                        <LoginInputStyle
+                            {...register('user_password')}
+                            placeholder='password'
+                            type='password'
+                        />
+                    </LabelWrap>
+                    {errors.user_password && <ErrorMessage>{errors.user_password.message}</ErrorMessage>}
+                </LabelStyle>
+                <Button.Submit>Login</Button.Submit>
+                
             </LoginStyle>
         </>
     )

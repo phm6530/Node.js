@@ -55,10 +55,9 @@ const PreButton = styled.button`
 export default function ProjectSeach(){
     const [ input , setInput ] = useState('');
     const navigate = useNavigate();
-    const location = useLocation();
     const dispatch = useDispatch();
+    const location = useLocation();
     const {login}  = useSelector(state => state.authSlice);
-    console.log('login : ',login);
     
     const seachProejct = (e) =>{
         e.preventDefault();

@@ -28,6 +28,7 @@ import DashBoardTitle from '../../component/ui/DashBoardTitle';
 const BoardStyle = styled.div`
     display: flex;
     justify-content: space-between;
+    position: relative;
     /* padding-top: 200px; */
     /* transform: translateY(-120px); */
 `
@@ -35,10 +36,12 @@ const BoardStyle = styled.div`
 const BoardReplyStyle = styled.div`
 /* border: 3px solid #fff; */
     width: 45%;
+    left: 55%;
+    position: absolute;
     border-radius: 1em;
     background: #e2e6ef;
     overflow: hidden;
-    position: relative;
+    height: 100%;
     padding: 40px 0 0;
     box-shadow: 0px 5px 20px rgb(67 27 16 / 18%);
 `
@@ -173,7 +176,7 @@ export default function Board(){
                     setMoreData(false);
                 }
                 setTotal(data.counter);
-                console.log('userQuery 실행');
+                // console.log('userQuery 실행');
                 // 이건 맞음
                 setUserData(prev => {
                     return [...prev , ...data.pageData]

@@ -37,7 +37,7 @@ const RenderPrevStyle = styled(CalendarDay)`
 
 
 // cell 뿌리기
-const RenderCell = ({ currentYear, currentMonth , selectDay, listData ,  onClickSelector}) => {
+const RenderCell = ({ paramYear, paramMonth , selectDay, listData ,  onClickSelector}) => {
 
     //이번달 Div 구하기
     const getLastDayOfMonth =(year, month)=> {    
@@ -65,9 +65,9 @@ const RenderCell = ({ currentYear, currentMonth , selectDay, listData ,  onClick
     }
 
     // 랜더
-    const RenderPrevDate = getPrevDayofElement(currentYear, currentMonth);
-    const RenderDate = getLastDayOfMonth(currentYear, currentMonth);
-    const RenderLastDate = getNextDayofElement(currentYear, currentMonth);
+    const RenderPrevDate = getPrevDayofElement(paramYear, paramMonth);
+    const RenderDate = getLastDayOfMonth(paramYear, paramMonth);
+    const RenderLastDate = getNextDayofElement(paramYear, paramMonth);
 
     const ListKeys = listData && Object.keys(listData);
 
@@ -82,11 +82,11 @@ const RenderCell = ({ currentYear, currentMonth , selectDay, listData ,  onClick
             {RenderPrevDate && RenderPrevDate.map(day => <RenderPrevStyle  key={`prev-${day}`}> {day}일</RenderPrevStyle>)}
             {RenderDate.map(day => 
                 {
-                    const confirmDay = `${currentYear}-${currentMonth}-${day}`;
+                    const confirmDay = `${paramYear}-${paramMonth}-${day}`;
                     return (
                         <CalendarDay  
                             className={selectDay === confirmDay && 'active'} 
-                            onClick={()=>onClickSelector(`${currentYear}-${currentMonth}-${day}`)} 
+                            onClick={()=>onClickSelector(`${paramYear}-${paramMonth}-${day}`)} 
                             key={`this-${day}`}>
                                 <span>{day}일</span>
                                 {
@@ -114,32 +114,25 @@ const RenderHeader = () =>{
 }
 
 const RenderNav = ({
-   currentMonth, setCurrentMonth,
-    currentYear, setCurrentYear 
+   paramMonth, paramYear
 }) =>{
     const navigate =useNavigate();
     const {pathname} =useLocation();
 
     // 월 변경 핸들러
     const handleMonthChange = (type) => {
-
+        
         if (type === 'next') {
-            if (currentMonth === 12) {
-                setCurrentYear(+currentYear + 1);
-                setCurrentMonth(1);
-                navigate(`${pathname}?year=${+currentYear + 1}&month=${1}`);
+            if (+paramMonth === 12) {
+                navigate(`${pathname}?year=${+paramYear + 1}&month=${1}`);
             } else {
-                navigate(`${pathname}?year=${+currentYear}&month=${+currentMonth + 1}`);
-                setCurrentMonth(+currentMonth + 1);
+                navigate(`${pathname}?year=${+paramYear}&month=${+paramMonth + 1}`);
             }
         } else {
-            if (currentMonth === 1) {
-                setCurrentYear(+currentYear - 1);
-                setCurrentMonth(12);
-                navigate(`${pathname}?year=${+currentYear - 1}&month=${12}`);
+            if (+paramMonth === 1) {
+                navigate(`${pathname}?year=${+paramYear - 1}&month=${12}`);
             } else {
-                setCurrentMonth(+currentMonth - 1);
-                navigate(`${pathname}?year=${+currentYear}&month=${+currentMonth - 1}`);
+                navigate(`${pathname}?year=${+paramYear}&month=${+paramMonth - 1}`);
             }
         }
        
@@ -147,10 +140,10 @@ const RenderNav = ({
 
     return(
         <>
-               {currentYear}년
+               {paramYear}년
                 <button onClick={() => handleMonthChange('prev')}>prev</button>
                 <button onClick={() => handleMonthChange('next')}>next</button>
-            <h1>{currentMonth}월</h1>
+            <h1>{paramMonth}월</h1>
         </>
     )
 }
@@ -160,13 +153,9 @@ export default function Calendar({
     selectDay , 
     listData , 
     setSelectDay,
-    currentYear,
-    setCurrentMonth,
-    currentMonth,
-    setCurrentYear
+    paramYear,
+    paramMonth
 }) {
-
-
 
     const onClickSelector = (day) =>{
         setSelectDay(day);
@@ -178,10 +167,8 @@ export default function Calendar({
 
                 {/* Clanedar Nav */}
                 <RenderNav
-                    currentMonth={currentMonth}
-                    setCurrentMonth={setCurrentMonth}
-                    currentYear={currentYear}
-                    setCurrentYear={setCurrentYear}
+                    paramMonth={paramMonth}
+                    paramYear={paramYear}
                 />
 
                 {/* Calenader Header */}
@@ -191,11 +178,11 @@ export default function Calendar({
 
                 {/* Calenader Body */}
                 <RenderCell
-                    currentYear={currentYear}
-                    currentMonth={currentMonth}
                     onClickSelector={onClickSelector}
                     selectDay={selectDay}
                     listData={listData}
+                    paramYear={paramYear}
+                    paramMonth={paramMonth}
                 />
              
                 
