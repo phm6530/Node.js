@@ -28,9 +28,15 @@ const DashBoardStyle = styled.div`
                     }
             case 'Calendar' :
                 if(props.$DarkMode){
-                        return css`background: url(/img/calendar/bg_calendar.jpg);`
+                        return css`background: url(/img/project/bg_darkmode.jpg);`
                     }else{
-                        return css`background: url(/img/calendar/bg_calendar.jpg);`
+                        return css`background: url(/img/project/bg.jpg);`
+                    }
+            case 'Contact' :
+                if(props.$DarkMode){
+                        return css`background: url(/img/project/bg_darkmode.jpg);`
+                    }else{
+                        return css`background: url(/img/project/bg.jpg);`
                     }
             default :
                 return ''

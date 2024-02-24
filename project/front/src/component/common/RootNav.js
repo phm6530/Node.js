@@ -54,6 +54,7 @@ export default function RootNav({ChangePageHandler}){
         { path : '/todoCalnder' , pathName : 'MY Calendar' , AuthPage : false },
         { path : '/Board' , pathName : 'Board' , AuthPage : false },
         { path : '/admin' , pathName : 'Admin' , AuthPage : true },
+        { path : '/contact' , pathName : 'contact' , AuthPage : false },
     ]
 
     const openLoginPopup = () => setLoginModal(true);

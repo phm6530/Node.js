@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { useMutation , useQueryClient} from 'react-query';
 import { useDispatch } from 'react-redux';
-import { TodaySeletor } from './TodaySeletor'; 
 import { useSearchParams } from 'react-router-dom';
 
 // 커스텀훅 or 팝업창 or redux-Trunk
@@ -15,6 +14,8 @@ import Confirm from '../../../component/ui/Confirm';
 import { fetchEditSchedule , fetchDeleteSchedule, fetchToggleComplete } from '../ScheduleFetch';
 import { useAuthCheck } from '../../../component/common/AuthClientCheck';
 import { Button } from '../../../component/ui/Button';
+import { TodaySeletor , dayFormetting } from './TodaySeletor'; 
+
 
 // icon
 import { FaTrashAlt } from "react-icons/fa";
@@ -62,10 +63,24 @@ const TextArea = styled.textarea`
 `
 
 const ButtonNavWrap = styled.div`
-    
-
     border-radius: 1em;
     color: #fff;
+`
+
+const ImportantStyle = styled.span`
+    font-size: 12px;
+    margin-top: 2px;
+    img{
+        width: 17px;
+        margin-right: 10px;
+        filter: drop-shadow(2px 4px 4px rgba(0, 0, 0, 0.3));
+    }
+`
+
+const DayStyle = styled.span`
+    font-weight: bold;
+    font-size: 30px;
+    color:#fff;
 `
 
 const ListHandler = ({ idx ,selectWork , setSelectWork , ScheduleItem}) =>{
@@ -74,7 +89,7 @@ const ListHandler = ({ idx ,selectWork , setSelectWork , ScheduleItem}) =>{
     const [ modal , setModal ] = useState(false);
     const [ deleteKey , setDeleteKey ] = useState(null);
     const [ textAreaHeight , setTextArerHeight ] = useState(ScheduleItem.work.split(/\r\n|\r|\n/).length);
-    const { schedule_key , complete } = ScheduleItem;
+    const { schedule_key , complete ,important } = ScheduleItem;
     const dispatch = useDispatch();
     const queryClient = useQueryClient();
 
@@ -166,14 +181,17 @@ const ListHandler = ({ idx ,selectWork , setSelectWork , ScheduleItem}) =>{
             $complete={complete}
         >  
             <CompleteHandler onClick={()=>onToggleHandler(schedule_key)}>{idx + 1}.</CompleteHandler>
-            
+            {important === 1 && <ImportantStyle>
+                    <img src='/img/calendar/important.png' alt=''></img>
+                </ImportantStyle>}
             <FormStyle onSubmit={handleSubmit(onEditHandler)}>
             
                 <TextArea 
-                    rows={textAreaHeight}
                     {...register('work' , { required : '빈칸은 입력 불가합니다.' })} 
+
+                    rows={textAreaHeight}
                     readOnly={ScheduleItem.schedule_key !== selectWork}
-                    onChange={(e)=>setTextArerHeight(e.target.value.split(/\r\n|\r|\n/).length)}
+                    onChange={(e)=>{setTextArerHeight(e.target.value.split(/\r\n|\r|\n/).length); console.log(e.target.value.length)}}
                 />
 
                 {ScheduleItem.schedule_key === selectWork && <button type='submit'>확인</button>}
@@ -192,6 +210,10 @@ const ListHandler = ({ idx ,selectWork , setSelectWork , ScheduleItem}) =>{
 const ScheduleList = ({selectDay , listData}) =>{
 
     const [ selectWork , setSelectWork ] = useState(null);
+
+    // const test  = dayFormetting();
+    // console.log('selectDay ::: ', listData && listData[test(selectDay)]);
+
     const filterArr = [];
     for(const date in listData){
         const formattedSelectDay = new Date(selectDay).toDateString();
@@ -201,6 +223,12 @@ const ScheduleList = ({selectDay , listData}) =>{
         }
     }
 
+    const test = filterArr.sort((a,b) => {
+        return b.important - a.important;
+    });
+    console.log(test);
+
+    
 
     return(
         <>  
@@ -212,7 +240,8 @@ const ScheduleList = ({selectDay , listData}) =>{
                 </FadeinComponent>
             )}
 
-            {filterArr.map((Schedule,idx)=>{
+            {filterArr.map((Schedule ,idx)=>{
+                
                 return <FadeinComponent position={'right'} key={Schedule.schedule_key}>
                         <ListHandler
                             idx={idx}
@@ -225,6 +254,7 @@ const ScheduleList = ({selectDay , listData}) =>{
         </>
     )
 }
+       
 
 export default function Schedule({ 
     selectDay , 
@@ -241,12 +271,18 @@ export default function Schedule({
             month : today().split('-')[1]
         })
     }
-
+    
     return (
         <ScheduleWrap>
             <ButtonNavWrap>
                 <Button.ForsquareBtn onClick={()=>todayButton()}>ToDay</Button.ForsquareBtn>
+                <Button.ForsquareBtn onClick={()=>todayButton()}>D-day 설정</Button.ForsquareBtn>
+                <Button.ForsquareBtn onClick={()=>todayButton()}>일정 변경</Button.ForsquareBtn>
             </ButtonNavWrap>
+
+            <DayStyle>                
+                {selectDay.replaceAll('-','. ')}
+            </DayStyle>
             <ScheduleList
                 listData={listData}
                 selectDay={selectDay} //업로드해야할 날짜

@@ -27,7 +27,6 @@ const ButtonTypeSubmit = styled.button`
         box-shadow: 3px 1px 17px rgba(255, 255, 255, 0.8), 1px -1px 4px rgba(48, 59, 73, 0.24);
     
     }
-
   `
 
   const ForsquareBtnStyle = styled.button`
@@ -44,8 +43,6 @@ const ButtonTypeSubmit = styled.button`
     &:active{
         box-shadow: 0px 15px 15px rgba(0,0,0,0.0);
     }
-
-
   `
 const Type = ({children , ...props}) =>{
     return(

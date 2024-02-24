@@ -10,3 +10,18 @@ export const TodaySeletor = () =>{
     return TodayCalculater;
 }
 
+export const dayFormetting = () =>{
+    const dayCalculater = (target) =>{
+        const date = new Date(target);    
+        const Year = String(date.getFullYear());
+        const Month = String(date.getMonth() + 1);
+        const Day = date.getDate();
+
+        const monthPad = Month.padStart(2, '0');
+        return `${Year}-${monthPad}-${Day}`
+    } 
+    return dayCalculater;
+}
+
+
+

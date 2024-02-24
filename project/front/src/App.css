@@ -104,7 +104,7 @@ body {
 }
 
 .loaded {
-  animation: 0.4s ease load forwards;
+  animation: 0.4s 0.1s ease load forwards;
   opacity: 0;
 }
 

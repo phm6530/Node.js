@@ -226,7 +226,6 @@ const RenderNav = ({
 
     // 월
     const monthArr = ['January' , 'February', 'March' , 'April' , 'May' ,'June', 'July' , 'August' ,'September' ,'October' , 'November' ,'December'];
-    console.log(+paramMonth - 1);
     return(
                 <CalendarNavWarp>
                         <button onClick={() => handleMonthChange('prev')}>

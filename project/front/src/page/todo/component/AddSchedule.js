@@ -9,8 +9,9 @@ import styled from 'styled-components';
 import { TextAreaStyle } from '../../../component/ui/TextArea';
 import { Button } from '../../../component/ui/Button';
 
+
 const AddScheduleFormStyle = styled.form`
-    padding: 10px;
+    padding: 10px 0;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -32,13 +33,16 @@ const ErrorStyle = styled.div`
 `
 
 const AddSchedule = ({selectDay}) =>{
-    const { register,  handleSubmit , reset, formState : {errors}} = useForm({
+    const {  register,  handleSubmit , reset, formState : { errors } } = useForm({
         defaultValues : {
-            Schedule_title : ''
+            Schedule_title : '',
+            Schedule_important : false
         }
     });
+    // console.log('errors : ',errors);
     const { clientAuthCheck }= useAuthCheck();
     const dispatch = useDispatch();
+
     const queryclient = useQueryClient();
 
 
@@ -53,21 +57,43 @@ const AddSchedule = ({selectDay}) =>{
         }
     });
 
+
     const AddScheduleHandler = async(formData) => {
-        console.log(formData);
+        console.log('formData:',   formData);
         const rquestData = {
             schedule_date : selectDay,
             work: formData.Schedule_title,
-            schedule_key : uuidv4()
+            important: formData.Schedule_important,
+            schedule_key : uuidv4(),
+
         }
         if(!clientAuthCheck('입력')) return;
         
         mutation.mutate(rquestData);
     }
 
+
+
+    // 카테고리
+    const ScheduleCategory = [
+        '일반',
+        'React',
+        '자격증'
+    ];
+
+
     return(
         <>
             <AddScheduleFormStyle onSubmit={handleSubmit(AddScheduleHandler)}>
+
+                <label>
+                    <input 
+                        {...register('Schedule_important')}
+                        type="checkbox" 
+                    />중요!
+                </label>
+                
+                
                 <TextAreaStyle {...register('Schedule_title' , {
                         required : '추가하실 일정을 입력해주세요!',
                         maxLength : {
@@ -77,6 +103,7 @@ const AddSchedule = ({selectDay}) =>{
                     })}/>
                 <Button.Submit>입력하기</Button.Submit>
             </AddScheduleFormStyle>
+            {errors.Schedule_Category && <ErrorStyle>{errors.Schedule_Category.message}</ErrorStyle>}
             {errors.Schedule_title && <ErrorStyle>{errors.Schedule_title.message}</ErrorStyle>}
         </>
     )

@@ -71,36 +71,41 @@ const FormInputDiv = styled.div`
 const InputReply = forwardRef((fields ,ref)=>{
   const {darkMode} = useContext(DarkMode); 
   const { setValue } = useFormContext();
-  const { isAuth , ...props } = fields;
+  const { isAuth , label, error, ...props } = fields;
 
-
+    console.log({...props});
     useEffect(() => {
         if (isAuth) {
             setValue(props.name, '관리자'); // 'name' 필드에 '관리자' 값을 설정
         }
     }, [isAuth, props.name, setValue]);
 
-    const {label , error  } =fields;
-
-
     return(
         <>  
             <FormInputDiv
                 $darkMode={darkMode}
-                $error={error}
             >
                 <span>{label}</span>
 
                 {
                     
                     fields.type === 'textarea' ?
-                    <TextAreaStyle {...props}/> : <InputStyle {...props} ref={ref}
-                    type={fields.name === 'password' ? 'password' : 'text'}
-                    autoComplete='off'
+
+                    <TextAreaStyle 
+                        $error={error}
+                        {...props}    
+                    /> 
                     
-                    // {isAuth && (value = '관리자')}
-                    disabled={isAuth}
-                />
+                    : 
+                    
+                    <InputStyle 
+                        $error={error}
+                        ref={ref}
+                        type={fields.name === 'password' ? 'password' : 'text'}
+                        autoComplete='off'
+                        disabled={isAuth}
+                        {...props} 
+                    />
                 }
 
            

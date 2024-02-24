@@ -61,12 +61,13 @@ export default function AddProject(){
     const ProjectKey = Params.get('key');
 
     useEffect(()=>{
+
         const fetching = async() =>{
             return await projectEdit(ProjectKey);
         }
+
         if(Type === 'edit'){
             fetching().then(res => {
-                console.log(res);
                 reset({
                     key : res.project_key,
                     title : res.title,
@@ -82,6 +83,7 @@ export default function AddProject(){
                 dispatch(alertThunk(error.message , 0))
             })
         }
+
     },[ProjectKey  , Type , dispatch , reset ]);
 
 

@@ -39,6 +39,7 @@ import AuthComponent from './component/common/AuthComponent';
 import Test from './test';
 import Animation from './Animation';
 import ErrorRoot from './component/Errorpage/ErrorRoot';
+import Contact from './page/contact/Contact';
 
 
 
@@ -104,9 +105,8 @@ const router = createBrowserRouter([
           element : <Test/> ,   
           
         }  ,{
-          path : '/ani',
-          element : <Animation/> ,   
-          
+          path : '/contact',
+          element : <Contact/>
         }
     ]
   }
