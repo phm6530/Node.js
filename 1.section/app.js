@@ -1,12 +1,13 @@
 const express = require('express'); // express 라이브러리 로드
 const cors = require('cors'); // cors 검토
+require('dotenv').config();
 
 // Notice
 const boardRouter = require('./page/notcie'); // Board
 const projectRouter = require('./page/project'); //프로젝트
 const scheduleRouter = require('./page/schedule'); //스케줄
 const authRouter = require('./page/authRouter'); //login logout 로직
-
+const mailModuleRouter = require('./page/mailModule');// 메일보내기
 
 const app = express();
 // console.log('암호키 : ',jwtSecret);
@@ -21,6 +22,7 @@ app.use('/board' , boardRouter);
 app.use('/project' , projectRouter);
 app.use('/schedule' ,scheduleRouter);
 app.use(authRouter);
+app.use('/mailModule', mailModuleRouter);
 
 
 

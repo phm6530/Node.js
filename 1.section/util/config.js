@@ -1,5 +1,5 @@
 const mysql = require('mysql2');
-require('dotenv').config();//.env 파일 읽기
+//.env 파일 읽기
 
 const db = mysql.createConnection({
     host: process.env.DB_HOST,

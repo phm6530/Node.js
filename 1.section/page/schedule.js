@@ -12,7 +12,7 @@ db.query = util.promisify(db.query);
 router.get('/' , async(req,res, next ) =>{   
     try{
         const sql = `SELECT id , work , complete , schedule_key , 
-        DATE_FORMAT(schedule_date, '%Y-%m-%d') AS formatted_date FROM schedules 
+        DATE_FORMAT(schedule_date, '%Y-%m-%d') AS formatted_date , important  FROM schedules 
         WHERE schedule_date >= '2024-02-01' AND schedule_date < '2024-03-01'`
         const response = await db.query(sql);
         
@@ -24,7 +24,7 @@ router.get('/' , async(req,res, next ) =>{
             }
             restResponseData[data].push(response[item]);
         }
-        
+        // console.log(restResponseData);
         res.json({message : '성공' , restResponseData});
     }catch(error){
         const err = new NotFoundError('에러입니다.');
@@ -34,11 +34,12 @@ router.get('/' , async(req,res, next ) =>{
 
 // insert 
 router.post('/add' , async(req,res, next ) =>{   
-    const {schedule_date , work , schedule_key} = req.body;
+    const {schedule_date , work , schedule_key , important} = req.body;
+    console.log(req.body);
     try{
-        const sql = `insert into schedules(schedule_date , work , schedule_key) 
-        value(?,?, ? )`;
-        const response = await db.query(sql , [schedule_date , work , schedule_key]);
+        const sql = `insert into schedules(schedule_date , work , schedule_key , important) 
+        value(?,?,?,?)`;
+        const response = await db.query(sql , [schedule_date , work , schedule_key , important]);
         res.json({message : 'success' , databaseInsert : response.affectedRows});
     }catch(error){
         const err = new NotFoundError('에러입니다.');
