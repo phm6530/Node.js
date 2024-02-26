@@ -26,6 +26,7 @@ const BoardReplyStyle = styled.div`
     width: 90%;
     background: #e2e6ef;
     padding: 30px;
+    border: .6rem solid rgba(255,255,255,0.4);
     box-shadow: 14px 14px 15px rgb(36 36 36 / 5%);
     `
 

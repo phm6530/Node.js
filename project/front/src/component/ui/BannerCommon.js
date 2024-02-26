@@ -2,12 +2,12 @@ import styled from 'styled-components';
 
 
 const PagePoint = styled.div`
-    background: rgba(0,0,0,0.2);
-    display: flex;
+    background: rgba(0, 0, 0, 0.2);
+    display: inline-flex;
     align-content: center;
-    padding: 10px 10px;
+    padding: 13px 15px;
     align-items: center;
-    width: 150px;
+    /* width: 150px; */
     border-radius: 1em;
     color: #fff;
     img{
@@ -16,9 +16,9 @@ const PagePoint = styled.div`
     }
 `
 
-const BannerPoint = ({children}) =>{
+const BannerPoint = ({ className, children}) =>{
     return(
-        <PagePoint>
+        <PagePoint className={className}>
             {children}
         </PagePoint>
     )

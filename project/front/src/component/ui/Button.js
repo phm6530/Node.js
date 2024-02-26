@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled , {css}from 'styled-components';
 
 const ButtonType = styled.button`
     font-size: 12px;
@@ -8,8 +8,6 @@ const ButtonType = styled.button`
     border-radius: 4em;
 `
 const ButtonTypeSubmit = styled.button`
-    background: linear-gradient(to right, #e2e6ef, #c5cde0);
-    background: #e5e9f2;
     width: 150px;
     height: 50px;
     display: flex;
@@ -18,15 +16,23 @@ const ButtonTypeSubmit = styled.button`
     font-size: 14px;
     cursor: pointer;
     position: relative;
-    box-shadow: -4px -4px 20px rgb(255, 255, 255), 4px 4px 17px rgba(36, 36, 36, 0.26);
     align-items: center;
     justify-content: center;
-    background: linear-gradient(to right, #5e6c89, #35373b);
-    border: 5px solid rgb(255 255 255 / 77%);
-    &:active{
-        box-shadow: 3px 1px 17px rgba(255, 255, 255, 0.8), 1px -1px 4px rgba(48, 59, 73, 0.24);
-    
+    background:linear-gradient(to right, #4f3974, #20242d);
+    ${props => props.$page && 
+        css` 
+        box-shadow:3px 21px 17px rgb(0 0 0 / 20%);  
+        `
     }
+
+    
+    &:active{
+        box-shadow:3px 21px 17px rgb(0 0 0 / 25%);  
+    }
+    &:disabled{
+        opacity: .5;
+    }
+    
   `
 
   const ForsquareBtnStyle = styled.button`
@@ -50,9 +56,13 @@ const Type = ({children , ...props}) =>{
     )
 }
 
-const Submit = ({children , ...props})=>{
+const Submit = ({children , page, disabled , ...props})=>{
     return(
-        <ButtonTypeSubmit {...props}>
+        <ButtonTypeSubmit 
+            $page={page}
+            disabled={disabled} 
+            {...props}
+        >
             {children}
         </ButtonTypeSubmit>
     )

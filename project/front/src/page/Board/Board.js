@@ -125,7 +125,7 @@ const BoardDashBoard = styled.div`
 `
 
 const BoardGrid = styled(Grid)`
-    padding-top: 150px;
+ 
 `
 
 export default function Board(){
@@ -237,7 +237,8 @@ export default function Board(){
                             MY Board
                         </BannerCommon.BannerPoint>
                         
-                        <DashBoardTitle>Guest Book</DashBoardTitle>
+                        <DashBoardTitle>
+                            <b>Guest Book</b></DashBoardTitle>
                         <PageText>
                             <p style={{display:'flex'}}><RiDoubleQuotesL style={{marginRight:'5px' , opacity:'.5'}}/> 남기고 싶은 말씀을 적어주세요 !</p>
                             <p>

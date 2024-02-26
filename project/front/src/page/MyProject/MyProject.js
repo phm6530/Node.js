@@ -18,7 +18,7 @@ import BannerCommon from '../../component/ui/BannerCommon';
 
 const ProjectGrid = styled(Grid)`
     /* transform: translateY(-120px); */
-    padding-top: 150px;
+
 `
 
 const ProjectItemWrap = styled.div`

@@ -19,11 +19,10 @@ import { TodaySeletor } from './component/TodaySeletor';
 import ReactChat from 'react-apexcharts';
 
 const CalenaderGrid = styled(Gird)`
-    padding-top: 150px;
+
 `
 
 const PageSubText = styled.div`
-    color:#fff;
     font-size: 20px;
     margin-bottom: 70px;
     text-shadow: 0px 5px 5px rgba(0,0,0,.4);
@@ -49,9 +48,6 @@ const SummeryStyle = styled.div`
     margin: 0 20px;
 `
 
-const DdayList = styled.div`
-
-`
 
 const DdayItemStyle = styled.div`
     display: flex;
@@ -132,7 +128,6 @@ const StudyTimer = () =>{
                     NextMinit = 0;
                 }
      
-
                 return {...prev , Hour : NextHour , minit : NextMinit , second : NextSeond}
             });
         },1000);

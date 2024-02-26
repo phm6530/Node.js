@@ -68,9 +68,9 @@ export default function RootLayout(){
             <RootNav 
                 ChangePageHandler={ChangePageHandler}
             />
-            <Gird>
+            {/* <Gird>
                 <Timer/>
-            </Gird>
+            </Gird> */}
 
             <PageChange ref={wrapRef} $path={path} className='loaded'>
                     <Outlet/>

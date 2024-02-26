@@ -27,7 +27,7 @@ import Grid from '../../component/ui/Grid';
 
 const AdminGrid = styled(Grid)`
     /* transform: translateY(-120px); */
-    padding-top: 150px;
+
 `
 
 const projectStack = [ 'Node' , 'Next' , 'Css' , 'Html' , 'JavaSciprt' , 'React', 'PHP' , 'MySql', 'Scss' , 'jquery'];
