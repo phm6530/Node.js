@@ -11,12 +11,18 @@ const myMail = nodeMailer.createTransport({
     }
 })
 
-const mailOpt = (user_data, title, contents) => {
+const mailOpt = (who, contents , radioOption ,  yourContact) => {
     const mailOptions = {
       from: process.env.MAIL_ID,
       to: process.env.MAIL_ID,
-      subject: title,
-      text: contents
+      subject: `[${radioOption}] ${who}님의 문의사항`,
+    
+      html : `
+            [${radioOption}]<br>
+            보내신분 : ${who} <br>
+            연락처 : ${yourContact} <br>
+            문의내용  :  ${contents}    <br>
+      `
     };
     return mailOptions;
   }
@@ -31,8 +37,9 @@ const mailOpt = (user_data, title, contents) => {
 
 router.post('/' , async(req , res , next) =>{
     try{
-        const {name , who ,description} = req.body;
-        const mailOption = mailOpt(name , who ,description);
+        const { who ,description , radioOption , yourContact} = req.body;
+        console.log(req.body);
+        const mailOption = mailOpt( who ,description , radioOption , yourContact);
         await sendMail(mailOption);
         res.json({'message' : '성공'});
     }
