@@ -6,16 +6,19 @@ import { InputStyle , TextAreaStyle } from '../../../component/ui/TextArea';
 import ErrorBubble from '../../../component/ui/ErrorBubble';
 
 const FormInputDiv = styled.div`
-    width: 100%;
     border-radius: 10px;
     font-size: 14px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     display: flex;
     position: relative;
     flex-direction: column;
-
+    margin-right: 15px;
+    /* &:last-child{
+        margin-bottom: 0;
+    } */
     textarea{
-        min-height: 150px;
+        width: 100%;
+        min-height: 10px;
     }
     input:focus, textarea:focus {
         /* outline : 1px solid red; */
@@ -37,7 +40,6 @@ const InputReply = forwardRef((fields ,ref)=>{
   const { setValue } = useFormContext();
   const { isAuth , label, error, ...props } = fields;
 
-    console.log({...props});
     useEffect(() => {
         if (isAuth) {
             setValue(props.name, '관리자'); // 'name' 필드에 '관리자' 값을 설정

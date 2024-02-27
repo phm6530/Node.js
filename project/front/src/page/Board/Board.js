@@ -17,44 +17,40 @@ import { useForm , FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup'; // Yup + form hook 연동
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-import Grid from '../../component/ui/Grid';
+import Grid, { HeaderGird } from '../../component/ui/Grid';
 import alertThunk from '../../store/alertTrunk';
-import { RiDoubleQuotesL } from "react-icons/ri";
+// import { RiDoubleQuotesL } from "react-icons/ri";
 
 import StackIcon from '../../component/icon/StackIcon';
 import DashBoard from '../../component/ui/DashBoard';
 import DashBoardTitle from '../../component/ui/DashBoardTitle';
+import SubTitle   from '../../component/ui/Subtitle';
 
-const BoardStyle = styled.div`
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    /* padding-top: 200px; */
-    /* transform: translateY(-120px); */
+
+
+const FlexDelction = styled.div`
+    
 `
 
+
 const BoardReplyStyle = styled.div`
-/* border: 3px solid #fff; */
     width: 45%;
-    left: 55%;
-    position: absolute;
+    position: relative;
     border-radius: 1em;
-    background: #e2e6ef;
-    overflow: hidden;
     height: 100%;
-    padding: 40px 0 0;
-    box-shadow: 0px 5px 20px rgb(67 27 16 / 18%);
+    /* padding: 26px 0 0; */
+
+
 `
 
 const ReplyWrapHeader = styled.div`
-    background: -webkit-linear-gradient(to right, #000000, #2d3f60);
-    
-    background: linear-gradient(to right, #000000, #2d3f60);
+    background: -webkit-linear-gradient(to right, #2c383f, #363232);
+    background: linear-gradient(to right, #2c383f, #363232); 
     position: absolute;
     width: 100%;
     top: 0;
     z-index: 1;
-    box-shadow: 0px 5px 20px rgb(67 27 16 / 18%);
+    border-radius: 1em 1em 0 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -75,29 +71,23 @@ const ReplyWrapHeader = styled.div`
 `
 
 const PageText = styled.div`
-    width: 90%;
     word-break: keep-all;
-    margin-top: 20px;
-    margin-bottom: 50px;
+    /* margin-top: 20px; */
+    margin-bottom: 20px;
+    color: #222;
 
     p{
         line-height: 1.7em;
-        color:#fff;
     }
-    p:first-child{
-        font-size: 20px;
-        letter-spacing: -.5px;
-        margin-bottom: 10px;
-        color: #f3f3f3;
-        text-shadow: 0px 2px 5px rgb(0 0 0);
+    span{
+        font-size: 16px;
     }
-    p:nth-child(2){
+    /* p:nth-child(2){
         font-size: 16px;
         line-height: 1.9em;
-        margin-left: 25px;
         letter-spacing: -.2px;
-        color: #dae5ff;
-    }
+
+    } */
 `
 
 const ReplyHeaderPoint = styled.div`
@@ -121,11 +111,56 @@ const ReplyHeaderPoint = styled.div`
 `
 
 const BoardDashBoard = styled.div`
-    width: 55%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 `
 
 const BoardGrid = styled(Grid)`
- 
+    display: flex;
+    padding-top: 80px;
+    align-items: flex-start;
+    justify-content: space-between;
+`
+
+const RightWrap = styled.div`
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+`
+
+const CurruntReplyState = styled.div`
+        display: flex;
+        margin-bottom: 30px;
+        .currentReply{
+             /* background: red; */
+            /* border: 2px solid rgba(0, 0, 0, 0.2); */
+            /* padding: 5px 10px; */
+            font-size: 12px;
+            /* border: 1px solid #e930cc40; */
+            font-weight: bold;
+            border-radius: 4em;
+            margin-right: 10px;
+            /* border-bottom: 1px solid #c800ff4f; */
+            background: #e6e6e6;
+            color: #fff;
+            background: linear-gradient(to right, #5993b5, #363232);
+            background: linear-gradient(to left, #a35d5d, #6a5f86, #f84f9e);
+            color: transparent;
+            background-clip: text;
+
+            span{
+                color: transparent;
+                display: inline-block;
+                margin-left: 10px;
+            }
+        }
+`
+
+const ContentsWraps = styled.div`
+    display: flex;
+    flex-direction: column;
 `
 
 export default function Board(){
@@ -223,66 +258,103 @@ export default function Board(){
 
     return(
         <>  
-        {/* formProvider */}
+      
+        {/* Header */}
+        <DashBoard page={'board'}>
+            <HeaderGird>
+                <BannerCommon.BannerPoint>
+                        <img src="img/board.png" alt="board" />MY Board
+                </BannerCommon.BannerPoint>
+                            
+                <DashBoardTitle><b>Guest Book</b></DashBoardTitle>
+            </HeaderGird>
+        </DashBoard>
 
-        
-       
-                <DashBoard page={'board'}/>
+    
+  {/* formProvider */}
+                
                 <BoardGrid>
-                    <BoardStyle>
-                        <BoardDashBoard>
-
-                        <BannerCommon.BannerPoint>
-                            <img src="img/board.png" alt="board" />
-                            MY Board
-                        </BannerCommon.BannerPoint>
+                    {/* <CommonNav/> */}
                         
-                        <DashBoardTitle>
-                            <b>Guest Book</b></DashBoardTitle>
-                        <PageText>
-                            <p style={{display:'flex'}}><RiDoubleQuotesL style={{marginRight:'5px' , opacity:'.5'}}/> 남기고 싶은 말씀을 적어주세요 !</p>
-                            <p>
-                                <b>IntersectionObserver</b>로 구현한 <b>'Infinity Scroll'</b> 형식의 방명록입니다.<br></br>
-                               
-                                입력하시는 비밀번호는 단순 삭제용도의 비밀번호이며  <StackIcon.Node style={{backgroundColor: "#fff"}} label={'Node.js'}/>의 <b>brycpt</b>를 이용하여 암호화 저장하고 있으며 해싱된 비밀번호 이외 어떠한 정보도 수집하지 않습니다.
-                            </p>
-                        </PageText>
+
+
+
+                    <RightWrap>                
+                            <BoardDashBoard>
+                                <FlexDelction>
+                                    <SubTitle>
+                                        {/* <img src="/img/board/talk.png" alt="dev_icon" className='dev_icon'/> */}
+                                        <div className="subText">
+                                            My PortPolio Board<br></br>
+                                            남기고 싶은 말씀을 적어주세요 !
+                                        </div>
+                                    </SubTitle>
+                                    
+
+                                  
                         
-                        {/* Form */}
-                        <FormProvider {...formMethod}>
-                            <BoardReplyForm  
-                                onSubmitHandlr={onSubmitHandlr}
-                            />
-                        </FormProvider>
-                        </BoardDashBoard>
 
-                        <BoardReplyStyle>
+                                    <PageText>
+                                        <p>
+                                            <span>
+                                                {/* <StackIcon.Node style={{backgroundColor: "#fff"}} label={'Node.js'}/> */}
+                                                의 brycpt를 
+                                            이용하여 암호화 저장하고 있으며 해싱된 비밀번호 이외 어떠한 정보도 수집하지 않습니다.</span>
+                                        </p>
+                                    </PageText>
+                                 
+                                    
+                                </FlexDelction>
+                            <ContentsWraps>
+                                <CurruntReplyState>
+                                        <div className="currentReply">오늘 작성된 댓글 1 <span>/</span></div>
+                                        
+                                        <div className="currentReply">전체 댓글 1</div>
+                                    </CurruntReplyState>
+                              {/* Form Provider */}
+                                <FormProvider {...formMethod}>
+                                    <BoardReplyForm  
+                                        onSubmitHandlr={onSubmitHandlr}
+                                    />
+                                </FormProvider>
+                                </ContentsWraps>
+                                
+                            </BoardDashBoard>
+                            <BoardReplyStyle>
+                        <ReplyWrapHeader>
+                            <ReplyHeaderPoint>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </ReplyHeaderPoint>
 
-                            <ReplyWrapHeader>
-                                <ReplyHeaderPoint>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </ReplyHeaderPoint>
-                 
-                                <span>Total {total}</span>
-                            </ReplyWrapHeader>
+                            <span>Total {total}</span>
+                        </ReplyWrapHeader>
+                            
+                       
 
-                            {/* view or Page */}
-                                {userData && 
-                                    <BoardView
-                                        board={userData}
-                                        moreData={moreData}
-                                        setUserData={setUserData}
-                                        setLastPageIdx={setLastPageIdx}
-                                    /> }
-                            {/* {isLoading && 'loading....'} */}
-                            {(!isLoading && isError) && 'error'}
-                            {/* <ReplyWrapHeader>
-                                <span>Total {total}</span>
-                            </ReplyWrapHeader> */}
+
+                        {/* view or Page */}
+                            {userData && 
+                                <BoardView
+                                    board={userData}
+                                    moreData={moreData}
+                                    setUserData={setUserData}
+                                    setLastPageIdx={setLastPageIdx}
+                                /> }
+                        {/* {isLoading && 'loading....'} */}
+                        {(!isLoading && isError) && 'error'}
+                        {/* <ReplyWrapHeader>
+                            <span>Total {total}</span>
+                        </ReplyWrapHeader> */}
                         </BoardReplyStyle>
-                    </BoardStyle>
+                  
+
+
+
+                    </RightWrap>
+               
+                  
                 </BoardGrid>
 
 

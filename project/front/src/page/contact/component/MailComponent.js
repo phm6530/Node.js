@@ -4,23 +4,20 @@ import { useForm , Controller } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import alertThunk from '../../../store/alertTrunk';
 
+import alertThunk from '../../../store/alertTrunk';
 import Loading from '../../../component/common/animation/Loading';
 import ErrorBubble from '../../../component/ui/ErrorBubble';
+import SubTitle from '../../../component/ui/Subtitle';
 import { Button } from '../../../component/ui/Button';
 import { FaCheck } from "react-icons/fa";
-import ContactButtons from './ContactButtons';
 
 const FormStyle = styled.form`
     display: flex;
     flex-direction: column;
     width: 100%;
     align-items: flex-start;
-    .subText{
-        font-size: 30px;
-        line-height: 1.1em;
-    }
+
     input , textarea{
         width: 100%;
     }
@@ -38,7 +35,7 @@ const FormStyle = styled.form`
 
 const FieldLabel = styled.div`
     font-weight: bold;
-    margin-bottom: .4rem;
+    margin-bottom: .5rem;
       span{
             font-size: 12px;
             opacity: .5;
@@ -59,7 +56,7 @@ const ani = keyframes`
 
 const ContactContents = styled.div`
     opacity: 0;
-    margin-left: 50px;
+    margin-left: 100px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -90,18 +87,9 @@ const RadioLabel = styled.label`
         ${props => props.$check && 'color : #fff;'}
             
     }
-    ${({ $check }) => $check ? `
-        border: 2px solid #000;
+    ${({ $check }) => $check && `
         background: #000;
-        svg{
-            opacity: 1;
-            color: #fff;
-        }
-    ` 
-    : 
-    `   
-        
-    `
+        svg{opacity: 1;color: #fff;}` 
     };
 `
 
@@ -112,15 +100,7 @@ const RadioWrap = styled.div`
 
 `
 
-const SubTitle = styled.div`
-    display: flex;
-    align-items: center;
-    margin-bottom: 2.5rem;
-    img{
-        width: 35px;
-        margin-right: 10px;
-    }
-`
+
 
 
 export default function MailComponent(){
@@ -137,7 +117,7 @@ export default function MailComponent(){
             radioOption : '일반 문의'
         });
         setRadioIdx(0)
-    },[]);
+    },[reset]);
 
     const Radio = ['일반 문의','뉴스레터' , '유지보수' , '홍보 페이지 제작' , '기타']
 
@@ -184,9 +164,7 @@ export default function MailComponent(){
                             <span className='subText'>말이 통하는 개발자, 박현민입니다.</span>
                         </SubTitle>
                         <RadioWrap>
-              
-
-
+            
                             <FieldLabel>문의내용 * <span>해당 문의사항은 메일로 전달됩니다.</span></FieldLabel>
                             <Controller
                                 name='radioOption'
@@ -223,12 +201,28 @@ export default function MailComponent(){
                                 placeholder='보내시는 분'
                                 type="text"  
                                 {...register('who' , {
-                                required : '회신 받으실 연락처를 적어주세요'
+                                required : '성함이나 회사명을 입력해주세요.'
                                 })}
                                 $error={errors.who}
                             /> 
                             {errors.who &&  <ErrorBubble>{errors.who.message}</ErrorBubble> }
                         </InputMargin>
+
+                        <InputMargin>
+                            <FieldLabel>회신 받으실 연락처*</FieldLabel>
+                            <InputStyle 
+                                $type={'contact'}
+                                placeholder='보내시는 분'
+                                type="text"  
+                                {...register('yourContact' , {
+                                required : '회신 받으실 연락처를 적어주세요~'
+                                })}
+                                $error={errors.yourContact}
+                            /> 
+                            {errors.yourContact &&  <ErrorBubble>{errors.yourContact.message}</ErrorBubble> }
+                        </InputMargin>
+
+
 
                         <InputMargin>
                         <FieldLabel>내용 *</FieldLabel>

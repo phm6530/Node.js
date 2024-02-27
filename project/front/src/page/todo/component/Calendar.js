@@ -195,11 +195,6 @@ const RenderHeader = () =>{
 
 
 
-const NavWrap = styled.div`
-
-`
-
-
 const RenderNav = ({
    paramMonth, paramYear
 }) =>{

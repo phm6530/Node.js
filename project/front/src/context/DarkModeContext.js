@@ -6,7 +6,7 @@ const DarkMode = createContext()
 
     const GlobalStyle = createGlobalStyle`
         body{
-            ${props => props.darkMode ? `background: #141414;` : `background: #fff; `}
+            ${props => props.darkMode ? `background: #222;` : `background: #fff; `}
             ${props => props.transition ? '' : `transition: background 1.6s  cubic-bezier(0, 0.88, 0, 1.03)`}
         }   
         

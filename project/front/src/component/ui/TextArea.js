@@ -5,7 +5,7 @@ const InputStyle = styled.input`
     border-radius: .5em;
     background: #f9fafb;
     border: 1px solid #2f2f2f26;
-    ${props => props.$error && `border: 1px solid #ff6f6f;`}
+    ${props => props.$error && `border: 1px solid #ffcece;;`}
 `
 
 const TextAreaStyle = styled.textarea`
@@ -13,7 +13,7 @@ const TextAreaStyle = styled.textarea`
     border-radius: .5em;
     background: #f9fafb;
     border: 1px solid #2f2f2f26;
-    ${props => props.$error && `border: 1px solid #ff6f6f;`}
+    ${props => props.$error && `border: 1px solid #ffcece;`}
 `
 
 

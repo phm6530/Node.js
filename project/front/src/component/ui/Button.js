@@ -8,7 +8,7 @@ const ButtonType = styled.button`
     border-radius: 4em;
 `
 const ButtonTypeSubmit = styled.button`
-    width: 150px;
+    width: 120px;
     height: 50px;
     display: flex;
     color: #fff;
@@ -18,7 +18,8 @@ const ButtonTypeSubmit = styled.button`
     position: relative;
     align-items: center;
     justify-content: center;
-    background:linear-gradient(to right, #4f3974, #20242d);
+    background:linear-gradient(to right, #72638d, #4f6494);
+    box-shadow:3px 21px 17px rgb(0 0 0 / 25%); 
     ${props => props.$page && 
         css` 
         box-shadow:3px 21px 17px rgb(0 0 0 / 20%);  
@@ -27,7 +28,7 @@ const ButtonTypeSubmit = styled.button`
 
     
     &:active{
-        box-shadow:3px 21px 17px rgb(0 0 0 / 25%);  
+        box-shadow:3px 21px 17px rgb(0 0 0 / 30%);  
     }
     &:disabled{
         opacity: .5;
@@ -56,10 +57,10 @@ const Type = ({children , ...props}) =>{
     )
 }
 
-const Submit = ({children , page, disabled , ...props})=>{
+const Submit = ({children ,  disabled , ...props})=>{
     return(
         <ButtonTypeSubmit 
-            $page={page}
+            // $page={page}
             disabled={disabled} 
             {...props}
         >

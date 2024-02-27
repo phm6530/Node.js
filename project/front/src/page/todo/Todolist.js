@@ -16,7 +16,7 @@ import { scheduleFetch } from './ScheduleFetch';
 import { TodaySeletor } from './component/TodaySeletor';
 
 //그래프
-import ReactChat from 'react-apexcharts';
+// import ReactChat from 'react-apexcharts';
 
 const CalenaderGrid = styled(Gird)`
 

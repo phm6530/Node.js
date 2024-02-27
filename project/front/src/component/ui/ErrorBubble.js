@@ -25,17 +25,20 @@ const ErrorStyle = styled.div`
         font-weight: bold;
         box-shadow: 0px 15px 15px rgba(0,0,0,0.2);
         opacity: 0;
+        border:  1px solid #ff1818;
         animation: ${errorAnimation} .2s ease forwards;
         &:after{
-            position: absolute;
             content: "";
+            position: absolute;
             display: block;
             width: 10px;
             height: 10px;
-            bottom: -5px;
+            bottom: -6px;
             z-index: 0;
+            border-bottom: 1px solid red;
+            border-right: 1px solid red;
             left: 40px;
-            background:#fff;
+            background: #fff;
             transform: rotate(45deg);
         }
 `
