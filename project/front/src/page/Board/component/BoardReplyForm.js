@@ -21,10 +21,12 @@ const checkAnimtaion = keyframes`
 `
 
 const BoardReplyStyle = styled.div`
-    border-radius: 1em;
+border-radius: 1em;
     display: flex;
     position: relative;
-    margin-bottom: 50px;
+    /* margin-bottom: 50px; */
+    background: #fafafa;
+    padding: 20px 20px;
         .InputWrap{
             flex-grow: 1;
             width: 100%;
@@ -72,7 +74,7 @@ const RadioStyle = styled.label`
             height: 17px;
             border-radius: 2em;
             top: -7px;
-            background:#52bea6;
+            background:#994ed2;
             border: 2px solid #fff;
             animation: ${checkAnimtaion} .5s ease;
         }
@@ -86,6 +88,7 @@ const RadioStyle = styled.label`
 const RadioWrap = styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 10px 20px;
     
     border-radius: 1em;
@@ -95,7 +98,7 @@ const RadioWrap = styled.div`
     left: 0;
     top: -4em;
     border: 3px solid #ffffff4f;
-    background: #f7f7f7;
+    background: #f2f2f2;
     box-sizing: border-box;
 `
 
@@ -145,24 +148,22 @@ const Label = styled.span`
     
 `
 
-const IdPasswordWrap = styled.div`
-    width: 100%;
-    
-    display: flex;
-`
+
 
 const UserIconViewer = styled.div`
-        padding: 10px ;
         margin-right: 10px;
         display: flex;
         flex-direction: column;
         align-items: center;
+        border-right: 1px solid #dddddd;
+        padding-right: 1rem;
         button{
             background: rgba(0,0,0,0.1);
             font-size: 12px;
             padding: 3px 17px;
             margin-top: 10px;
             border-radius: 3em;
+            color: #222;
         }
         .ImgArea{
             width: 70px;
@@ -177,6 +178,43 @@ const UserIconViewer = styled.div`
         }
 `
 
+const CurruntReplyState = styled.div`
+        display: flex;
+        margin-bottom: 1rem;
+        .currentReply{
+            font-size: .8rem;
+            margin-left: 1rem;
+            font-weight: bold;
+            border-radius: 4em;
+            margin-right: 10px;
+            background: #e6e6e6;
+            color: #fff;
+            background: linear-gradient(to left, #a35d5d, #6a5f86, #5262a8);
+            color: transparent;
+            background-clip: text;
+            position: relative;
+            margin-right: 2rem;
+            &:after{
+                position: absolute;
+                content: "";
+                left: -1rem;
+                top:50%;
+                transform: translateY(-50%);
+                width: 6px;
+                height: 6px;
+                border-radius: 3em;
+                background: #606095;
+            }
+            span{
+                color: transparent;
+                display: inline-block;
+                margin-left: 10px;
+            }
+        }
+`
+
+
+
 export default function BoardReplyForm({
     onSubmitHandlr,
     control
@@ -190,13 +228,7 @@ export default function BoardReplyForm({
     return(
         <BoardReplyStyle $darkMode={darkMode}>
             
-           <UserIconViewer>
-                    <div className="ImgArea">
-                        <img src={selectIcon} alt="Pictureasa"/>
-                    </div>
-                    <button onClick={()=>setChangeCrector(true)}>변경</button>
-                </UserIconViewer>
-                
+  
 
             <FormStyle  method='POST' onSubmit={handleSubmit(onSubmitHandlr)}>
                 {changeCrector && 
@@ -205,10 +237,23 @@ export default function BoardReplyForm({
                      control={control}
                      defaultValue="person_1"
                      render={({field})=>
-                         <>
+                         <> 
+              
+                
                              <Label>Crecter <span><QuestionMark color={'#0000005e'} size={'20'}/></span></Label>
+                                                          
+                                  
+                             <CurruntReplyState>
+                                    <div className="currentReply">오늘 작성된 댓글 1</div>
+                                    <div className="currentReply">전체 댓글 1</div>
+                                </CurruntReplyState>
                              <RadioWrap>
-                                
+                                <UserIconViewer>
+                                    <div className="ImgArea">
+                                        <img src={selectIcon} alt="Pictureasa"/>
+                                    </div>
+                                    <button onClick={()=>setChangeCrector(true)}>You</button>
+                                </UserIconViewer>
                                  {   
                                      [...Array(6)].map((_,idx)=> {
                                          const icon = `person_${idx + 1}`;
@@ -223,7 +268,6 @@ export default function BoardReplyForm({
                                                  value={icon}
                                                  onChange={()=>{
                                                     field.onChange(icon)
-                                                    setChangeCrector(false);
                                                 }}
                                                  name={field.name}
                                                  checked={field.value  === icon}
@@ -242,7 +286,6 @@ export default function BoardReplyForm({
 
                 <div className="InputWrap">
 
-                <IdPasswordWrap>
                     <Controller
                         name='userName'
                         control={control}
@@ -273,21 +316,20 @@ export default function BoardReplyForm({
                                 }
                             />
                     }
-                </IdPasswordWrap>
                 <Controller
                     name='contents'
                     control={control}
                     render={({field})=>
                         <InputReply 
                             {...field}
-                            // label='댓글'
+                            label='댓글'
                             type={'textarea'}
                             placeholder={'남기실 댓글 내용을 입력해주세요!'}
                             error={errors[{...field}.name]}
                         />
                     }
                 />
-                 <Button.Submit style={{marginLeft: 'auto'}}>Add</Button.Submit>
+                 <Button.Submit style={{marginLeft: 'auto'}}>댓글 등록하기</Button.Submit>
                 </div>
        
                 </FormStyle>

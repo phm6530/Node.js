@@ -8,7 +8,7 @@ import BoardReplyForm from './component/BoardReplyForm';
 import BoardView from './component/BoardVIew';
 
 import * as Yup from 'yup';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import BannerCommon from '../../component/ui/BannerCommon';
 // import { dateFormating } from '../../component/common/DateFormat';
@@ -16,12 +16,11 @@ import BannerCommon from '../../component/ui/BannerCommon';
 import { useForm , FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup'; // Yup + form hook 연동
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Grid, { HeaderGird } from '../../component/ui/Grid';
 import alertThunk from '../../store/alertTrunk';
 // import { RiDoubleQuotesL } from "react-icons/ri";
 
-import StackIcon from '../../component/icon/StackIcon';
 import DashBoard from '../../component/ui/DashBoard';
 import DashBoardTitle from '../../component/ui/DashBoardTitle';
 import SubTitle   from '../../component/ui/Subtitle';
@@ -32,15 +31,30 @@ const FlexDelction = styled.div`
     
 `
 
+const animation = keyframes`
+    from{
+        transform: translateX(-50px);
+        opacity: 0;
+    }
+    to{
+        transform: translateX(-0px);
+        opacity: 1;
+    }
+` 
 
 const BoardReplyStyle = styled.div`
-    width: 45%;
     position: relative;
+    opacity: 0;
     border-radius: 1em;
     height: 100%;
-    /* padding: 26px 0 0; */
+    padding: 26px 0 0;
+    width: 45%;
+    box-shadow: 50px 80px 15px rgba(0,0,0,0.1);
+    position: absolute;
+    overflow: hidden;
 
-
+    left: 0;
+    animation: ${animation} .5s .3s cubic-bezier(0.1, 0.45, 0, 1.09) forwards;
 `
 
 const ReplyWrapHeader = styled.div`
@@ -51,6 +65,7 @@ const ReplyWrapHeader = styled.div`
     top: 0;
     z-index: 1;
     border-radius: 1em 1em 0 0;
+    
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -74,20 +89,9 @@ const PageText = styled.div`
     word-break: keep-all;
     /* margin-top: 20px; */
     margin-bottom: 20px;
+    margin-top: 10px;
     color: #222;
-
-    p{
-        line-height: 1.7em;
-    }
-    span{
-        font-size: 16px;
-    }
-    /* p:nth-child(2){
-        font-size: 16px;
-        line-height: 1.9em;
-        letter-spacing: -.2px;
-
-    } */
+    font-size: 14px;
 `
 
 const ReplyHeaderPoint = styled.div`
@@ -114,49 +118,35 @@ const BoardDashBoard = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
+    max-width: 45rem;
+    margin: 0 auto;
+    .tester{
+        width: 15rem;
+        border-radius: 1em;
+        height: 350px;
+        margin-right: 3rem;
+        box-shadow: 3px 21px 17px rgb(0 0 0 / 25%);
+    }
 `
 
 const BoardGrid = styled(Grid)`
     display: flex;
     padding-top: 80px;
     align-items: flex-start;
-    justify-content: space-between;
+    justify-content: flex-end;
+    margin-bottom: 7rem;
+    padding-bottom: 9rem;
 `
 
 const RightWrap = styled.div`
     height: 100%;
-    width: 100%;
     display: flex;
+    width: 45%;
+    transition: all .5s ease;
+    /* box-shadow: 50px 80px 15px rgba(0,0,0,0.1); */
     flex-direction: column;
 `
 
-const CurruntReplyState = styled.div`
-        display: flex;
-        margin-bottom: 30px;
-        .currentReply{
-             /* background: red; */
-            /* border: 2px solid rgba(0, 0, 0, 0.2); */
-            /* padding: 5px 10px; */
-            font-size: 12px;
-            /* border: 1px solid #e930cc40; */
-            font-weight: bold;
-            border-radius: 4em;
-            margin-right: 10px;
-            /* border-bottom: 1px solid #c800ff4f; */
-            background: #e6e6e6;
-            color: #fff;
-            background: linear-gradient(to right, #5993b5, #363232);
-            background: linear-gradient(to left, #a35d5d, #6a5f86, #f84f9e);
-            color: transparent;
-            background-clip: text;
-
-            span{
-                color: transparent;
-                display: inline-block;
-                margin-left: 10px;
-            }
-        }
-`
 
 const ContentsWraps = styled.div`
     display: flex;
@@ -224,8 +214,6 @@ export default function Board(){
         }
     ); 
 
-    // console.log('Board / userData : ',userData);
-    
 
     // Query 뮤테이션
     const mutation = useMutation(formData => fetchReply(formData), {
@@ -271,21 +259,53 @@ export default function Board(){
         </DashBoard>
 
     
-  {/* formProvider */}
-                
-                <BoardGrid>
-                    {/* <CommonNav/> */}
-                        
+                            {/* formProvider */}
+                                            
+                        <BoardGrid>
+                            {/* <CommonNav/> */}
+                                
+                                    
+                            <BoardReplyStyle>
+
+                            <ReplyWrapHeader>
+                                <ReplyHeaderPoint>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </ReplyHeaderPoint>
+
+                                <span>Total {total}</span>
+                            </ReplyWrapHeader>
 
 
 
-                    <RightWrap>                
+
+                            {/* view or Page */}
+                            {userData && 
+                                <BoardView
+                                    board={userData}
+                                    moreData={moreData}
+                                    setUserData={setUserData}
+                                    setLastPageIdx={setLastPageIdx}
+                                /> }
+                            {(!isLoading && isError) && 'error'}
+                            </BoardReplyStyle>
+
+
+                    <RightWrap
+                        id='parallex_form'
+                    >                
                             <BoardDashBoard>
+                                {/* <div className='tester'></div> */}
                                 <FlexDelction>
                                     <SubTitle>
                                         {/* <img src="/img/board/talk.png" alt="dev_icon" className='dev_icon'/> */}
+                                      
                                         <div className="subText">
-                                            My PortPolio Board<br></br>
+                                            <div className="subTextPoint">
+                                                My PortPolio Board
+                                            </div>
+
                                             남기고 싶은 말씀을 적어주세요 !
                                         </div>
                                     </SubTitle>
@@ -294,60 +314,23 @@ export default function Board(){
                                   
                         
 
-                                    <PageText>
-                                        <p>
-                                            <span>
-                                                {/* <StackIcon.Node style={{backgroundColor: "#fff"}} label={'Node.js'}/> */}
-                                                의 brycpt를 
-                                            이용하여 암호화 저장하고 있으며 해싱된 비밀번호 이외 어떠한 정보도 수집하지 않습니다.</span>
-                                        </p>
-                                    </PageText>
-                                 
+       
+                                
+
+                                        {/* Form Provider */}
+                                            <FormProvider {...formMethod}>
+                                                <BoardReplyForm  
+                                                    onSubmitHandlr={onSubmitHandlr}
+                                                />
+                                            </FormProvider>
+                                            <PageText>brycpt를 이용하여 암호화 저장하고 있으며 해싱된 비밀번호 이외 어떠한 정보도 수집하지 않습니다.</PageText>
                                     
                                 </FlexDelction>
-                            <ContentsWraps>
-                                <CurruntReplyState>
-                                        <div className="currentReply">오늘 작성된 댓글 1 <span>/</span></div>
-                                        
-                                        <div className="currentReply">전체 댓글 1</div>
-                                    </CurruntReplyState>
-                              {/* Form Provider */}
-                                <FormProvider {...formMethod}>
-                                    <BoardReplyForm  
-                                        onSubmitHandlr={onSubmitHandlr}
-                                    />
-                                </FormProvider>
-                                </ContentsWraps>
+                   
                                 
                             </BoardDashBoard>
-                            <BoardReplyStyle>
-                        <ReplyWrapHeader>
-                            <ReplyHeaderPoint>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                            </ReplyHeaderPoint>
-
-                            <span>Total {total}</span>
-                        </ReplyWrapHeader>
-                            
-                       
 
 
-                        {/* view or Page */}
-                            {userData && 
-                                <BoardView
-                                    board={userData}
-                                    moreData={moreData}
-                                    setUserData={setUserData}
-                                    setLastPageIdx={setLastPageIdx}
-                                /> }
-                        {/* {isLoading && 'loading....'} */}
-                        {(!isLoading && isError) && 'error'}
-                        {/* <ReplyWrapHeader>
-                            <span>Total {total}</span>
-                        </ReplyWrapHeader> */}
-                        </BoardReplyStyle>
                   
 
 

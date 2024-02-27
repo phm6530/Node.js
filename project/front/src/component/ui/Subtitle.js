@@ -3,10 +3,15 @@ import styled from 'styled-components'
 const SubTitleStyle = styled.div`
     display: flex;
     align-items: center;
-    margin-bottom: 2.5rem;
+    margin-bottom: 2.0rem;
     .subText{
-        font-size: 2rem;
-        line-height: 1.4em;
+        .subTextPoint{
+            font-size: 3.5rem;
+            padding-top: 50px;
+            margin-bottom: 1rem;
+        }
+        font-size: 2.0rem;
+        line-height: 1.7em;
         font-weight: bold;
         color: #222;
     }

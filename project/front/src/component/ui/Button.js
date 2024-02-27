@@ -8,18 +8,18 @@ const ButtonType = styled.button`
     border-radius: 4em;
 `
 const ButtonTypeSubmit = styled.button`
-    width: 120px;
     height: 50px;
     display: flex;
     color: #fff;
-    border-radius: 5em;
+    border-radius: 1em;
+    padding: 0 2rem;
     font-size: 14px;
     cursor: pointer;
     position: relative;
     align-items: center;
     justify-content: center;
-    background:linear-gradient(to right, #72638d, #4f6494);
-    box-shadow:3px 21px 17px rgb(0 0 0 / 25%); 
+    background:linear-gradient(to right, #8d56ef, #4f6494);
+    box-shadow:0 5px 15px 5px rgb(16 16 16 / 14%), inset 0 -2px 0 0 rgb(16 16 16 / 36%); 
     ${props => props.$page && 
         css` 
         box-shadow:3px 21px 17px rgb(0 0 0 / 20%);  
@@ -28,7 +28,7 @@ const ButtonTypeSubmit = styled.button`
 
     
     &:active{
-        box-shadow:3px 21px 17px rgb(0 0 0 / 30%);  
+        box-shadow:0 5px 15px 5px rgb(16 16 16 / 24%), inset 0 -2px 5px 0 rgb(16 16 16 / 56%); 
     }
     &:disabled{
         opacity: .5;

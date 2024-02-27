@@ -5,23 +5,23 @@ import styled from 'styled-components';
 
 const BoardReplyWrap = styled.div`
   /* overflow-y: scroll; */
-  padding-top: 40px;
+    padding-top: 20px;
     height: 100%;
-    border: 4px solid rgba(0,0,0,0.05);
-    box-shadow: 50px 50px 55px rgba(0,0,0,0.2);
+    overflow-y: scroll;
+    background: #e9f0ff;
    &::-webkit-scrollbar {
         width: 4px;  /* 스크롤바의 너비 */
     }
     &::-webkit-scrollbar-thumb {
         height: 20%; /* 스크롤바의 길이 */
-        background: #355b75; /* 스크롤바의 색상 */
+        background: rgba(0,0,0,0.3); /* 스크롤바의 색상 */
         overflow: hidden;
         border-radius: 10px;
-        box-sizing: border-box;
+        box-sizing: border-box;;
     }
 
     &::-webkit-scrollbar-track {
-        background: rgba(33, 122, 244, .1); 
+        background: rgba(0, 0, 0, .1); 
     }
 `
 

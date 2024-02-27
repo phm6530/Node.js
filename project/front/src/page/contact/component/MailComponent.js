@@ -247,7 +247,7 @@ export default function MailComponent(){
                             style={{marginLeft: 'auto'}}
                             page='contact'
                             disabled={mailSubmit}
-                        >Submit</Button.Submit>
+                        >문의 메일 보내기</Button.Submit>
                     </FormStyle>
                 </ContactContents>
         </>

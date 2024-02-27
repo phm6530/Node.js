@@ -217,9 +217,8 @@ $error-Message-color : rgb(233, 97, 97);
     margin-bottom: 10px;
     padding: 0 10px;
     display: flex;
-    align-items: center;
+    
     position: relative;
-    background: rgba(0, 0, 0, 0.03);
     /* box-shadow: -4px -4px 15px rgba(255, 255, 255, 0.7), 4px 4px 15px rgba(36, 36, 36, 0.15);
     /* box-shadow: -4px -4px 15px rgba(255, 255, 255, 0.7), 4px 4px 15px rgba(36, 36, 36, 0.15);*/
     .replyPicture{
@@ -251,14 +250,14 @@ $error-Message-color : rgb(233, 97, 97);
       white-space: pre-line;
     }
     .replyContents{
-      // background-color: #fff;
-      // padding: 10px 15px;
+      background-color: #fff;
+      padding: 10px 15px;
       border-radius: 0.5em;
       position: relative;
       width: calc(100% - 70px);
-      // box-shadow: -15px -3px 10px rgba(136, 136, 136, 0.15), 4px 3px 14px rgba(36, 36, 36, 0.1);
+      box-shadow: 2px 2px 1px rgba(0,0,0,0.1);
       &::before{
-        // content: "";
+        content: "";
         display: block;
         position: absolute;
         left: -20px;

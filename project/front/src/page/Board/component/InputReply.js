@@ -12,7 +12,6 @@ const FormInputDiv = styled.div`
     display: flex;
     position: relative;
     flex-direction: column;
-    margin-right: 15px;
     /* &:last-child{
         margin-bottom: 0;
     } */
