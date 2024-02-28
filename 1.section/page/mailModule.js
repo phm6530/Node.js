@@ -16,7 +16,6 @@ const mailOpt = (who, contents , radioOption ,  yourContact) => {
       from: process.env.MAIL_ID,
       to: process.env.MAIL_ID,
       subject: `[${radioOption}] ${who}님의 문의사항`,
-    
       html : `
             [${radioOption}]<br>
             보내신분 : ${who} <br>

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();//라우터 연결
-// const { verify }  = require('../util/auth'); 
+const { verify }  = require('../util/auth'); 
 
 const { passwordHashing } = require('../util/password');
 const { validation_Reply } = require('../util/validate');
@@ -17,7 +17,7 @@ db.query = util.promisify(db.query); //프로미스 생성
 
 
 // 댓글 등록완료
-router.post('/reply' ,  validation_Reply,  async(req, res, next) =>{
+router.post('/reply' , verify ,validation_Reply  ,  async(req, res, next) =>{
     const { userIcon , userName , contents , password , idx , page } = req.body; 
     console.log(req.body);
     const limit = 1;
@@ -58,9 +58,10 @@ router.post('/reply' ,  validation_Reply,  async(req, res, next) =>{
     }
 });
 
+
+
 router.post('/reply/delete', async(req,res,next)=>{
     const body = req.body;
-    
     try{
         const { isDeleted  , isDeleted_key , counter } = await isDeleteReply(body);
         res.json({message: '성공' , isDeleted , isDeleted_key , counter });

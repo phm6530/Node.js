@@ -1,7 +1,7 @@
 const { 
     compare 
 } = require('bcrypt');
-const { readData , allBoardData , BoardData , BoardWirte} = require('./readData');
+const { readData} = require('./readData');
 const { NotFoundError } = require('./error');
 
 //DB 연동
@@ -10,17 +10,17 @@ const db = require('../util/config');
 db.query = util.promisify(db.query); //프로미스 생성
 
 
-const isValidAdmin = async (id, password) => {
+const isValidAdmin = async (id, userPassword) => {
     try {
-        const data = await readData();
-        const user = data.admin.find((User) => User.email === id);
-
-        if (!user) {
-            // throw new Error('등록된 관리자가 아닙니다.');
+        const sql =`select password from admin_user where id = ?`;
+        const response = await db.query(sql , [id] );
+        
+        if (response.length === 0 ) {
             throw new NotFoundError('등록된 관리자가 아닙니다.');
         }
 
-        const isMatch = await compare(password, user.password);
+        const responsePasword = response[0].password;
+        const isMatch = await compare(userPassword, responsePasword);
         if (!isMatch) {
             throw new NotFoundError('비밀번호가 맞지않습니다.');
         }

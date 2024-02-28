@@ -1,9 +1,12 @@
 const joi = require('joi');
+const { verify } = require('./auth');
 
 
 // 댓글 유효성검사
 const validation_Reply = (req, res, next) =>{
     const body = req.body;
+    const token = req.headers.authorization || null;
+
     const schema = joi.object({
         idx : joi.string().required(),
         userIcon : joi.string().required(),
