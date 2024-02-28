@@ -1,10 +1,15 @@
 
 // reply Submit 로직
 const fetchReply = async(formData) =>{
+    const token = localStorage.getItem('token');
+
+    const Url = `http://localhost:8080/Board/reply${token ? '/Auth' : ''}`;
+    console.log(Url);
     try{
-        const response = await fetch('http://localhost:8080/Board/reply', {
+        const response = await fetch( Url , {
             method : 'POST',
             headers : {
+                'Authorization': token ? `Bearer ${token}` : '',
                 'Content-Type' : 'application/json'
             },
             body: JSON.stringify(formData)

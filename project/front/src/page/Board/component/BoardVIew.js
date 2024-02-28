@@ -2,13 +2,31 @@ import { useEffect, useRef, useState } from 'react';
 import BoardReply from './BoardReply';
 import Fadeup from '../../../FadeinComponent';
 import styled from 'styled-components';
+import BoardReplyState from './BoardReplyState';
+
+
+const FirstDayStyle = styled.div`
+    font-size: 1rem;
+    letter-spacing: -.1rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 50px;
+
+    ${props => props.$first && 'margin-top: 0;'}
+    &:after{
+        content: "";
+        flex-grow: 1;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+        width: 50%;
+        margin-left: 2rem;
+    }
+`
+
 
 const BoardReplyWrap = styled.div`
-  /* overflow-y: scroll; */
-    padding-top: 20px;
     height: 100%;
-    overflow-y: scroll;
-    background: #e9f0ff;
    &::-webkit-scrollbar {
         width: 4px;  /* 스크롤바의 너비 */
     }
@@ -23,31 +41,11 @@ const BoardReplyWrap = styled.div`
     &::-webkit-scrollbar-track {
         background: rgba(0, 0, 0, .1); 
     }
+    
 `
 
-const FirstDayStyle = styled.div`
-    font-size: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    &:after{
-        /* content: ""; */
-    /* width: 95%; */
-    z-index: 55;
-    font-size: 11px;
-    padding: 6px 18px;
-    color: white;
-    /* font-weight: bold; */
-    margin: 0 auto;
-    background: #2c3197;
-    left: -67px;
-    background: linear-gradient(to right, #e7e7e7, #cfcfcf);
-    border-radius: 1em 1em 0 0em;
-    transform: rotate(270deg);
-    top: 46px;
 
-    }
-`
+
 
 export default function BoardView({ moreData , board ,setUserData, setLastPageIdx }){
     const [ selectIdx , setSelectIdx ] = useState(null);
@@ -75,11 +73,10 @@ export default function BoardView({ moreData , board ,setUserData, setLastPageId
             io.disconnect();
         }
     },[board, setLastPageIdx,  moreData]);
-    let arr = [];
     return(
-        <>  
         <BoardReplyWrap>
             {board.length === 0 &&  <p> 등록된 게시물이 없습니다. </p>}
+            <BoardReplyState/>
             {   
                 
                 board && (()=>{
@@ -88,27 +85,42 @@ export default function BoardView({ moreData , board ,setUserData, setLastPageId
                         const date = item.date.split(' ')[0];
 
                         let isFirstDay = false;
+                        let firstDiv = false;
                         if(!arr.includes(date)){
                             isFirstDay = true;
                             arr.push(date);
                         }
                         
-                        return <Fadeup key={item.board_key} >
-                            {isFirstDay && <FirstDayStyle>{date}</FirstDayStyle>}
-                            <BoardReply 
-                                ref={(dom) => refs.current[idx] = dom}
-                                reply={item}
-                                idx={item.idx}
-                                selectIdx={selectIdx === item.board_key}
-                                setSelectIdx={setSelectIdx}
-                                setUserData={setUserData}
-                            />
-                        </Fadeup>
+                        if(arr.length === 1){
+                            firstDiv = true;
+                        }
+
+                        return (
+                            <div key={item.board_key}>
+                            {isFirstDay && (
+                                <>
+                                    <Fadeup key={`date-${item.board_key}`}>
+                                        <FirstDayStyle $first={firstDiv}>{date}</FirstDayStyle>
+                                    </Fadeup>
+                                </>
+                            )}       
+                            <Fadeup key={item.board_key} >
+                                <BoardReply 
+                                    ref={(dom) => refs.current[idx] = dom}
+                                    reply={item}
+                                    idx={item.idx}
+                                    selectIdx={selectIdx === item.board_key}
+                                    setSelectIdx={setSelectIdx}
+                                    setUserData={setUserData}
+                                />
+                            </Fadeup>
+                            </div>
+                        )
                     })
                 })()
             }
               
         </BoardReplyWrap>
-        </>
+ 
     )
 }

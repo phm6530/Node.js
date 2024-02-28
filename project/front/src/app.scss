@@ -211,23 +211,21 @@ $error-Message-color : rgb(233, 97, 97);
   .BoardComment{
     margin-bottom: 3px;
     /* border-radius: 1em; */
-    
+
     margin: 0 1rem;
     border-radius: 1em;
     margin-bottom: 10px;
     padding: 0 10px;
     display: flex;
-    
     position: relative;
-    /* box-shadow: -4px -4px 15px rgba(255, 255, 255, 0.7), 4px 4px 15px rgba(36, 36, 36, 0.15);
-    /* box-shadow: -4px -4px 15px rgba(255, 255, 255, 0.7), 4px 4px 15px rgba(36, 36, 36, 0.15);*/
+    
     .replyPicture{
-      width: 50px;
-      height: 50px;
+      width: 45px;
+      height: 45px;
       margin-right: 20px;
       border-radius: 5em;
       box-shadow: -4px -4px 10px rgb(255, 255, 255), 4px 4px 10px rgba(36, 36, 36, 0.15);
-      border: 2px solid rgb(255 255 255);
+      border: 3px solid rgb(255 255 255);
       box-sizing: border-box;
     }
     .replyHeader{
@@ -236,7 +234,14 @@ $error-Message-color : rgb(233, 97, 97);
       justify-content: space-between;
       .reply_UserName{
         font-weight: bold;
+        display: flex;
+        align-items: center;
         font-size: 14px;
+        svg{
+          opacity: .5;
+          font-size: 12px;
+          margin-right: 5px;
+        }
       }
     }
     .replyDate{
@@ -255,7 +260,8 @@ $error-Message-color : rgb(233, 97, 97);
       border-radius: 0.5em;
       position: relative;
       width: calc(100% - 70px);
-      box-shadow: 2px 2px 1px rgba(0,0,0,0.1);
+      box-shadow: 2px 2px 1px rgba(0,0,0,0.05);
+      border: 1px solid rgb(0 0 0 / 8%);
       &::before{
         content: "";
         display: block;
@@ -278,6 +284,7 @@ $error-Message-color : rgb(233, 97, 97);
     resize: none;
     white-space: pre-line;
   }
+  
   textarea:focus{
     outline: none;
     // border: 1px solid red;

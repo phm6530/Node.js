@@ -1,4 +1,5 @@
-import styled , {css}from 'styled-components';
+import styled , {css} from 'styled-components';
+import { IoMdArrowForward } from "react-icons/io";
 
 const ButtonType = styled.button`
     font-size: 12px;
@@ -7,25 +8,38 @@ const ButtonType = styled.button`
     padding: 5px 10px;
     border-radius: 4em;
 `
+
+
 const ButtonTypeSubmit = styled.button`
-    height: 50px;
+    
     display: flex;
     color: #fff;
-    border-radius: 1em;
-    padding: 0 2rem;
-    font-size: 14px;
+    border-radius: 5rem;
     cursor: pointer;
+    font-size: .8rem;
+    justify-content: space-between;
     position: relative;
     align-items: center;
     justify-content: center;
-    background:linear-gradient(to right, #8d56ef, #4f6494);
+    /* background:linear-gradient(to right, #8d56ef, #4f6494); */
     box-shadow:0 5px 15px 5px rgb(16 16 16 / 14%), inset 0 -2px 0 0 rgb(16 16 16 / 36%); 
-    ${props => props.$page && 
-        css` 
-        box-shadow:3px 21px 17px rgb(0 0 0 / 20%);  
-        `
+    padding-left: 1.5rem;
+    background: #000;
+    .submit_Icon{
+        background: #fff;
+        border-radius:100%;
+        padding: .6rem;
+        margin: .3rem;
+        margin-left: 1rem;
+        svg{
+            font-size:1.4rem;
+            color: #000;
+        }
     }
-
+    &:hover > .submit_Icon{
+        background: red;
+    }
+    
     
     &:active{
         box-shadow:0 5px 15px 5px rgb(16 16 16 / 24%), inset 0 -2px 5px 0 rgb(16 16 16 / 56%); 
@@ -51,6 +65,19 @@ const ButtonTypeSubmit = styled.button`
         box-shadow: 0px 15px 15px rgba(0,0,0,0.0);
     }
   `
+
+  const PopupOpenButton = styled.div`
+        box-shadow: 0px 15px 15px rgba(0,0,0,0.1);
+        padding: 10px 20px;
+        border-radius: 5em;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        img{
+            width: 30px;
+        }
+  `
 const Type = ({children , ...props}) =>{
     return(
         <ButtonType {...props}>{children}</ButtonType>
@@ -65,6 +92,9 @@ const Submit = ({children ,  disabled , ...props})=>{
             {...props}
         >
             {children}
+            <div className="submit_Icon">
+                <IoMdArrowForward />
+            </div>
         </ButtonTypeSubmit>
     )
 }
@@ -77,6 +107,19 @@ const ForsquareBtn = ({children , ...props})=>{
     )
 }
 
+const Popup = () =>{
+    return(
+        <PopupOpenButton>
+            Guest Book Wirte
+            <img src="/img/board/arrow2.png" alt="arrow_2" />
+        </PopupOpenButton>
+
+    )
+
+}
+
+
+
 
 export function Button({children}){
     return(
@@ -86,6 +129,9 @@ export function Button({children}){
     )
 }
 
+
+
 Button.Type = Type;
 Button.Submit = Submit;
+Button.Popup = Popup;
 Button.ForsquareBtn = ForsquareBtn;

@@ -21,12 +21,10 @@ const checkAnimtaion = keyframes`
 `
 
 const BoardReplyStyle = styled.div`
-border-radius: 1em;
+    border-radius: 1em 1em 0 0;
     display: flex;
     position: relative;
-    /* margin-bottom: 50px; */
-    background: #fafafa;
-    padding: 20px 20px;
+    /* padding: 1.5rem; */
         .InputWrap{
             flex-grow: 1;
             width: 100%;
@@ -39,9 +37,8 @@ const FormStyle = styled.form`
         flex-wrap: wrap;
         flex-grow: 1;
         align-items: flex-start;
-        background: linear-gradient(to left, #a35d5d, #6a5f86, #f84f9e);
-    color: transparent;
-    background-clip: text;
+        color: transparent;
+        background-clip: text;
 `
 
 
@@ -90,15 +87,12 @@ const RadioWrap = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    
     border-radius: 1em;
     margin-bottom: 19px;
-    background: #ffffff3d;
     z-index: 10;
     left: 0;
     top: -4em;
     border: 3px solid #ffffff4f;
-    background: #f2f2f2;
     box-sizing: border-box;
 `
 
@@ -155,7 +149,6 @@ const UserIconViewer = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
-        border-right: 1px solid #dddddd;
         padding-right: 1rem;
         button{
             background: rgba(0,0,0,0.1);
@@ -178,40 +171,6 @@ const UserIconViewer = styled.div`
         }
 `
 
-const CurruntReplyState = styled.div`
-        display: flex;
-        margin-bottom: 1rem;
-        .currentReply{
-            font-size: .8rem;
-            margin-left: 1rem;
-            font-weight: bold;
-            border-radius: 4em;
-            margin-right: 10px;
-            background: #e6e6e6;
-            color: #fff;
-            background: linear-gradient(to left, #a35d5d, #6a5f86, #5262a8);
-            color: transparent;
-            background-clip: text;
-            position: relative;
-            margin-right: 2rem;
-            &:after{
-                position: absolute;
-                content: "";
-                left: -1rem;
-                top:50%;
-                transform: translateY(-50%);
-                width: 6px;
-                height: 6px;
-                border-radius: 3em;
-                background: #606095;
-            }
-            span{
-                color: transparent;
-                display: inline-block;
-                margin-left: 10px;
-            }
-        }
-`
 
 
 
@@ -222,13 +181,18 @@ export default function BoardReplyForm({
     const { darkMode } = useContext(DarkMode);
     const { handleSubmit ,  watch , formState : { errors } } = useFormContext();//useForm 트리
     const { login } = useSelector(state => state.authSlice);
-    const [ changeCrector , setChangeCrector ] = useState(true);
+    const [ changeCrector , setChangeCrector ] = useState(false);
     
     const selectIcon = `/img/board/${watch('userIcon')}.png`;
     return(
         <BoardReplyStyle $darkMode={darkMode}>
             
-  
+            <UserIconViewer>
+                <div className="ImgArea">
+                    <img src={selectIcon} alt="Pictureasa"/>
+                </div>
+                <button onClick={()=>setChangeCrector(true)}>You</button>
+            </UserIconViewer>
 
             <FormStyle  method='POST' onSubmit={handleSubmit(onSubmitHandlr)}>
                 {changeCrector && 
@@ -242,18 +206,9 @@ export default function BoardReplyForm({
                 
                              <Label>Crecter <span><QuestionMark color={'#0000005e'} size={'20'}/></span></Label>
                                                           
-                                  
-                             <CurruntReplyState>
-                                    <div className="currentReply">오늘 작성된 댓글 1</div>
-                                    <div className="currentReply">전체 댓글 1</div>
-                                </CurruntReplyState>
+                       
                              <RadioWrap>
-                                <UserIconViewer>
-                                    <div className="ImgArea">
-                                        <img src={selectIcon} alt="Pictureasa"/>
-                                    </div>
-                                    <button onClick={()=>setChangeCrector(true)}>You</button>
-                                </UserIconViewer>
+                         
                                  {   
                                      [...Array(6)].map((_,idx)=> {
                                          const icon = `person_${idx + 1}`;
@@ -329,7 +284,7 @@ export default function BoardReplyForm({
                         />
                     }
                 />
-                 <Button.Submit style={{marginLeft: 'auto'}}>댓글 등록하기</Button.Submit>
+                 <Button.Submit style={{marginLeft: 'auto'}}>Submit</Button.Submit>
                 </div>
        
                 </FormStyle>

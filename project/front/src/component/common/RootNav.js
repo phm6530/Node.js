@@ -15,6 +15,7 @@ import Popup from '../popup/Popup';
 import DarkModeBtn from '../ui/DarkModeBtn';
 import { useLocation } from 'react-router-dom';
 import LoginForm from '../popup/login/LoginForm';
+import TopButton from './TopButton';
 
 
 // Nav 선택
@@ -61,6 +62,9 @@ export default function RootNav({ChangePageHandler}){
 
     return(
         <>  
+            {/* TopButton */}
+            <TopButton/>
+
             {/* Alert */}
             { view && <Alert/>}
             {loginModal && (

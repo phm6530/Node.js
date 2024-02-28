@@ -5,7 +5,11 @@ const LeftComponent = styled.div`
     position: sticky;
     height: 100%;
     top: 100px;
-    
+    width: 20rem;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 1rem;
+    margin-right: 2rem;
 `
 const PageSubText = styled.div`
     color:#222;

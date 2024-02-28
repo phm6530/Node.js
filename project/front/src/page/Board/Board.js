@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { fetchReply , fetchData } from './BoardFetch';
 
 import BoardReplyForm from './component/BoardReplyForm';
-import BoardView from './component/BoardVIew';
 
 import * as Yup from 'yup';
 import styled, { keyframes } from 'styled-components';
@@ -16,20 +15,17 @@ import BannerCommon from '../../component/ui/BannerCommon';
 import { useForm , FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup'; // Yup + form hook 연동
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
-import Grid, { HeaderGird } from '../../component/ui/Grid';
+import {  useState } from 'react';
+import Grid from '../../component/ui/Grid';
 import alertThunk from '../../store/alertTrunk';
-// import { RiDoubleQuotesL } from "react-icons/ri";
 
 import DashBoard from '../../component/ui/DashBoard';
 import DashBoardTitle from '../../component/ui/DashBoardTitle';
 import SubTitle   from '../../component/ui/Subtitle';
+import ProfileComponent from './component/ProfileComponent';
+import BoardReplyWrap from './component/BoardReplyWrap ';
 
 
-
-const FlexDelction = styled.div`
-    
-`
 
 const animation = keyframes`
     from{
@@ -42,83 +38,21 @@ const animation = keyframes`
     }
 ` 
 
-const BoardReplyStyle = styled.div`
-    position: relative;
-    opacity: 0;
-    border-radius: 1em;
-    height: 100%;
-    padding: 26px 0 0;
-    width: 45%;
-    box-shadow: 50px 80px 15px rgba(0,0,0,0.1);
-    position: absolute;
-    overflow: hidden;
-
-    left: 0;
-    animation: ${animation} .5s .3s cubic-bezier(0.1, 0.45, 0, 1.09) forwards;
-`
-
-const ReplyWrapHeader = styled.div`
-    background: -webkit-linear-gradient(to right, #2c383f, #363232);
-    background: linear-gradient(to right, #2c383f, #363232); 
-    position: absolute;
-    width: 100%;
-    top: 0;
-    z-index: 1;
-    border-radius: 1em 1em 0 0;
-    
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    
-     span{
-        color: #fff;
-        font-size: 12px;
-        /* border: 1px solid #fff6; */
-        border-radius: 19px;
-        padding: 2px 12px;
-        margin-right: 20px;
-        background: #1e1e1e87;
-        margin: 5px;
-        margin-right: 20px;
-
-     }
-     
-`
 
 const PageText = styled.div`
     word-break: keep-all;
-    /* margin-top: 20px; */
-    margin-bottom: 20px;
     margin-top: 10px;
     color: #222;
     font-size: 14px;
+    padding-bottom: 20px;
 `
 
-const ReplyHeaderPoint = styled.div`
-    margin-left: 20px;
-    div{
-        display: inline-block;
-        width: 10px;
-        height: 10px;
-        border-radius: 1em;
-        margin-right: 5px;
-    }
-    div:first-child{
-        background: #28c840;
-    }
-    div:nth-child(2){
-        background: #febc2e;
-    }
-    div:nth-child(3){
-        background: #ff5f57;
-    }
-`
+
 
 const BoardDashBoard = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-width: 45rem;
     margin: 0 auto;
     .tester{
         width: 15rem;
@@ -130,27 +64,26 @@ const BoardDashBoard = styled.div`
 `
 
 const BoardGrid = styled(Grid)`
+    padding-top: 25rem;
     display: flex;
-    padding-top: 80px;
-    align-items: flex-start;
-    justify-content: flex-end;
-    margin-bottom: 7rem;
-    padding-bottom: 9rem;
+    flex-direction: column;
+    justify-content: space-between;
 `
 
 const RightWrap = styled.div`
     height: 100%;
     display: flex;
-    width: 45%;
+    width: 100%;
     transition: all .5s ease;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 1rem;
     /* box-shadow: 50px 80px 15px rgba(0,0,0,0.1); */
     flex-direction: column;
 `
 
-
-const ContentsWraps = styled.div`
+const FlexJs =styled.div`
     display: flex;
-    flex-direction: column;
 `
 
 export default function Board(){
@@ -243,104 +176,57 @@ export default function Board(){
         }
         mutation.mutate(formData); 
     }   
-
+    
+    
     return(
         <>  
       
-        {/* Header */}
-        <DashBoard page={'board'}>
-            <HeaderGird>
-                <BannerCommon.BannerPoint>
-                        <img src="img/board.png" alt="board" />MY Board
-                </BannerCommon.BannerPoint>
-                            
-                <DashBoardTitle><b>Guest Book</b></DashBoardTitle>
-            </HeaderGird>
-        </DashBoard>
+                {/* Header */}
+                <DashBoard page={'board'}>
+                        <BannerCommon.BannerPoint>
+                                <img src="img/board.png" alt="board" />MY Board
+                        </BannerCommon.BannerPoint>
+                        <DashBoardTitle><b>MY PORTPOLIO, BOARD</b></DashBoardTitle>
+                </DashBoard>
 
-    
-                            {/* formProvider */}
-                                            
-                        <BoardGrid>
-                            {/* <CommonNav/> */}
-                                
-                                    
-                            <BoardReplyStyle>
+                {/* Body */}
+                <BoardGrid>      
 
-                            <ReplyWrapHeader>
-                                <ReplyHeaderPoint>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </ReplyHeaderPoint>
+                    <FlexJs>
 
-                                <span>Total {total}</span>
-                            </ReplyWrapHeader>
+                        <ProfileComponent/>
 
-
-
-
-                            {/* view or Page */}
-                            {userData && 
-                                <BoardView
-                                    board={userData}
-                                    moreData={moreData}
-                                    setUserData={setUserData}
-                                    setLastPageIdx={setLastPageIdx}
-                                /> }
-                            {(!isLoading && isError) && 'error'}
-                            </BoardReplyStyle>
-
-
-                    <RightWrap
-                        id='parallex_form'
-                    >                
+                        {/*  */}
+                        <RightWrap id='parallex_form'>                
                             <BoardDashBoard>
-                                {/* <div className='tester'></div> */}
-                                <FlexDelction>
-                                    <SubTitle>
-                                        {/* <img src="/img/board/talk.png" alt="dev_icon" className='dev_icon'/> */}
-                                      
-                                        <div className="subText">
-                                            <div className="subTextPoint">
-                                                My PortPolio Board
-                                            </div>
-
-                                            남기고 싶은 말씀을 적어주세요 !
-                                        </div>
-                                    </SubTitle>
-                                    
-
-                                  
-                        
-
-       
-                                
-
-                                        {/* Form Provider */}
-                                            <FormProvider {...formMethod}>
-                                                <BoardReplyForm  
-                                                    onSubmitHandlr={onSubmitHandlr}
-                                                />
-                                            </FormProvider>
-                                            <PageText>brycpt를 이용하여 암호화 저장하고 있으며 해싱된 비밀번호 이외 어떠한 정보도 수집하지 않습니다.</PageText>
-                                    
-                                </FlexDelction>
-                   
-                                
+                                <SubTitle>
+                                    <div className="subText">GUEST BOARD</div>
+                                </SubTitle>
+                                <PageText>brycpt를 이용하여 암호화 저장하고 있으며 해싱된 비밀번호 이외 어떠한 정보도 수집하지 않습니다.</PageText>
                             </BoardDashBoard>
+                              {/* Form Provider */}
+                            <FormProvider {...formMethod}>
+                                <BoardReplyForm  
+                                    onSubmitHandlr={onSubmitHandlr}
+                                />
+                            </FormProvider>
 
+                           {/* 댓글 컴포넌트 */}
+                            {(!isLoading && isError) && 'error'}
+                            {userData && <BoardReplyWrap
+                                    userData = {userData}
+                                    moreData = {moreData}
+                                    total= {total}
+                                    setUserData= {setUserData}
+                                    setLastPageIdx = {setLastPageIdx}
+                            />}
 
-                  
+                        </RightWrap>
+                        
+                    </FlexJs>         
 
-
-
-                    </RightWrap>
-               
-                  
+                 
                 </BoardGrid>
-
-
         </>
     )
 }

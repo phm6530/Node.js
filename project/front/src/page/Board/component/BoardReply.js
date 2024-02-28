@@ -1,14 +1,17 @@
-import { deleteFetch } from '../BoardFetch';
+import styled from 'styled-components';
+import * as Yup from 'yup';
 
+import { deleteFetch } from '../BoardFetch';
 import { useMutation} from 'react-query';
 import { Controller, useForm } from 'react-hook-form';
-import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { DeleteIcon } from '../../../component/icon/Icon';
-import styled from 'styled-components';
 import { forwardRef } from 'react';
 import { useDispatch } from 'react-redux';
+import { FaUser } from "react-icons/fa6";
+
 import alertThunk from '../../../store/alertTrunk';
+
 
 const schema = Yup.object({
     password : Yup.string().required('비밀번호를 입력해주세요.')
@@ -29,7 +32,6 @@ const HoverStyled = styled(HoverStyle)`
 
 const ButtonSTyle = styled.button`
     font-size: 12px;
-    
     color: #fff;
     border-radius: 5px;
     padding: 2px 5px;
@@ -99,40 +101,43 @@ const BoardReply = forwardRef((props , ref)=>{
     <div className='BoardComment' key={board_key} ref={ref}>
         <ReplyPicture $pirture={user_icon} className="replyPicture"></ReplyPicture>
         <div className="replyContents">
+
         <div className="replyHeader">
             
-            <p className='reply_UserName'>{user_name}</p>
-        <div className='replyDelete'>
-        {!selectIdx && <button onClick={()=>setSelectIdx(board_key)}>
-            <HoverStyled>
-                <DeleteIcon size='20' color='#cdcdcd' />    
-            </HoverStyled>
-        </button>}
-        {selectIdx && (
-            <FormStyle onSubmit={handleSubmit(onSubmitHandler)}>
-                <Controller
-                    name='password'
-                    control={control}
-                    render={({field})=>
+                
+            <div className='reply_UserName'><FaUser/>{user_name}</div>
+            
+            <div className='replyDelete'>
+            {!selectIdx && <button onClick={()=>setSelectIdx(board_key)}>
+                <HoverStyled>
+                    <DeleteIcon size='20' color='#cdcdcd' />    
+                </HoverStyled>
+            </button>}
+            {selectIdx && (
+                <FormStyle onSubmit={handleSubmit(onSubmitHandler)}>
+                    <Controller
+                        name='password'
+                        control={control}
+                        render={({field})=>
 
-                        <input 
-                            autoComplete='off'
-                            type='password'
-                            {...field}
-                        />
-                    }
-                />
+                            <input 
+                                autoComplete='off'
+                                type='password'
+                                {...field}
+                            />
+                        }
+                    />
 
-                <ButtonSTyle type='submit'>확인</ButtonSTyle>
+                    <ButtonSTyle type='submit'>확인</ButtonSTyle>
 
-                <ButtonSTyle type='button' onClick={()=>{
-                    setSelectIdx(null);  
-                    reset();
-                }}>취소</ButtonSTyle>
-            </FormStyle>
-        )}
-        </div>
-       
+                    <ButtonSTyle type='button' onClick={()=>{
+                        setSelectIdx(null);  
+                        reset();
+                    }}>취소</ButtonSTyle>
+                </FormStyle>
+            )}
+            </div>
+        
         </div>
         <div className="replyDescription">
             {contents}

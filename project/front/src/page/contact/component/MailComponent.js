@@ -56,8 +56,10 @@ const ani = keyframes`
 
 const ContactContents = styled.div`
     opacity: 0;
-    margin-left: 100px;
     flex-grow: 1;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 1em;
     display: flex;
     flex-direction: column;
     animation: ${ani} .5s .2s ease forwards;
@@ -97,6 +99,7 @@ const RadioWrap = styled.div`
     position: relative;
     width: 100%;
     margin-bottom: 20px;
+    margin-top: 2.5rem;
 
 `
 
@@ -160,8 +163,8 @@ export default function MailComponent(){
              
                     <FormStyle onSubmit={handleSubmit(onSubmitHandler)}>
                         <SubTitle>
-                            <img src="/img/contact/dev_person_1.png" alt="dev_icon" className='dev_icon'/>
-                            <span className='subText'>말이 통하는 개발자, 박현민입니다.</span>
+                            {/* <img src="/img/contact/dev_person_1.png" alt="dev_icon" className='dev_icon'/> */}
+                            <span className='subText'>HI! PHM, DEVELOPER</span>
                         </SubTitle>
                         <RadioWrap>
             

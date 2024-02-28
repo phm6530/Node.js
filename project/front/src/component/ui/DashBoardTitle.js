@@ -21,8 +21,6 @@ const animationShadow = keyframes`
         transform: translateX(50px);
     }
 `
-
-
 const DashBoardTitleStyle = styled.div`
     background: linear-gradient(to top, #ffffff, #ffffff, #96c1ff);
     color: transparent;
@@ -30,22 +28,22 @@ const DashBoardTitleStyle = styled.div`
     opacity: 0;
     -webkit-background-clip: text;
     letter-spacing: -4px;
-    font-size: 10rem;
+    font-size: 5rem;
     font-weight: bold;
     animation: ${animation} 1s .5s cubic-bezier(0.1, 0.45, 0, 1.09) forwards;
 `
 
 const DashBoardShadow = styled.div`
     position: absolute;
-    font-size: 200px;
+    font-size: 6rem;
     z-index: 0;
     bottom: -25px;
-    background: linear-gradient(to top, #000000, #2c3457a8, #2a5ec521);
+    background: linear-gradient(to top, #ffffff, #a1a1a16e, #000000de);
     left: 10px;
     color: transparent;
     background-clip: text;
     opacity: 0;
-    transition: all .5s cubic-bezier(0.1, 0.45, 0, 1.09) ; 
+    transition: all .5s cubic-bezier(0.1, 0.45, 0, 1.09);
     animation: ${animationShadow} 1s .7s cubic-bezier(0.1, 0.45, 0, 1.09) forwards;
 `
 
@@ -73,6 +71,7 @@ export default function DashBoardTitle({ className, children }) {
                 <DashBoardShadow id="dashboardShadow" className={className}>
                     {children}
                 </DashBoardShadow>
+                
                 <DashBoardTitleStyle className={className}>
                     {children}
                 </DashBoardTitleStyle>
