@@ -5,14 +5,15 @@ const { verify } = require('./auth');
 // 댓글 유효성검사
 const validation_Reply = (req, res, next) =>{
     const body = req.body;
-    const token = req.headers.authorization || null;
-
+    console.log(body);
+    const verifyState = req.headers?.authState;
+    console.log('verifyState :::: ',verifyState);
     const schema = joi.object({
         idx : joi.string().required(),
         userIcon : joi.string().required(),
         userName : joi.string().required(),
         contents : joi.string().required(),
-        password : joi.string().min(4).required(),
+        password : verifyState ? joi.string().allow('', null) : joi.string().min(4).required(),
         page : joi.number().required(),
     })
 

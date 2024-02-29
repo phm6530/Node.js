@@ -10,6 +10,7 @@ const verify = (req,res,next)=>{
     if(!token) throw new NotFoundError('권한이 없습니다.');
     try{
         jwt.verify(token , process.env.JWT_SECRET);
+        req.headers.authState = true ;
         next();
     }
     catch(error){

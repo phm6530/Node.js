@@ -6,8 +6,6 @@ const { passwordHashing } = require('../util/password');
 const { validation_Reply } = require('../util/validate');
 const { isDeleteReply } = require('../util/util');
 
-
-
 // DB 연결
 const util = require('util');
 
@@ -16,47 +14,84 @@ const { NotFoundError } = require('../util/error');
 db.query = util.promisify(db.query); //프로미스 생성
 
 
-// 댓글 등록완료
-router.post('/reply' , verify ,validation_Reply  ,  async(req, res, next) =>{
-    const { userIcon , userName , contents , password , idx , page } = req.body; 
-    console.log(req.body);
-    const limit = 1;
-    // const dbOffset = (page - 1) * limit;
-    
-    try{
-        const hashedPassword = await passwordHashing(password);//비밀번호 해싱하기
+// 전체 숫자 세기
+const getTotalCount = async() =>{
+    const count_sql = `SELECT COUNT(*) AS cnt FROM board`;
+    const [counter] = await db.query(count_sql);
+    return counter.cnt;
+}
+
+const replyHandler = async (reqData, res, requestRoleType) => {
+    const { 
+        userIcon, 
+        userName, 
+        contents, 
+        idx , 
+        password = null
+    } = reqData;
+    console.log('page :' , requestRoleType);
+    try {
+        const limit = 1;
+        let hashedPassword = undefined;
+        let role = 0;
+
+        // 일반 사용자의 경우 비밀번호 해싱 처리
+        if(requestRoleType !== 'admin' && password) {
+            hashedPassword = await passwordHashing(password);
+        }else{
+            role = 'admin';
+        }
         
-        let req_sql = 
-        `INSERT INTO 
-        board (user_icon , user_name , user_password , contents , board_key ,date) 
-        value (?,?,?,?,? , NOW())`;
-        await db.query(req_sql , [ userIcon , userName , hashedPassword , contents , idx]); //반영
+        let req_sql = `
+            INSERT INTO 
+            board (user_icon, user_name, user_password, contents, role , board_key, date) 
+            VALUES (?, ?, ?, ?, ? , ?, NOW())`;
 
+        await db.query(req_sql, [userIcon, userName, hashedPassword, contents, role , idx]);
         let res_sql = `
-            SELECT idx ,
-            user_icon ,  
-            user_name , 
-            contents , 
-            board_key , 
-            date 
+            SELECT idx, user_icon, user_name, contents, board_key, date , role
             FROM board ORDER BY idx DESC LIMIT ?`;
-        const response = await db.query(res_sql , [limit]); //리턴데이터
-        const count_sql = `select count(*) as cnt from board`;
-        const counter = await db.query(count_sql);
+     
+        const response = await db.query(res_sql, [limit]);
+ 
+        const count = await getTotalCount();
 
-
-        res.status(201).json({
-            path : 'board/reply',
-            counter : counter[0].cnt,
-            resData : response
+        return res.status(201).json({
+            path: 'board/reply',
+            counter: count,
+            resData: response
         });
 
-    }   
-    catch(error){
-        const err = new NotFoundError('database insert falied');
-        next(err)
+    } catch (error) {
+        // 적절한 에러 처리
+        return res.status(500).json({ message: 'Database insert failed' });
+    }
+};
+
+// 댓글 등록완료
+router.post('/reply', validation_Reply, async (req, res, next) => {
+    const reqData = req.body;
+    const requestRoleType = 'user';
+    try {
+        // replyHandler에 필요한 모든 인자 전달
+        await replyHandler(reqData , res , requestRoleType);
+    } catch (error) {
+        next(error);
     }
 });
+
+// 댓글 등록완료
+router.post('/reply/auth', verify , validation_Reply, async (req, res, next) => {
+    const reqData = req.body;
+    const page = 'admin';
+    try {
+        await replyHandler(reqData, res , page);
+    } catch (error) {
+        next(error);
+    }
+});
+
+
 
 
 
@@ -85,7 +120,8 @@ router.get('/:idx', async (req, res, next) => {
             user_name , 
             contents , 
             board_key , 
-            date 
+            date ,
+            role
             from board order by idx desc limit ? offset ?`;
         const response_database = await db.query(sql ,[limit , idx])
 
