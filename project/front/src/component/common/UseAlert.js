@@ -6,7 +6,7 @@ const useAlert = () => {
     const dispatch = useDispatch();
     const [ timerId , setTimerId ] = useState(null);
     console.log('timerId : ', timerId);
-    console.count();
+    
     const showAlert = (message, type) => {
         if(timerId) {
             console.log('삭제 타이머 ID :' , timerId );

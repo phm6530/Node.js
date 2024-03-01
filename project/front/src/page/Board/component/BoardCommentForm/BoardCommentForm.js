@@ -1,13 +1,24 @@
-import { Controller } from 'react-hook-form';
-import { useFormContext } from 'react-hook-form';
-import InputReply from './InputReply'
-import styled, { keyframes } from 'styled-components';
-import { DarkMode } from '../../../context/DarkModeContext';
+import { Controller , useFormContext } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
 import { useContext, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { QuestionMark } from '../../../component/icon/Icon';
-import { Button } from '../../../component/ui/Button';
+import { v4 as uuidv4 } from 'uuid';
+import { fetchReply } from '../../BoardFetch';
 
+import styled, { keyframes } from 'styled-components';
+
+import { DarkMode } from '../../../../context/DarkModeContext';
+import CommentInput from './Detail/CommentInput';
+import { findForBadword } from '../../../../filter/filterWording';
+import alertThunk from '../../../../store/alertTrunk';
+
+import { QuestionMark } from '../../../../component/icon/Icon';
+import { Button } from '../../../../component/ui/Button';
+import { useLocation } from 'react-router-dom';
+import { useMutation } from 'react-query';
+
+import * as Yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup'; // Yup + form hook 연동
+import { useForm } from 'react-hook-form';
 
 const checkAnimtaion = keyframes`
     from{
@@ -142,8 +153,6 @@ const Label = styled.span`
     
 `
 
-
-
 const UserIconViewer = styled.div`
         margin-right: 10px;
         display: flex;
@@ -171,27 +180,106 @@ const UserIconViewer = styled.div`
         }
 `
 
-
-
-
-export default function BoardReplyForm({
-    onSubmitHandlr,
-    control
-}){
+export default function BoardCommentForm({setTotal , setUserFetchData}){
     const { darkMode } = useContext(DarkMode);
-    const { handleSubmit ,  watch , formState : { errors } } = useFormContext();//useForm 트리
     const { login } = useSelector(state => state.authSlice);
+
     const [ changeCrector , setChangeCrector ] = useState(false);
+
+    const location = useLocation();
+    const dispatch = useDispatch();
+
+
+    const schama = Yup.object({
+        userIcon : Yup.string().required('필수항목 입니다.'),
+        userName : Yup.string().required('필수항목 입니다.').min(2, '최소 2글자 이상 적어주세요..').max(20,'최대 20글자 이하로 적어주세요'),
+        contents : Yup.string().required('필수항목 입니다.').min(4, '최소 4글자 이상 적어주세요..'),
+        password : Yup.string().when([],()=>{
+            return login
+                ? Yup.string().notRequired()
+                : Yup.string().required('필수항목 입니다.').min(4, '최소 4글자의 비밀번호를 기재해주세요')
+        })
+    })
+
+    const personIcon = [...Array(6)].map((_,idx)=> `person_${idx + 1}`);    
+    const randomUserIcon = login ? 'adminPicture' :personIcon[Math.floor(Math.random() * personIcon.length)];
     
-    const selectIcon = `/img/board/${watch('userIcon')}.png`;
+    // React-hook-form
+    const { reset , watch , handleSubmit , control , formState : { errors } , getValues} = useForm({
+        resolver : yupResolver(schama) ,
+        defaultValues : {
+            userIcon : randomUserIcon,
+            userName : login ? 'Admin' : '',
+            contents : '',
+            password : ''
+        }
+    });
+
+    // const currentValue = watch(); //현재 hook form에 등록된 값임
+    
+    useEffect(()=>{
+        reset({
+            ...getValues(),
+            userName : login ? 'Admin' : '',
+            userIcon : randomUserIcon
+        })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[login]);
+
+        // Query 뮤테이션
+        const mutation = useMutation(formData => fetchReply(formData), {
+            onSuccess: (data) => {
+                setUserFetchData(prev => [...data.resData , ...prev]);
+                setTotal(data.counter);
+                console.log('userMutation 실행');
+                dispatch(alertThunk('댓글 등록되었습니다.', true))
+                reset({
+                    ...getValues(),
+                    userName: login ? 'Admin' : '',
+                    contents: '',
+                    password: ''
+              });
+            },
+            onError: (error) => {
+                dispatch(alertThunk(error.message, 0));
+            }
+
+        });
+        
+        // submit
+        const onSubmitHandlr = async(data) =>{
+
+            if(!findForBadword(data.contents)){
+                dispatch(alertThunk('비속어는 입력 불가합니다...', false));
+                return;
+            }
+    
+            const formData = {
+                idx : uuidv4(),
+                ...data ,
+                page : new URLSearchParams(location.search).get('page') || 1 ,
+            }
+            mutation.mutate(formData); 
+        }   
+        
+    const selectIcon = `/img/board/${login ? 'adminPicture.jpg' : `${watch('userIcon')}.jpg`}`;
+
+    useEffect(()=>{
+        setChangeCrector(false);
+    },[login]);
+
+
     return(
-        <BoardReplyStyle $darkMode={darkMode}>
+        <BoardReplyStyle 
+            $darkMode={darkMode}
+        >
             
             <UserIconViewer>
                 <div className="ImgArea">
                     <img src={selectIcon} alt="Pictureasa"/>
                 </div>
-                <button onClick={()=>setChangeCrector(true)}>You</button>
+                {login || <button onClick={()=>setChangeCrector(true)}>You</button>}
+                
             </UserIconViewer>
 
             <FormStyle  method='POST' onSubmit={handleSubmit(onSubmitHandlr)}>
@@ -202,13 +290,8 @@ export default function BoardReplyForm({
                      defaultValue="person_1"
                      render={({field})=>
                          <> 
-              
-                
                              <Label>Crecter <span><QuestionMark color={'#0000005e'} size={'20'}/></span></Label>
-                                                          
-                       
                              <RadioWrap>
-                         
                                  {   
                                      [...Array(6)].map((_,idx)=> {
                                          const icon = `person_${idx + 1}`;
@@ -245,7 +328,7 @@ export default function BoardReplyForm({
                         name='userName'
                         control={control}
                         render={({field})=>
-                            <InputReply 
+                            <CommentInput 
                                 {...field}
                                 label='글쓴이'
                                 isAuth={login}
@@ -261,7 +344,7 @@ export default function BoardReplyForm({
                                 name='password'
                                 control={control}
                                 render={({field})=>
-                                    <InputReply 
+                                    <CommentInput 
                                         {...field}
                                         label='password'
                                         type={'password'}
@@ -275,7 +358,7 @@ export default function BoardReplyForm({
                     name='contents'
                     control={control}
                     render={({field})=>
-                        <InputReply 
+                        <CommentInput 
                             {...field}
                             label='댓글'
                             type={'textarea'}

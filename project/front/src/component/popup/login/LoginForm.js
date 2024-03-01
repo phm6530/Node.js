@@ -161,7 +161,6 @@ export default function LoginForm(){
 
             // 완료시에만 로그인 팝업 닫기
             // popupClose();       
-
         }
         catch(error){
             console.error(error);

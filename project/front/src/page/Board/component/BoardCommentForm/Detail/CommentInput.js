@@ -1,9 +1,8 @@
-import { forwardRef, useContext, useEffect } from 'react';
+import { forwardRef, useContext  } from 'react';
 import styled from 'styled-components';
-import { DarkMode } from '../../../context/DarkModeContext';
-import { useFormContext } from 'react-hook-form';
-import { InputStyle , TextAreaStyle } from '../../../component/ui/TextArea'; 
-import ErrorBubble from '../../../component/ui/ErrorBubble';
+import { DarkMode } from '../../../../../context/DarkModeContext';
+import { InputStyle , TextAreaStyle } from '../../../../../component/ui/TextArea'; 
+import ErrorBubble from '../../../../../component/ui/ErrorBubble';
 
 const FormInputDiv = styled.div`
     border-radius: 10px;
@@ -34,35 +33,24 @@ const FormInputDiv = styled.div`
     }
     
 `
-const InputReply = forwardRef((fields ,ref)=>{
-  const {darkMode} = useContext(DarkMode); 
-  const { setValue } = useFormContext();
-  const { isAuth , label, error, ...props } = fields;
-
-    useEffect(() => {
-        if (isAuth) {
-            setValue(props.name, '관리자'); // 'name' 필드에 '관리자' 값을 설정
-        }
-    }, [isAuth, props.name, setValue]);
-
+const CommentInput = forwardRef((fields ,ref)=>{
+  const { darkMode } = useContext(DarkMode); 
+  const { isAuth , label, error,  ...props } = fields;
+console.count();
+console.log(label);
     return(
         <>  
             <FormInputDiv
                 $darkMode={darkMode}
             >
                 <span>{label}</span>
-
                 {
-                    
                     fields.type === 'textarea' ?
-
                     <TextAreaStyle 
                         $error={error}
                         {...props}    
                     /> 
-                    
                     : 
-                    
                     <InputStyle 
                         $error={error}
                         ref={ref}
@@ -72,8 +60,6 @@ const InputReply = forwardRef((fields ,ref)=>{
                         {...props} 
                     />
                 }
-
-           
                 {error && <ErrorBubble>{error.message}</ErrorBubble>}
             </FormInputDiv>
         </>
@@ -81,5 +67,5 @@ const InputReply = forwardRef((fields ,ref)=>{
     )
 });
 
-export default InputReply;
+export default CommentInput;
 

@@ -3,7 +3,7 @@
 const fetchReply = async(formData) =>{
     const token = localStorage.getItem('token');
 
-    const Url = `http://localhost:8080/Board/reply${token ? '/Auth' : ''}`;
+    const Url = `http://localhost:8080/Board/reply${token ? '/auth' : ''}`;
     console.log(Url);
     try{
         const response = await fetch( Url , {
@@ -25,7 +25,7 @@ const fetchReply = async(formData) =>{
         }
 
         const result = await response.json();
-        // console.log('result : : ',result);
+        console.log('result : : ',result);
         return result;
     }catch(error){
         throw error;

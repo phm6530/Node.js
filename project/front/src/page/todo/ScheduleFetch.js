@@ -1,9 +1,8 @@
 
 // 초기데이터 로더
-const scheduleFetch = async(url) =>{
-    
+const scheduleFetch = async(Year , Month ) =>{
     try{
-        const response = await fetch(`http://localhost:8080/schedule`);
+        const response = await fetch(`http://localhost:8080/schedule?Year=${Year}&month=${Month}`);
         if(!response.ok){
             const errorResponse = await response.json();
             throw new Error(errorResponse.message);

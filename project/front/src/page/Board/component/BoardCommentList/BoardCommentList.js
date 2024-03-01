@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import BoardReply from './BoardReply';
-import Fadeup from '../../../FadeinComponent';
+import CommentItem from './Detail/CommentItem';
+import Fadeup from '../../../../FadeinComponent';
 import styled from 'styled-components';
-import BoardReplyState from './BoardReplyState';
-
+import CommentState from './Detail/CommentState';
 
 const FirstDayStyle = styled.div`
     font-size: 1rem;
@@ -24,9 +23,10 @@ const FirstDayStyle = styled.div`
     }
 `
 
-
 const BoardReplyWrap = styled.div`
     height: 100%;
+    /* background: #9bbbd4; */
+    padding: 20px;
    &::-webkit-scrollbar {
         width: 4px;  /* 스크롤바의 너비 */
     }
@@ -45,24 +45,28 @@ const BoardReplyWrap = styled.div`
 `
 
 
-
-
-export default function BoardView({ moreData , board ,setUserData, setLastPageIdx }){
+export default function BoardCommentList({ 
+    userFetchData , 
+    moreFetchData  , 
+    total , 
+    setUserFetchData, 
+    setLastPageIdx 
+}){
     const [ selectIdx , setSelectIdx ] = useState(null);
     const refs = useRef([]);
     useEffect(()=>{
-        if(!moreData) return ;
+        if(!moreFetchData) return ;
         
         const selectRefs = refs.current.slice(0, refs.current.length);
         // console.log(selectRefs.length);
-        const lastRef = selectRefs[board.length - 1];
+        const lastRef = selectRefs[userFetchData.length - 1];
 
         //디버깅용 색칠하기
-        if(lastRef){
-            lastRef.style.backgroundColor = 'red';
-        }
+        // if(lastRef){
+        //     lastRef.style.backgroundColor = 'red';
+        // }
         const io = new IntersectionObserver((entry)=>{
-            if(entry[0].isIntersecting && moreData ) {
+            if(entry[0].isIntersecting && moreFetchData ) {
                 setLastPageIdx(selectRefs.length);
             }
         } , { threshold : .1})
@@ -72,20 +76,24 @@ export default function BoardView({ moreData , board ,setUserData, setLastPageId
         return ()=>{
             io.disconnect();
         }
-    },[board, setLastPageIdx,  moreData]);
+    },[userFetchData, setLastPageIdx,  moreFetchData]);
+
+
     return(
         <BoardReplyWrap>
-            {board.length === 0 &&  <p> 등록된 게시물이 없습니다. </p>}
-            <BoardReplyState/>
+            {userFetchData.length === 0 &&  <p> 등록된 게시물이 없습니다. </p>}
+            
+            <CommentState total={total}/>
             {   
                 
-                board && (()=>{
+                userFetchData && (()=>{
                     const arr = [];
-                    return board.map((item, idx)=> {
+                    return userFetchData.map((item, idx)=> {
                         const date = item.date.split(' ')[0];
-
+                        
                         let isFirstDay = false;
                         let firstDiv = false;
+                        
                         if(!arr.includes(date)){
                             isFirstDay = true;
                             arr.push(date);
@@ -97,23 +105,22 @@ export default function BoardView({ moreData , board ,setUserData, setLastPageId
 
                         return (
                             <div key={item.board_key}>
-                            {isFirstDay && (
-                                <>
+                                {isFirstDay && (
                                     <Fadeup key={`date-${item.board_key}`}>
                                         <FirstDayStyle $first={firstDiv}>{date}</FirstDayStyle>
                                     </Fadeup>
-                                </>
-                            )}       
-                            <Fadeup key={item.board_key} >
-                                <BoardReply 
-                                    ref={(dom) => refs.current[idx] = dom}
-                                    reply={item}
-                                    idx={item.idx}
-                                    selectIdx={selectIdx === item.board_key}
-                                    setSelectIdx={setSelectIdx}
-                                    setUserData={setUserData}
-                                />
-                            </Fadeup>
+                                )} 
+
+                                <Fadeup key={item.board_key} >
+                                    <CommentItem 
+                                        ref={(dom) => refs.current[idx] = dom}
+                                        item={item}
+                                        role={item.role}
+                                        selectIdx={selectIdx === item.board_key}
+                                        setSelectIdx={setSelectIdx}
+                                        setUserFetchData={setUserFetchData}
+                                    />
+                                </Fadeup>
                             </div>
                         )
                     })

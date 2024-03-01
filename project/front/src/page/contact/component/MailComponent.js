@@ -111,9 +111,6 @@ export default function MailComponent(){
     const dispatch = useDispatch();
     const [ mailSubmit , setMailSubmit ] = useState(false);
     const [ radioIdx , setRadioIdx ] = useState();
-    console.log(radioIdx);
-    console.log(errors);
-
 
     useEffect(()=>{
         reset({

@@ -108,7 +108,7 @@ const StudyTimer = () =>{
     })
     const [ id , setId ] = useState();
     
-    console.log(timer);
+    // console.log(timer);
     
     //Timer Func
     const TimerFunc = () =>{
@@ -187,7 +187,7 @@ export default function Todolist(){
     const [ listData , setListData ] = useState();    
     const dispatch = useDispatch();
 
-    console.log(listData);
+    // console.log(listData);
 
     useQuery(['Schedule' , getMonth ], ()=>scheduleFetch(getYear , getMonth),{
         refetchOnWindowFocus:false,

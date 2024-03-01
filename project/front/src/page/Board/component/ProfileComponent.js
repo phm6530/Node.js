@@ -21,7 +21,6 @@ const ProfileCard = styled.div`
 `
 const ProfilePicture = styled.div`
     width: 4rem;
-    height: 4rem;
     border-radius: 100%;
     
     border: 5px solid #fff;
