@@ -22,10 +22,16 @@ const verify = (req,res,next)=>{
 
 // 토근생성
 const createToken = (id)=>{
-    return jwt.sign({ id: id }, process.env.JWT_SECRET, 
-    {
-        expiresIn: '5h' // 토큰 유효시간 설정
-    });
+    try{
+        return jwt.sign({ id: id }, process.env.JWT_SECRET, 
+            {
+                expiresIn: '5h' // 토큰 유효시간 설정
+            });
+    }
+    catch(error){
+        throw new NotFoundError('토큰 생성에 실패하였습니다...');
+    }
+    
 }
 
 // 인증 확인 로직
