@@ -95,12 +95,14 @@ router.post('/reply/auth', verify , validation_Reply, async (req, res, next) => 
 
 
 
-router.post('/reply/delete', async(req,res,next)=>{
-    const body = req.body;
+router.post('/reply/delete', async(req,res, next)=>{
+    const body =  req.body;
+    const token = req.headers.authorization.split(" ")[1] || undefined;
     try{
-        const { isDeleted  , isDeleted_key , counter } = await isDeleteReply(body);
+        const { isDeleted  , isDeleted_key , counter } = await isDeleteReply(body , token);
         res.json({message: '성공' , isDeleted , isDeleted_key , counter });
     }catch(error){
+        console.log(error);
         console.log(error.message);
         res.status(error.status || 500).json({message : error.message});
     }
@@ -109,7 +111,7 @@ router.post('/reply/delete', async(req,res,next)=>{
 
 // 초기로드 or 게시판 페이징
 router.get('/:idx', async (req, res, next) => {
-
+    
     try {
         const idx = +req.params.idx;
         console.log(idx);

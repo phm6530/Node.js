@@ -1,14 +1,14 @@
 const { 
     compare 
 } = require('bcrypt');
-const { readData} = require('./readData');
 const { NotFoundError } = require('./error');
 
 //DB 연동
 const util = require('util');
 const db = require('../util/config');
+const jwt = require('jsonwebtoken');
 db.query = util.promisify(db.query); //프로미스 생성
-
+require('dotenv').config();
 
 const isValidAdmin = async (id, userPassword) => {
     try {
@@ -31,44 +31,45 @@ const isValidAdmin = async (id, userPassword) => {
     }
 }
 
+const isDeleteReply = async({ reply_password , board_key ,  auth }, token) =>{
+    
+    let sql_ReplyFind = `select * from board where board_key = ? `;
+    const boardRecord = await db.query(sql_ReplyFind, [board_key]);
+    
+    if(!boardRecord || boardRecord.length === 0 ){
+        throw new NotFoundError('이미 삭제되었거나 서버에 문제가 있습니다.');
+    }
 
-
-
-const isDeleteReply = async({ reply_password , board_key }) =>{
-
-    // const limit = 10;
-    // const offset = ((page || 1 ) - 1) * 10
-    try{
-        let sql_ReplyFind = `select * from board where board_key = ? `;
-        const boardRecord = await db.query(sql_ReplyFind, [board_key]);
-        
-        if(!boardRecord || boardRecord.length === 0 ){
-            throw new NotFoundError('이미 삭제되었거나 서버에 문제가 있습니다.');
+    // 인증된 사용자면 토큰 검사해서 삭제하고 아니면 비번 검사하기
+    // role 은 나중에 고려해보자 흠
+    if(auth){
+        try{
+          jwt.verify(token , process.env.JWT_SECRET);
         }
+        catch(error){
+            throw new NotFoundError('유효하지 않은 토큰입니다.');
+        }
+    }else{
         const isMatch = await compare(reply_password , boardRecord[0].user_password);
         if(!isMatch){
             throw new NotFoundError('비밀번호가 맞지않습니다.');
         }
+    }
+    
+    try{
 
-            let sql_delete = `delete from board where board_key = ? `;
-            const deleteResult = await db.query(sql_delete, [board_key]);
-            const isDeleted = deleteResult.affectedRows > 0;
+        let sql_delete = `delete from board where board_key = ? `;
+        const deleteResult = await db.query(sql_delete, [board_key]);
+        const isDeleted = deleteResult.affectedRows > 0;
 
-            console.log('deleteResult', deleteResult);
-            console.log('isDelete', isDeleted);
-            // let sql_NewArry = `select idx, user_name , contents , board_key from board order by idx desc limit ? offset ?`;
-            // const newArray = await db.query(sql_NewArry, [limit , offset]);
+        let sql_cnt = `select count(*) as cnt from board`;
+        const counter = await db.query(sql_cnt);
 
-            let sql_cnt = `select count(*) as cnt from board`;
-            const counter = await db.query(sql_cnt);
-
-            // console.log(newArray);
-            return {
-                isDeleted ,
-                isDeleted_key : board_key,
-                counter : counter[0].cnt
-            }
-        
+        return {
+            isDeleted ,
+            isDeleted_key : board_key,
+            counter : counter[0].cnt
+        }        
     }
     catch(err){
         throw err;

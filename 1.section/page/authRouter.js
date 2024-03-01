@@ -4,6 +4,16 @@ const router = express.Router();
 const { verify , createToken }  = require('../util/auth'); // 검증
 const { isValidAdmin } = require('../util/util');
 
+const util = require('util');
+const db = require('../util/config');
+const { compare } = require('bcrypt');
+db.query = util.promisify(db.query);
+
+const loginState = async(id) =>{
+    const sql = `update admin_user set state = 1 where id = ?`;
+    return await db.query(sql , [id])
+}
+
 // Login Token 생성
 router.post('/login', async (req, res) => {
     const { user_id, user_password } = req.body;
@@ -27,6 +37,9 @@ router.post('/login', async (req, res) => {
             // if(!admin){
             //     return res.status(401).json({message : 'not found this guy'});
             // }
+
+            const isState = await loginState(user_id);
+            console.log(isState);
             const token = createToken(user_id);
             return res.json({ message: 'Token is Created', token: token , Auth : true});
     
@@ -38,11 +51,19 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.post('/logout', verify , (req, res) => {
+const logoutState = async(id) =>{
+    const sql = `update admin_user set state = 0 where id = ?`;
+    return await db.query(sql , [id])
+}
+
+router.post('/logout', verify , async(req, res) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    console.log(token);
     
+    await logoutState(req.id);
     // 파일에 로그 기록
     // logger.info(`User ${req.user.id} logged out`);
-    return res.status(200).send('Logged out');
+    return res.status(200).json({message : 'logOut Success'})
 });
 
 

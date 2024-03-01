@@ -10,13 +10,23 @@ db.query = util.promisify(db.query);
 
 // 데이터 가져오기
 router.get('/' , async(req,res, next ) =>{   
+    const { Year , month } = req.query;
     try{
-        const sql = `SELECT id , work , complete , schedule_key , 
-        DATE_FORMAT(schedule_date, '%Y-%m-%d') AS formatted_date , important  FROM schedules 
-        WHERE schedule_date >= '2024-02-01' AND schedule_date < '2024-03-01'`
-        const response = await db.query(sql);
-        
+        const sql = `
+            SELECT 
+            id, 
+            work, 
+            complete, 
+            schedule_key, 
+            DATE_FORMAT(schedule_date, '%Y-%m-%d') AS formatted_date, 
+            important  
+            FROM schedules 
+            WHERE YEAR(schedule_date) = ? AND MONTH(schedule_date) = ?
+        `
+
+        const response = await db.query(sql,[ Year , month ]);
         const restResponseData = {}
+
         for(const item in response){
             const data = response[item].formatted_date;
             if(!restResponseData[data]){
@@ -24,7 +34,7 @@ router.get('/' , async(req,res, next ) =>{
             }
             restResponseData[data].push(response[item]);
         }
-        // console.log(restResponseData);
+
         res.json({message : '성공' , restResponseData});
     }catch(error){
         const err = new NotFoundError('에러입니다.');

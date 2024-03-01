@@ -9,7 +9,9 @@ const verify = (req,res,next)=>{
     const token = req.headers.authorization?.split(' ')[1];
     if(!token) throw new NotFoundError('권한이 없습니다.');
     try{
-        jwt.verify(token , process.env.JWT_SECRET);
+        jwt.verify(token , process.env.JWT_SECRET , (_ , decoded)=>{
+            req.id = decoded.id;
+        });
         req.headers.authState = true ;
         next();
     }
