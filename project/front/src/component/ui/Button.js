@@ -3,8 +3,7 @@ import { IoMdArrowForward } from "react-icons/io";
 
 const ButtonType = styled.button`
     font-size: 12px;
-    background: rgba(0,0,0,0.5);
-    color: #fff;
+    color:#222;
     padding: 5px 10px;
     border-radius: 4em;
 `

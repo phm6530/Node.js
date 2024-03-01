@@ -147,7 +147,7 @@ export default function LoginForm(){
             }
             console.log(response.status);
             if(!resultData.Auth || resultData.token === undefined){
-                throw new Error(resultData.message);
+                throw new Error(resultData.message || '서버 오류');
             }
             // 토큰 저장
             localStorage.setItem('token', resultData.token);

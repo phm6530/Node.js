@@ -19,7 +19,7 @@ import { TodaySeletor } from './component/TodaySeletor';
 // import ReactChat from 'react-apexcharts';
 
 const CalenaderGrid = styled(Gird)`
-
+   padding-top: 22rem;
 `
 
 const PageSubText = styled.div`
@@ -90,6 +90,7 @@ const ScheduleSummary = () =>{
 
 
 const StopWatch = styled.div`
+    align-item:center;
     .time{
         color: #fff;
         font-weight: bold;;
@@ -98,6 +99,10 @@ const StopWatch = styled.div`
     width: 100%;
     display: flex;
     align-items: flex-end;
+    span{
+        font-weight: bold;
+        color:#fff;
+    }
 `
 
 const StudyTimer = () =>{
@@ -157,8 +162,10 @@ const StudyTimer = () =>{
     }
     
     return(
-        <>
+        <>  
+            
             <StopWatch>
+                <span>study Timer : </span>                
                 <div className="time">
                     {TimerFormetting(timer.Hour)} : {TimerFormetting(timer.minit)} : {TimerFormetting(timer.second)}
                 </div>
@@ -201,23 +208,25 @@ export default function Todolist(){
 
     return(
         <>
-            <DashBoard page={'Calendar'}></DashBoard>
-            <CalenaderGrid>
-
-                {/* header */}
-                <BannerCommon.BannerPoint>
+             <DashBoard page={'Calendar'}>
+             {/* header */}
+             <BannerCommon.BannerPoint>
                     <img src="img/calendar.png" alt="calendar" />
                     MY STUDY
                 </BannerCommon.BannerPoint>
 
                <DashBoardTitle><b>MY SCHEDULE</b></DashBoardTitle>
-               <PageSubText>
+            </DashBoard>
+            <CalenaderGrid>
+
+              
+               {/* <PageSubText>
                 웹 퍼블리셔 4년차, 프로젝트 활동을 기록합니다. <br></br>더 넓은 지식을 위해 React, Node.js를 학습 중에 있습니다.<br></br>
                 <p>*전 회사의 공개 가능한 프로젝트 / 개인 작업물만 공유합니다.</p>
-                </PageSubText> 
+                </PageSubText>  */}
                 <FadeinComponent>
                     <ContentsWrap>
-
+                        
                         <StudyTimer/>
                         {/* body */}
                         <CalendarStyle 

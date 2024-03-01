@@ -193,16 +193,9 @@ export default function BoardCommentForm({setTotal , setUserFetchData}){
     const schama = Yup.object({
         userIcon : Yup.string().required('필수항목 입니다.'),
         userName : Yup.string().required('필수항목 입니다.').min(2, '최소 2글자 이상 적어주세요..').max(20,'최대 20글자 이하로 적어주세요'),
-        contents : Yup.string().required('필수항목 입니다.').min(4, '최소 4글자 이상 적어주세요..')
-        
-        //Yup에서는 false를 리턴해야 유효성검사에 걸림 true면 유효성 체크 완료임
-        .test('filterBadWord' , '비속어는 입력 불가합니다...', (value)=> findForBadword(value)),
-        password: Yup.string().when([], () => {
-            return Yup.string().notRequired().when('login', {
-                is: false, // login 상태가 false일 때만 비밀번호 필수
-                then: Yup.string().required('필수항목 입니다.').min(4, '최소 4글자의 비밀번호를 기재해주세요')
-            });
-        })
+        contents : Yup.string().required('필수항목 입니다.')
+        .min(4, '최소 4글자 이상 적어주세요..').test('filterBadWord' , '비속어는 입력 불가합니다...', (value)=> findForBadword(value)),
+        password : login? Yup.string().notRequired() : Yup.string().required('비밀번호를 입력해주세요.')
     })
 
     const personIcon = [...Array(6)].map((_,idx)=> `person_${idx + 1}`);    
@@ -215,8 +208,7 @@ export default function BoardCommentForm({setTotal , setUserFetchData}){
             userIcon : randomUserIcon,
             userName : login ? 'Admin' : '',
             contents : '',
-            password : '',
-            filterBadWord : ''
+            password : ''
         }
     });
 

@@ -41,7 +41,7 @@ const SeachArea = styled.div`
     }
 `
 
-const PreButton = styled.button`
+const PreViewButtonStyle = styled.button`
     border: 1px solid rgba(255,255,255,0.2);
     padding: 3px 15px;
     font-size: 12px;
@@ -84,14 +84,36 @@ export default function ProjectSeach(){
         navigate(location.pathname + path);
     }
 
+    const PreViewButton = ({children , seachContent}) =>{
+        
+        return(
+            <PreViewButtonStyle
+                type='button'
+                onClick={()=>navigate(
+                    !seachContent ? '/project' : `${location.pathname}?seach=${seachContent}`)}
+            >   
+            {children}
+            </PreViewButtonStyle>
+        )
+    }
+
     return(
         <SeachArea>
         <button onClick={()=>nav('/add')}className="addProjectBtn">+ Add Project</button>
           <form onSubmit={seachProejct}>
-                <PreButton>참여 100%</PreButton>
-                <PreButton>디자인</PreButton>
-                <PreButton>개발</PreButton>
-                <PreButton>웹진</PreButton>
+            <PreViewButton>전체보기</PreViewButton>
+                <PreViewButton
+                    seachContent='100%'
+                >참여 100%</PreViewButton>
+                <PreViewButton
+                    seachContent='디자인'
+                >디자인</PreViewButton>
+                <PreViewButton
+                    seachContent='개발'
+                >개발</PreViewButton>
+                <PreViewButton
+                    seachContent='웹진'
+                >웹진</PreViewButton>
                 <input type="text" placeholder='검색어를 적어주세요.' onChange={(e)=>setInput(e.target.value)}/>
                 <button type='submit' className='seachbtn'>Seach</button>
             </form>

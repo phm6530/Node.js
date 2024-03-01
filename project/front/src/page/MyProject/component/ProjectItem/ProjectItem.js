@@ -32,16 +32,15 @@ const ProjectDuration = styled.div`
 
 const ProjectFadeinStyle = styled(Fadein)`
     border-radius: 1rem;
-    /* padding: 1.5rem; */
     margin: .5rem;
-    /* box-shadow: -14px -14px 30px rgb(255 255 255 / 0%), 14px 14px 20px rgb(34 48 65 / 7%); */
     background: #fff;
+    padding: 1rem;
     overflow: hidden;
-    width: 30%;
+    width: 31%;
 `
-
+ 
 const ProjectImgArea = styled.div`
-    border-radius: 2em 2em 0 0;
+    border-radius: 2em;
     overflow: hidden;
 `
 
@@ -88,6 +87,7 @@ export default function ProjectItem(project){
               
                         <ProjectImgArea>
                             <img src="/img/project/jkl.jpg" alt="jkl" />
+                            
                         </ProjectImgArea>
 
               
@@ -102,12 +102,12 @@ export default function ProjectItem(project){
                                 <div>
                                     <ProjectDescription>{project.description}</ProjectDescription>
                                     <ProjectSubTitle>기술스택</ProjectSubTitle>
-                                    {/* {   
+                                    {   
                                         project.skill &&  project.skill.map((e, idx)=>{
                                             //<StackIcon.Css/>   
                                             return <span key={idx}>{SKILL_ICON[`${e}`] || e}</span>
                                         })
-                                    } */}
+                                    }
                                 </div>
                         
                                 <ProjectSubTitle>프로젝트 기간</ProjectSubTitle>
