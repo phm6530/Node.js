@@ -10,14 +10,7 @@ const enabledAni = keyframes`
         bottom: 2rem;
     }
 `
-const disabledAni = keyframes`
-    from{
 
-    }
-    to{
-
-    }
-`
 
 const TopButtonStyle = styled.div`
     position: fixed;
@@ -33,7 +26,7 @@ const TopButtonStyle = styled.div`
     align-items: center;
     justify-content: center;
     svg{
-        font-size: 35px;
+        font-size: 20px;
         color: #fff;
     }
     animation: ${enabledAni} .5s ease forwards;

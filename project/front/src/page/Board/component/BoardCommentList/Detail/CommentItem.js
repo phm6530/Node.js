@@ -1,15 +1,22 @@
 import styled from 'styled-components';
 import * as Yup from 'yup';
 
-import { forwardRef } from 'react';
+import { forwardRef, useState } from 'react';
 import { useForm  , FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+
+import { deleteFetch } from '../../../BoardFetch'; 
+import alertThunk from '../../../../../store/alertTrunk';
 
 // icon
 import { DeleteIcon } from '../../../../../component/icon/Icon';
 import { FaCircleCheck } from "react-icons/fa6";
 import CommentDelete from './CommentDelete';
+import { useDispatch, useSelector } from 'react-redux';
+import Popup from '../../../../../component/popup/Popup';
+import Confirm from '../../../../../component/ui/Confirm';
+import { useMutation } from 'react-query';
 
 
 
@@ -30,7 +37,9 @@ const HoverStyled = styled(HoverStyle)`
 const ReplyPicture = styled.div`
     ${props => `background :url(/img/board/${props.$pirture}.jpg)`};
     background-size: cover;
+
 `
+
 
 const ReplyUserName = styled.div`
         font-weight: bold;
@@ -113,6 +122,9 @@ const ReplyBubble = styled.div`
   `
 
 const CommentItem = forwardRef((props , ref)=>{
+    const { login } =useSelector(state => state.authSlice);
+    const [ modal ,setModal ] = useState(false);
+    const dispatch = useDispatch();
     const { 
         item , 
         selectIdx , 
@@ -129,7 +141,7 @@ const CommentItem = forwardRef((props , ref)=>{
 
 
     const schema = Yup.object({
-        password : Yup.string().required('비밀번호를 입력해주세요.')
+        password : login? Yup.string().notRequired() : Yup.string().required('비밀번호를 입력해주세요.')
     })
     
     const {formState : { errors } , ...useFormProps } = useForm({
@@ -139,11 +151,36 @@ const CommentItem = forwardRef((props , ref)=>{
         }
     });
 
+    const deleteHandler = (key) =>{
+        login ? setModal(true) : setSelectIdx(key);
+    }
+    
+    const { mutate }  = useMutation((formData)=>deleteFetch(formData),{
+        onSuccess : (data) =>{
+            dispatch(alertThunk('삭제되었습니다.', true));
+            setUserFetchData(prev => {
+                return prev.filter((e)=>{
+                    return e.board_key !== data.isDeleted_key
+                });
+            });
+        }
+    })
+
     return(
+    <>
+    {modal && (
+        <Popup closePopup={()=>setModal(false)}>
+            <Confirm confirm={() =>mutate({board_key})}/>
+        </Popup>
+        )
+    }
+
     <ReplyWrap 
         key={board_key} 
         ref={ref}
-    >
+    >   
+
+        
         <ReplyPicture 
             $pirture={user_icon} 
             className="replyPicture">
@@ -154,25 +191,30 @@ const CommentItem = forwardRef((props , ref)=>{
         >
             <div className="replyHeader">
                 <ReplyUserName>{user_name}{role === 'admin' && <FaCircleCheck/>}</ReplyUserName>
-                
-                    <div className='replyDelete'>
-                    {!selectIdx && <button onClick={()=>setSelectIdx(board_key)}>
-                        <HoverStyled>
-                            <DeleteIcon size='20' color='#cdcdcd' />    
-                        </HoverStyled>
-                    </button>}
+                    {
+                        ( role === 'admin' && !login ) || (
+                        <div className='replyDelete'>
+                        {!selectIdx && <button onClick={()=>deleteHandler(board_key)}>
+                            <HoverStyled>
+                                <DeleteIcon size='20' color='#cdcdcd' />    
+                            </HoverStyled>
+                        </button>}
 
-                    {selectIdx && (
-                            <FormProvider {...useFormProps}>
-                                <CommentDelete
-                                    setUserFetchData={setUserFetchData}
-                                    board_key={board_key}
-                                    setSelectIdx={setSelectIdx}
-                                /> 
-                            </FormProvider>
+                            {selectIdx && (
+                                    <FormProvider {...useFormProps}>
+                                        <CommentDelete
+                                            setUserFetchData={setUserFetchData}
+                                            board_key={board_key}
+                                            setSelectIdx={setSelectIdx}
+                                            mutateAsync={mutate}
+                                        /> 
+                                    </FormProvider>
+                                )
+                            }
+                        </div>
                         )
                     }
-                    </div>
+            
             
             </div>
         <div className="replyDescription">
@@ -182,7 +224,8 @@ const CommentItem = forwardRef((props , ref)=>{
         </ReplyBubble>
         
         {errors.password && errors.password.message}
-        </ReplyWrap>    
+        </ReplyWrap> 
+    </>   
     )
 })
 

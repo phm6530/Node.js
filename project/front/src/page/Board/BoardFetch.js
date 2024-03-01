@@ -55,13 +55,16 @@ const fetchData = async (page) => {
 
 //댓글 삭제로직
 const deleteFetch = async(formData) =>{
+    const token = localStorage.getItem('token');
+
     try{
         const response = await fetch('http://localhost:8080/board/reply/delete',{
                 method: 'POST',
                 headers:{
+                    'Authorization': token ? `Bearer ${token}` : '',
                     'Content-Type' : 'application/json'
                 },
-                body : JSON.stringify(formData)
+                body : JSON.stringify({...formData , auth : Boolean(token)})
             })
 
             const result = await response.json();

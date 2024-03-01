@@ -8,13 +8,14 @@ import alertThunk from '../../../store/alertTrunk';
 import styled from 'styled-components';
 import { TextAreaStyle } from '../../../component/ui/TextArea';
 import { Button } from '../../../component/ui/Button';
-
+import ErrorBubble from '../../../component/ui/ErrorBubble';
 
 const AddScheduleFormStyle = styled.form`
     padding: 10px 0;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    position: relative;
     button{
         color: #fff;
         margin-top: 10px;
@@ -27,9 +28,8 @@ const AddScheduleFormStyle = styled.form`
         font-size: 14px;
     }
 `
-
-const ErrorStyle = styled.div`
-    color: red;
+const TextAreaWrap = styled.div`
+    width: 100%;
 `
 
 const AddSchedule = ({selectDay}) =>{
@@ -74,12 +74,6 @@ const AddSchedule = ({selectDay}) =>{
 
 
 
-    // 카테고리
-    const ScheduleCategory = [
-        '일반',
-        'React',
-        '자격증'
-    ];
 
 
     return(
@@ -93,18 +87,23 @@ const AddSchedule = ({selectDay}) =>{
                     />중요!
                 </label>
                 
-                
-                <TextAreaStyle {...register('Schedule_title' , {
-                        required : '추가하실 일정을 입력해주세요!',
-                        maxLength : {
-                            value : 250,
-                            message : '250자를 초과해서 등록 할 수 없습니다.'
-                        }
+                <TextAreaWrap>{errors.Schedule_title && <ErrorBubble>{errors.Schedule_title.message}</ErrorBubble>}
+                    <TextAreaStyle 
+                       $error={errors.Schedule_title}
+                        placeholder='일정을 입력해주세요'
+                        {...register('Schedule_title' , {
+                            required : '추가하실 일정을 입력해주세요!',
+                            maxLength : {
+                                value : 250,
+                                message : '250자를 초과해서 등록 할 수 없습니다.'
+                            }
+                            
                     })}/>
+                </TextAreaWrap>
                 <Button.Submit>입력하기</Button.Submit>
+                
             </AddScheduleFormStyle>
-            {errors.Schedule_Category && <ErrorStyle>{errors.Schedule_Category.message}</ErrorStyle>}
-            {errors.Schedule_title && <ErrorStyle>{errors.Schedule_title.message}</ErrorStyle>}
+            {/* {errors.Schedule_Category && <ErrorStyle>{errors.Schedule_Category.message}</ErrorStyle>} */}
         </>
     )
 }
