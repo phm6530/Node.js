@@ -1,4 +1,4 @@
-import styled , {css} from 'styled-components';
+import styled from 'styled-components';
 import { IoMdArrowForward } from "react-icons/io";
 
 const ButtonType = styled.button`
@@ -9,46 +9,6 @@ const ButtonType = styled.button`
     border-radius: 4em;
 `
 
-
-const ButtonTypeSubmit = styled.button`
-    
-    display: flex;
-    color: #fff;
-    border-radius: 5rem;
-    cursor: pointer;
-    font-size: .8rem;
-    justify-content: space-between;
-    position: relative;
-    align-items: center;
-    justify-content: center;
-    /* background:linear-gradient(to right, #8d56ef, #4f6494); */
-    box-shadow:0 5px 15px 5px rgb(16 16 16 / 14%), inset 0 -2px 0 0 rgb(16 16 16 / 36%); 
-    padding-left: 1.5rem;
-    background: #000;
-    .submit_Icon{
-        background: #fff;
-        border-radius:100%;
-        padding: .6rem;
-        margin: .3rem;
-        margin-left: 1rem;
-        svg{
-            font-size:1.4rem;
-            color: #000;
-        }
-    }
-    &:hover > .submit_Icon{
-        background: red;
-    }
-    
-    
-    &:active{
-        box-shadow:0 5px 15px 5px rgb(16 16 16 / 24%), inset 0 -2px 5px 0 rgb(16 16 16 / 56%); 
-    }
-    &:disabled{
-        opacity: .5;
-    }
-    
-  `
 
   const ForsquareBtnStyle = styled.button`
     border-radius: 2rem;
@@ -84,6 +44,46 @@ const Type = ({children , ...props}) =>{
     )
 }
 
+
+
+const ButtonTypeSubmit = styled.button`
+    display: flex;
+    color: #fff;
+    border-radius: 5rem;
+    cursor: pointer;
+    align-items: center;
+    font-size: .8rem;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    padding: .5rem .5rem .5rem 1.3rem;
+    /* background:linear-gradient(to right, #8d56ef, #4f6494); */
+    box-shadow:0 5px 15px 5px rgb(16 16 16 / 14%), inset 0 -2px 0 0 rgb(16 16 16 / 36%); 
+    background: #000;
+    .submit_Icon{
+        border-radius:100%;
+        margin: .3rem;
+        margin-left: 1rem;
+        svg{
+            font-size:1.4rem;
+            color: #fff;
+        }
+    }
+    &:hover > .submit_Icon{
+        /* background: red; */
+    }
+    
+    
+    &:active{
+        box-shadow:0 5px 15px 5px rgb(16 16 16 / 24%), inset 0 -2px 5px 0 rgb(16 16 16 / 56%); 
+    }
+    &:disabled{
+        opacity: .5;
+    }
+    
+  `
+
+
 const Submit = ({children ,  disabled , ...props})=>{
     return(
         <ButtonTypeSubmit 
@@ -115,9 +115,33 @@ const Popup = () =>{
         </PopupOpenButton>
 
     )
-
 }
 
+
+const ConfirmButtonStyle = styled.button`
+    background: #000;
+    color: #fff;
+    padding: .5rem 1rem; 
+    border-radius: 3em;
+    margin: .2rem;
+    &:hover{
+        background: #282828;
+    }
+    /* ${props => {
+        if(props.$btnType === 'Confirm'){
+            return `background: red`
+        }
+    }} */
+`
+
+const ConfirmButton = ({children, type, ...props}) =>{
+    return(
+        <ConfirmButtonStyle $btnType={type} {...props}>
+                {children}
+        </ConfirmButtonStyle>
+
+    )
+}
 
 
 
@@ -135,3 +159,4 @@ Button.Type = Type;
 Button.Submit = Submit;
 Button.Popup = Popup;
 Button.ForsquareBtn = ForsquareBtn;
+Button.ConfirmButton = ConfirmButton;

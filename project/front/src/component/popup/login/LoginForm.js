@@ -41,7 +41,6 @@ const LoginStyle = styled.form`
     button{
         width: 100%;
         color: #fff;
-        padding: 10px;
         border-radius: 5em;
         margin-bottom: 10px;
     }

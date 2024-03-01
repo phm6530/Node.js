@@ -16,13 +16,6 @@ const AddScheduleFormStyle = styled.form`
     flex-direction: column;
     align-items: flex-end;
     position: relative;
-    button{
-        color: #fff;
-        margin-top: 10px;
-        word-break: keep-all;
-        padding: 0px 10px;
-        /* border-radius: 1em; */
-    }
     textarea{
         width: 100%;
         font-size: 14px;

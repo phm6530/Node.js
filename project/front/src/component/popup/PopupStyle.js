@@ -36,6 +36,9 @@ const PopupStyle = styled.div`
     .close{
         text-align: center;
         width: 100%;
+        padding: .7rem;
+        font-size: .8rem;
+        
         span{
             color:#000;
             position: relative;

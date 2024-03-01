@@ -119,8 +119,11 @@ export default function ProjectItemHeader({project }){
 
             <>
             {modal && (
-                <Popup closePopup={()=>setModal(false)}>
-                    <Confirm confirm={()=>{
+                <Popup                     
+                    closePopup={()=>setModal(false)}>
+                    <Confirm 
+                    message={'프로젝트'}
+                    confirm={()=>{
                             mutateAsync(project.project_key);
                     }}/>
                 </Popup>

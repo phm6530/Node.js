@@ -170,7 +170,10 @@ const CommentItem = forwardRef((props , ref)=>{
     <>
     {modal && (
         <Popup closePopup={()=>setModal(false)}>
-            <Confirm confirm={() =>mutate({board_key})}/>
+            <Confirm 
+                message={'댓글'}
+                confirm={() =>mutate({board_key})}
+            />
         </Popup>
         )
     }
