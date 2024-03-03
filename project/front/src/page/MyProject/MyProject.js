@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
 
 import Grid from '../../component/ui/Grid';
 import DashBoard from '../../component/ui/DashBoard';
@@ -26,7 +24,8 @@ const ProjectItemWrap = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     border-radius: 1em;
-    margin-top: 3rem;
+    width: 100%;
+    /* margin-top: 3rem; */
 `
 
 const NoSeachingData = styled(FadeinComponent)`
@@ -42,10 +41,10 @@ const NoSeachingData = styled(FadeinComponent)`
 
 
 const PageSubText = styled.div`
-    color:#fff;
     font-size: 20px;
     margin-bottom: 70px;
-    text-shadow: 0px 5px 5px rgba(0,0,0,.4);
+    background: #fff;
+    padding: 2rem;
     p{
         font-size: 14px;
         color: #fff;
@@ -91,20 +90,21 @@ export default function MyProject(){
             
             <ProjectGrid>
                 
-{/* 
-                <PageSubText>    
+
+                {/* <PageSubText>    
                     웹 퍼블리셔 4년차, 프로젝트 활동을 기록합니다. <br></br>
                     더 넓은 지식을 위해 React, Node.js를 학습 중에 있습니다.<br></br>
                     <p>*전 회사의 공개 가능한 프로젝트 / 개인 작업물만 공유합니다.</p>
                 </PageSubText>  */}
 
-                    {/* 검색창 */}
-                    <ProjectSeach />
+           
 
                     {/* Wrap */}
                     <ProjectWrap>
                         <ProfileComponent/>
                         <ProjectItemWrap>
+                                     {/* 검색창 */}
+                    <ProjectSeach />
                             {isLoading && <NoSeachingData>Loading...</NoSeachingData>}
                             {(!isLoading && isError) && 'error'}
                             {(SeachValue && SeachArr.length === 0) && <NoSeachingData>검색과 일치하는 항목이 없음</NoSeachingData>}

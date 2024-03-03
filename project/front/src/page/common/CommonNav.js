@@ -13,7 +13,7 @@ const LeftComponent = styled.div`
 `
 const PageSubText = styled.div`
     color:#222;
-    font-size: 18px;
+    font-size: 16px;
     margin-bottom: 70px;
     p{
         font-size: 14px;

@@ -13,7 +13,7 @@ const IconStyle = styled.span`
     padding-left: 5px;
     border-radius: 1em;
     margin: 0 2px;
-    background: rgba(0,0,0,.2);
+    /* background: rgba(0,0,0,.2); */
     img,svg{
         width: 16px;
         margin-right:5px;
@@ -34,11 +34,7 @@ const IconStyle = styled.span`
                 return css``;
         }
     }}
-    ${props=> props.$darkMode ? ` background:rgba(255,255,255,0.1);` : 
-    `   
-        background:rgba(0,0,0,.05);
-    ;`
-    }
+    ${props=> props.$darkMode && ` background:rgba(255,255,255,0.1);`}
 `
 
 const Mysql = ({label}) =>{

@@ -69,13 +69,18 @@ const ProfileName = styled.div`
 const ProfileLocation = styled.div`
     display: flex;
     align-items: center;
-    font-size: 12px;
+    font-size: 14px;
     margin-bottom: 10px;
     justify-content: center;
     margin-bottom: 2rem;
     svg{
         margin-right: 10px;
     }
+`
+const OnLine = styled.div`
+    font-size: 14px;
+    background: #fff;
+    border-radius: 1rem;
 `
 export default function ProfileComponent(){
         const { login } = useSelector(state => state.authSlice);
@@ -86,6 +91,7 @@ export default function ProfileComponent(){
                 <ProfilePicture  $isOnline={login}>
                     <img src="./img/me.jpg" alt="IT'S ME" />
                 </ProfilePicture>
+
                 
                 <ProfileInfo>
                     <ProfileName>Park, Hyun Min</ProfileName>

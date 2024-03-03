@@ -19,7 +19,7 @@ const PagePoint = styled.div`
 const BannerPoint = ({ className, children}) =>{
     return(
         <PagePoint className={className}>
-            {children}
+            {/* {children} */}
         </PagePoint>
     )
 }

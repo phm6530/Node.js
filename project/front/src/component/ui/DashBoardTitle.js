@@ -28,7 +28,7 @@ const DashBoardTitleStyle = styled.div`
     opacity: 0;
     -webkit-background-clip: text;
     letter-spacing: -4px;
-    font-size: 5rem;
+    font-size: 6rem;
     font-weight: bold;
     animation: ${animation} 1s .5s cubic-bezier(0.1, 0.45, 0, 1.09) forwards;
 `

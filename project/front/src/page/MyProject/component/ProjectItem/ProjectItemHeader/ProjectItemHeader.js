@@ -42,14 +42,14 @@ const ProjectEditWrap = styled.div`
 `
 
 const ProjectTitle = styled.div`
-    font-weight: bold;
-    font-size: 18px;
+    font-weight: 600;
+    font-size: 1.2rem;
     display: flex;
     letter-spacing: -.5px;
     justify-content: space-between;
     align-items: center;
     position: relative;
-    background: linear-gradient(to right top, #2d3d61, #303a51, #466295);
+    background: linear-gradient(to right top, #60729c, #37396b, #622c84);
     color: transparent;
     background-clip: text;
     button{
@@ -57,7 +57,6 @@ const ProjectTitle = styled.div`
         padding: 7px;
         border-radius: 100%;
     }
-
 `
 
 const IconCustum = styled(HiOutlineDotsVertical)`
@@ -66,6 +65,7 @@ const IconCustum = styled(HiOutlineDotsVertical)`
 const ProjectItemHeaderStyle = styled.div`
     display: flex;
     align-items: center;
+    width: 100%;
 `
 
 

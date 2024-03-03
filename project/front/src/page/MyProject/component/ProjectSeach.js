@@ -15,7 +15,7 @@ const SeachArea = styled.div`
         background: transparent;
         border: 1px solid rgba(255,255,255,0.1);
         box-sizing: border-box;
-        color: #fff;
+        color: #000;
         text-indent: .7em;
         background: rgba(0,0,0,0.2);
         &:focus{
@@ -23,7 +23,7 @@ const SeachArea = styled.div`
         }
     }
     .seachbtn{
-        color: #fff;
+        color: #000;
         background: rgba(255,255,255,0.1);
         padding: 10px;
         border-radius: 0 1em 1em 0;  
@@ -33,7 +33,7 @@ const SeachArea = styled.div`
         }
     }
     button{
-        color: #fff;
+        color: #000;
     }
     .addProjectBtn{
         margin-right: auto;
@@ -42,14 +42,22 @@ const SeachArea = styled.div`
 `
 
 const PreViewButtonStyle = styled.button`
-    border: 1px solid rgba(255,255,255,0.2);
+    border: 1px solid rgba(0,0,0,0.2);
     padding: 3px 15px;
     font-size: 12px;
     border-radius: 5em;
     margin-right: 10px;
+    
     &:hover{
-        border: 1px solid rgba(255,255,255,0.6);
+        border: 1px solid rgba(0,0,0,0.6);
     }
+`
+
+
+const Seach = styled.div`
+    display: inline-block;
+    border: 1px solid #000;
+    border-radius: 1em;
 `
 
 export default function ProjectSeach(){
@@ -101,21 +109,20 @@ export default function ProjectSeach(){
         <SeachArea>
         <button onClick={()=>nav('/add')}className="addProjectBtn">+ Add Project</button>
           <form onSubmit={seachProejct}>
-            <PreViewButton>전체보기</PreViewButton>
+            <PreViewButton>ALL</PreViewButton>
                 <PreViewButton
                     seachContent='100%'
-                >참여 100%</PreViewButton>
+                >React</PreViewButton>
                 <PreViewButton
                     seachContent='디자인'
-                >디자인</PreViewButton>
+                >JavaSciprt</PreViewButton>
                 <PreViewButton
                     seachContent='개발'
-                >개발</PreViewButton>
-                <PreViewButton
-                    seachContent='웹진'
-                >웹진</PreViewButton>
-                <input type="text" placeholder='검색어를 적어주세요.' onChange={(e)=>setInput(e.target.value)}/>
-                <button type='submit' className='seachbtn'>Seach</button>
+                >참여율 100%</PreViewButton>
+                <Seach>
+                    <input type="text" placeholder='검색어를 적어주세요.' onChange={(e)=>setInput(e.target.value)}/>
+                    <button type='submit' className='seachbtn'>Seach</button>
+                </Seach>
             </form>
             
           

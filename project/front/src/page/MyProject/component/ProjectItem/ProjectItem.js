@@ -31,39 +31,38 @@ const ProjectDuration = styled.div`
 `
 
 const ProjectFadeinStyle = styled(Fadein)`
-    border-radius: 1rem;
-    margin: .5rem;
-    background: #fff;
-    padding: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
     overflow: hidden;
-    width: 31%;
+    display: flex;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
 `
  
 const ProjectImgArea = styled.div`
-    border-radius: 2em;
-    overflow: hidden;
+    /* border-radius: 2em; */
+    /* overflow: hidden; */
+    width: 35%;
 `
 
 
 
-const ProjectSubTitle = styled.p`
-    font-weight: bold;
-    margin-top: 24px;
-    font-size: 14px;
-`
+// const ProjectSubTitle = styled.p`
+//     font-weight: bold;
+//     margin-top: 24px;
+//     font-size: 14px;
+// `
 
 const ProjectCompany = styled.div`
     font-size: 12px;
     opacity: .5;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 `
 
 const ProjectDescription = styled.div`
     font-size: 14px;
     white-space: pre-line;
-    margin: 20px 0;
     padding-bottom: 20px;
-    border-bottom: 1px solid rgba(0,0,0,0.12);
+    /* border-bottom: 1px solid rgba(0,0,0,0.12); */
 `
 
 
@@ -71,6 +70,9 @@ const ProjectDescription = styled.div`
 const ContentsWrap = styled.div`
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    padding: 1.0rem 1rem 1rem 2rem;
+    flex-grow: 1;
 `
 
 export default function ProjectItem(project){
@@ -86,8 +88,7 @@ export default function ProjectItem(project){
 
               
                         <ProjectImgArea>
-                            <img src="/img/project/jkl.jpg" alt="jkl" />
-                            
+                            <img src="/img/project/jkl1.jpg" alt="jkl" />
                         </ProjectImgArea>
 
               
@@ -101,7 +102,7 @@ export default function ProjectItem(project){
                                 <ProjectCompany>{project.company}</ProjectCompany>
                                 <div>
                                     <ProjectDescription>{project.description}</ProjectDescription>
-                                    <ProjectSubTitle>기술스택</ProjectSubTitle>
+                                    {/* <ProjectSubTitle>기술스택</ProjectSubTitle> */}
                                     {   
                                         project.skill &&  project.skill.map((e, idx)=>{
                                             //<StackIcon.Css/>   
@@ -109,13 +110,13 @@ export default function ProjectItem(project){
                                         })
                                     }
                                 </div>
-                        
+{/*                         
                                 <ProjectSubTitle>프로젝트 기간</ProjectSubTitle>
 
                                 <ProjectDuration>
                                     <CiCalendar/>
                                     {project.startProject} - {project.endProject}
-                                </ProjectDuration>
+                                </ProjectDuration> */}
 
                                 <Button.Type onClick={()=>projectView(project.project_url)}>VIEW</Button.Type>
                         </ContentsWrap>
