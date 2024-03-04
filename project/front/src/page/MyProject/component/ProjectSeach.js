@@ -3,37 +3,44 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate , useLocation } from 'react-router-dom';
 import alertThunk from '../../../store/alertTrunk';
 import styled from 'styled-components';
+import { FaMagnifyingGlass } from "react-icons/fa6";
+
+
+const Seach = styled.div`
+    display: inline-flex;
+    /* border: 1px solid #000; */
+    border-radius: 2em;
+    position: relative;
+    background: rgba(0,0,0,0.05);
+    font-size: 14px;
+    width: 250px;
+
+    input{
+        border: 1px solid rgba(255,255,255,0.1);
+        box-sizing: border-box;
+        color: #000;
+        background: transparent;
+        text-indent: .7em;
+        flex-grow: 1;
+    }
+    button{
+        border-radius: 5rem;
+        background: #fff;
+        padding: .5rem;
+        margin: .2rem;
+    }
+`
 
 const SeachArea = styled.div`
     width: 100%;
     display: flex;
     justify-content: flex-end;
-    padding: 10px;
-    input{
-        border-radius: 2em 0 0 2em;
-        padding: 5px 10px 8px;
-        background: transparent;
-        border: 1px solid rgba(255,255,255,0.1);
-        box-sizing: border-box;
-        color: #000;
-        text-indent: .7em;
-        background: rgba(0,0,0,0.2);
-        &:focus{
-            background: rgba(0,0,0,0.3);
-        }
-    }
-    .seachbtn{
-        color: #000;
-        background: rgba(255,255,255,0.1);
-        padding: 10px;
-        border-radius: 0 1em 1em 0;  
-        font-size: 12px;
-        &:hover{
-            background: rgba(255,255,255,0.2);
-        }
-    }
+    padding: .5rem 1.5rem;
+    border-bottom: 1px solid rgb(0 0 0 / 6%);
+    margin-bottom: 1rem;
     button{
-        color: #000;
+        color: #222;
+        font-weight: 600;
     }
     .addProjectBtn{
         margin-right: auto;
@@ -42,22 +49,11 @@ const SeachArea = styled.div`
 `
 
 const PreViewButtonStyle = styled.button`
-    border: 1px solid rgba(0,0,0,0.2);
+    /* border: 1px solid rgba(0,0,0,0.2); */
     padding: 3px 15px;
     font-size: 12px;
-    border-radius: 5em;
-    margin-right: 10px;
-    
-    &:hover{
-        border: 1px solid rgba(0,0,0,0.6);
-    }
-`
+    border-left: 1px solid rgba(0,0,0,0.5);
 
-
-const Seach = styled.div`
-    display: inline-block;
-    border: 1px solid #000;
-    border-radius: 1em;
 `
 
 export default function ProjectSeach(){
@@ -86,16 +82,16 @@ export default function ProjectSeach(){
 
     const nav = (path) =>{
         if(!AuthCheck('생성')) {
-            console.log('안됨');
             return;
         }
         navigate(location.pathname + path);
     }
 
-    const PreViewButton = ({children , seachContent}) =>{
+    const PreViewButton = ({children , last ,  seachContent}) =>{
         
         return(
             <PreViewButtonStyle
+                
                 type='button'
                 onClick={()=>navigate(
                     !seachContent ? '/project' : `${location.pathname}?seach=${seachContent}`)}
@@ -110,18 +106,19 @@ export default function ProjectSeach(){
         <button onClick={()=>nav('/add')}className="addProjectBtn">+ Add Project</button>
           <form onSubmit={seachProejct}>
             <PreViewButton>ALL</PreViewButton>
-                <PreViewButton
+                {/* <PreViewButton
                     seachContent='100%'
-                >React</PreViewButton>
+                >뉴스레터</PreViewButton>
+              <PreViewButton
+                    seachContent='100%'
+                >웹진</PreViewButton> */}
                 <PreViewButton
-                    seachContent='디자인'
-                >JavaSciprt</PreViewButton>
-                <PreViewButton
+                    last={true}
                     seachContent='개발'
                 >참여율 100%</PreViewButton>
                 <Seach>
-                    <input type="text" placeholder='검색어를 적어주세요.' onChange={(e)=>setInput(e.target.value)}/>
-                    <button type='submit' className='seachbtn'>Seach</button>
+                    <input type="text" placeholder='검색어를 적어주세요...' onChange={(e)=>setInput(e.target.value)}/>
+                    <button type='submit'><FaMagnifyingGlass/></button>
                 </Seach>
             </form>
             

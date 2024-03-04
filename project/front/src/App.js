@@ -14,11 +14,12 @@ import store from './store/appSlice';
 
 // Home
 import HomeComponent from './page/Home/HomeComponent';
-import { projectChangeLoader } from './page/MyProject/ProjectFetch'; //add Loader
+// import { projectChangeLoader } from './page/MyProject/ProjectFetch'; //add Loader
 
 // MyProject
 import MyProject from './page/MyProject/MyProject';
-import AddProject from './page/MyProject/AddProject';
+import AddProject from './page/MyProject/component/AddProject/AddProject';
+
 
 // Notice
 import Board from './page/Board/Board';
@@ -39,6 +40,7 @@ import AuthComponent from './component/common/AuthComponent';
 import Test from './test';
 import ErrorRoot from './component/Errorpage/ErrorRoot';
 import Contact from './page/contact/Contact';
+import ProjectLayout from './page/MyProject/component/ProjectLayout';
 
 
 
@@ -51,14 +53,14 @@ const router = createBrowserRouter([
     children : [
         { index : true , element : <HomeComponent/> },
 
-        // Project
+        // ProjectLayOut Outlet
         {
           path : '/project',
-          
+          element :<ProjectLayout/>,
           children : [
             {
-              index : true,
-              element : <MyProject/>,
+              index : true, 
+              element : <MyProject/>
             },
             {
               path : 'add',

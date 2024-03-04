@@ -79,12 +79,16 @@ export default function DashBoard({ className , page ,children}) {
             id='parallaxEvent'
             $page={page}
             className={className}
-            $DarkMode={ctx.darkMode}
+            // $DarkMode={ctx.darkMode}
         >
             <HeaderGird>
                 {children}
+                {/* <p>*전 회사의 공개 가능한 프로젝트 / 개인 작업물만 공유합니다.</p> */}
                 <PathStyle><IoMdHome/> HOME / {path}</PathStyle>
             </HeaderGird>
+asfsafasfsf
+
+            {/* Video */}
             <VideoCanvas/>
         </DashBoardStyle>
     );

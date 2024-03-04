@@ -1,4 +1,3 @@
-import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
 const BackGroundVideo = styled.div`
@@ -15,7 +14,7 @@ function VideoCanvas() {
   return (
     <BackGroundVideo>
       <video autoPlay loop muted>
-      <source src = 'img/board/bg_video.mp4' type = 'video/mp4' />
+      <source src = '/img/board/bg_video.mp4' type = 'video/mp4' />
       </video>
     </BackGroundVideo>
   );

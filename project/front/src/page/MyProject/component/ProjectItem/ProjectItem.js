@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import StackIcon from '../../../../component/icon/StackIcon';
+import SKILL_ICON from '../../../../component/icon/StackIcon';
 import Fadein from '../../../../FadeinComponent';
 
 
@@ -8,19 +8,6 @@ import { CiCalendar } from "react-icons/ci";
 
 import { Button } from '../../../../component/ui/Button';
 import ProjectItemHeader from './ProjectItemHeader/ProjectItemHeader';
-
-const SKILL_ICON = {
-    Html : <StackIcon.Html label={'Html'}/>,
-    Css : <StackIcon.Css label={'Css'}/>,
-    JavaSciprt : <StackIcon.Js label={'JavaSciprt'}/>,
-    Node : <StackIcon.Node label={'Node.js'}/>,
-    React : <StackIcon.React label={'React'}/>,
-    PHP : <StackIcon.Php label={'Php'}/>,
-    jquery : <StackIcon.Jquery label={'jQuery'}/>,
-    Scss : <StackIcon.Scss label={'Scss'}/>,
-    MySql : <StackIcon.Mysql label={'Mysql'}/>,
-    Next : <StackIcon.Next label={'Next'}/>
-}
 
 
 
@@ -32,18 +19,40 @@ const ProjectDuration = styled.div`
 
 const ProjectFadeinStyle = styled(Fadein)`
     margin-bottom: 1rem;
+    padding: 0 1rem;
     padding-bottom: 1rem;
     overflow: hidden;
     display: flex;
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+    align-items: start;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
 `
  
 const ProjectImgArea = styled.div`
     /* border-radius: 2em; */
     /* overflow: hidden; */
     width: 35%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.2rem;
+    .cateGory{
+        background: red;
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 12px;
+        padding: 0.2rem 0.7rem;
+        color: #fff;
+        background: linear-gradient(to right, #bf4beb, #b36cd6, #c530afde);
+    }
 `
-
+const ProjectSkillWrap = styled.div`
+    display: flex;
+    background: linear-gradient(to top, #0000008a, #00000069, #ffffff00);
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    padding: 0.5rem;
+`
 
 
 // const ProjectSubTitle = styled.p`
@@ -54,14 +63,16 @@ const ProjectImgArea = styled.div`
 
 const ProjectCompany = styled.div`
     font-size: 12px;
-    opacity: .5;
+
     margin-bottom: 16px;
+    color: rgba(113 113 122);
 `
 
 const ProjectDescription = styled.div`
     font-size: 14px;
     white-space: pre-line;
     padding-bottom: 20px;
+    color:#3d4757;
     /* border-bottom: 1px solid rgba(0,0,0,0.12); */
 `
 
@@ -71,8 +82,14 @@ const ContentsWrap = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 1.0rem 1rem 1rem 2rem;
+    align-items: flex-start;
+    padding:1rem .5rem .5rem 1.5rem;
+    width: 65%;
     flex-grow: 1;
+`
+
+const ProjectButtonWrap = styled.div`
+
 `
 
 export default function ProjectItem(project){
@@ -89,6 +106,15 @@ export default function ProjectItem(project){
               
                         <ProjectImgArea>
                             <img src="/img/project/jkl1.jpg" alt="jkl" />
+                            <div className="cateGory">참여율 100%</div>
+                            <ProjectSkillWrap>
+                                    {       
+                                        project.skill &&  project.skill.map((e, idx)=>{
+                                            const SkillCmponent = SKILL_ICON[e];
+                                            return SkillCmponent ? <SkillCmponent key={`skill--${e}`} label={e}/> : <span key={idx}>{SKILL_ICON[e] || e}</span>
+                                        })
+                                    }
+                                    </ProjectSkillWrap>
                         </ProjectImgArea>
 
               
@@ -103,14 +129,11 @@ export default function ProjectItem(project){
                                 <div>
                                     <ProjectDescription>{project.description}</ProjectDescription>
                                     {/* <ProjectSubTitle>기술스택</ProjectSubTitle> */}
-                                    {   
-                                        project.skill &&  project.skill.map((e, idx)=>{
-                                            //<StackIcon.Css/>   
-                                            return <span key={idx}>{SKILL_ICON[`${e}`] || e}</span>
-                                        })
-                                    }
+                              
                                 </div>
-{/*                         
+
+
+{/*                             
                                 <ProjectSubTitle>프로젝트 기간</ProjectSubTitle>
 
                                 <ProjectDuration>
@@ -118,7 +141,9 @@ export default function ProjectItem(project){
                                     {project.startProject} - {project.endProject}
                                 </ProjectDuration> */}
 
-                                <Button.Type onClick={()=>projectView(project.project_url)}>VIEW</Button.Type>
+                                <ProjectButtonWrap>
+                                    <Button.Type onClick={()=>projectView(project.project_url)}>VIEW</Button.Type>
+                                </ProjectButtonWrap>
                         </ContentsWrap>
             </ProjectFadeinStyle>
         </>

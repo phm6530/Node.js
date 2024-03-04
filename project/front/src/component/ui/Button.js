@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled , {css} from 'styled-components';
 import { IoMdArrowForward } from "react-icons/io";
 
 const ButtonType = styled.button`
@@ -43,11 +43,9 @@ const Type = ({children , ...props}) =>{
     )
 }
 
-
-
-const ButtonTypeSubmit = styled.button`
+const CommonStyle = css`
     display: flex;
-    color: #fff;
+
     border-radius: 5rem;
     cursor: pointer;
     align-items: center;
@@ -56,9 +54,7 @@ const ButtonTypeSubmit = styled.button`
     align-items: center;
     justify-content: center;
     padding: .5rem .5rem .5rem 1.3rem;
-    /* background:linear-gradient(to right, #8d56ef, #4f6494); */
-    box-shadow:0 5px 15px 5px rgb(16 16 16 / 14%), inset 0 -2px 0 0 rgb(16 16 16 / 36%); 
-    background: #000;
+    
     .submit_Icon{
         border-radius:100%;
         margin: .3rem;
@@ -68,11 +64,15 @@ const ButtonTypeSubmit = styled.button`
             color: #fff;
         }
     }
-    &:hover > .submit_Icon{
-        /* background: red; */
-    }
-    
-    
+
+`;
+
+const ButtonTypeSubmit = styled.button`
+    ${CommonStyle}
+    background: #000;
+    color: #fff;
+
+    box-shadow:0 5px 15px 5px rgb(16 16 16 / 14%), inset 0 -2px 0 0 rgb(16 16 16 / 36%); 
     &:active{
         box-shadow:0 5px 15px 5px rgb(16 16 16 / 24%), inset 0 -2px 5px 0 rgb(16 16 16 / 56%); 
     }
@@ -81,6 +81,10 @@ const ButtonTypeSubmit = styled.button`
     }
     
   `
+  const ButtonTypeCancle = styled.button`
+    ${CommonStyle}
+`
+
 
 
 const Submit = ({children ,  disabled , ...props})=>{
@@ -97,6 +101,24 @@ const Submit = ({children ,  disabled , ...props})=>{
         </ButtonTypeSubmit>
     )
 }
+
+
+
+const Cancle = ({children , ...props})=>{
+    return(
+        <ButtonTypeCancle 
+            // $page={page}
+            {...props}
+        >
+            {children}
+            <div className="submit_Icon">
+                <IoMdArrowForward />
+            </div>
+        </ButtonTypeCancle>
+    )
+}
+
+
 
 const ForsquareBtn = ({children , ...props})=>{
     return(
@@ -159,3 +181,4 @@ Button.Submit = Submit;
 Button.Popup = Popup;
 Button.ForsquareBtn = ForsquareBtn;
 Button.ConfirmButton = ConfirmButton;
+Button.Cancle = Cancle;

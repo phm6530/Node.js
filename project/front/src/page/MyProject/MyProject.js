@@ -3,29 +3,22 @@ import styled from 'styled-components';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 
-
-import Grid from '../../component/ui/Grid';
-import DashBoard from '../../component/ui/DashBoard';
 import ProjectItem from './component/ProjectItem/ProjectItem';
 import ProjectSeach from './component/ProjectSeach';
 import { projectFetch } from './ProjectFetch';
 
-import DashBoardTitle from '../../component/ui/DashBoardTitle';
+
 import FadeinComponent from '../../FadeinComponent';
-import BannerCommon from '../../component/ui/BannerCommon';
 import ProfileComponent from '../Board/component/ProfileComponent';
 
-const ProjectGrid = styled(Grid)`
-   padding-top: 25rem;
-`
 
 const ProjectItemWrap = styled.div`
     display: flex;
-    flex-direction: row;
+    flex-direction:column;
     flex-wrap: wrap;
     border-radius: 1em;
     width: 100%;
-    /* margin-top: 3rem; */
+    background: #fff;
 `
 
 const NoSeachingData = styled(FadeinComponent)`
@@ -53,9 +46,12 @@ const PageSubText = styled.div`
     }
 `
 
+
 const ProjectWrap = styled.div`
     display: flex;
+
 `
+
 
 
 export default function MyProject(){
@@ -81,20 +77,10 @@ export default function MyProject(){
 
     return(
         <>  
-            <DashBoard page={'project'}>
-                <BannerCommon.BannerPoint>
-                    <img src="img/developer.png" alt="developer" />My Project
-                </BannerCommon.BannerPoint>
-                <DashBoardTitle><b>PROJECT</b></DashBoardTitle>
-            </DashBoard>
-            
-            <ProjectGrid>
-                
-
                 {/* <PageSubText>    
                     웹 퍼블리셔 4년차, 프로젝트 활동을 기록합니다. <br></br>
                     더 넓은 지식을 위해 React, Node.js를 학습 중에 있습니다.<br></br>
-                    <p>*전 회사의 공개 가능한 프로젝트 / 개인 작업물만 공유합니다.</p>
+             
                 </PageSubText>  */}
 
            
@@ -120,7 +106,6 @@ export default function MyProject(){
                     </ProjectWrap>
 
 
-            </ProjectGrid>
         </>
     )
 };

@@ -13,6 +13,7 @@ const commonStyle = css`
   }
 `;
 
+
 const InputStyle = styled.input`
   ${commonStyle}
 `;

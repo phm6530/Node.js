@@ -49,7 +49,7 @@ const ProjectTitle = styled.div`
     justify-content: space-between;
     align-items: center;
     position: relative;
-    background: linear-gradient(to right top, #60729c, #37396b, #622c84);
+    background: linear-gradient(to right top, #345091, #37396b, #357794);
     color: transparent;
     background-clip: text;
     button{

@@ -4,7 +4,7 @@ import { DarkMode } from '../../context/DarkModeContext';
 
 const IconStyle = styled.span`
     font-size: 10px;
-    font-weight: bold;
+    /* font-weight: bold; */
     padding: 6px 0;
     display: inline;
     align-items: center;
@@ -12,6 +12,7 @@ const IconStyle = styled.span`
     padding-right: 10px;
     padding-left: 5px;
     border-radius: 1em;
+    color: #fff;
     margin: 0 2px;
     /* background: rgba(0,0,0,.2); */
     img,svg{
@@ -19,31 +20,15 @@ const IconStyle = styled.span`
         margin-right:5px;
         display: inline-block;
     }   
-
-    ${props => {
-        switch(props.$stack){
-            case 'css' : 
-                return css``;
-            case 'js' : 
-                return css``;
-            case 'react' : 
-                return css``;
-            case 'node' : 
-                return css``;
-            default : 
-                return css``;
-        }
-    }}
-    ${props=> props.$darkMode && ` background:rgba(255,255,255,0.1);`}
 `
 
 const Mysql = ({label}) =>{
     const ctx = useContext(DarkMode); 
-    return( <IconStyle $stack={'mysql'} $darkMode={ctx.darkMode}> <img src="/img/stackIcon/mysql.png" alt={label} /> {label}</IconStyle>)
+    return( <IconStyle  $darkMode={ctx.darkMode}> <img src="/img/stackIcon/mysql.png" alt={label} /> {label}</IconStyle>)
 }
 const Scss = ({label}) =>{
     const ctx = useContext(DarkMode); 
-    return( <IconStyle $stack={'scss'} $darkMode={ctx.darkMode}> <img src="/img/stackIcon/scss.png" alt={label} /> {label}</IconStyle>)
+    return( <IconStyle $darkMode={ctx.darkMode}> <img src="/img/stackIcon/scss.png" alt={label} /> {label}</IconStyle>)
 } 
 
 const Jquery = ({label}) =>{
@@ -91,20 +76,33 @@ const Next = ({label}) =>{
 }
 
 
-const StackIcon = ({children}) => {
-    return <div>{children}</div>;
-};
+// const StackIcon = ({children}) => {
+//     return <div>{children}</div>;
+// };
 
-StackIcon.Js = Js;
-StackIcon.Css = Css;
-StackIcon.React = React;
-StackIcon.Ts = Ts;
-StackIcon.Node = Node;
-StackIcon.Html = Html;
-StackIcon.Php = Php;
-StackIcon.Jquery = Jquery;
-StackIcon.Mysql = Mysql;
-StackIcon.Scss = Scss;
-StackIcon.Next = Next;
+const SKILL_ICON = {
+    Html: Html,
+    Css: Css,
+    JavaScript: Js, // "JavaSciprt" 오타 수정 -> "JavaScript"
+    Node: Node,
+    React: React,
+    PHP: Php,
+    jQuery: Jquery, 
+    Scss: Scss,
+    Mysql: Mysql,
+    Next: Next,
+}
 
-export default StackIcon;
+// StackIcon.Js = Js;
+// StackIcon.Css = Css;
+// StackIcon.React = React;
+// StackIcon.Ts = Ts;
+// StackIcon.Node = Node;
+// StackIcon.Html = Html;
+// StackIcon.Php = Php;
+// StackIcon.Jquery = Jquery;
+// StackIcon.Mysql = Mysql;
+// StackIcon.Scss = Scss;
+// StackIcon.Next = Next;
+
+export default SKILL_ICON

@@ -4,7 +4,7 @@ const SubTitleStyle = styled.div`
     display: flex;
     align-items: center;
     .subText{
-        font-size: 3rem;
+        font-size: 2rem;
         line-height: 1.1em;
         font-weight: bold;
         color: #333333;

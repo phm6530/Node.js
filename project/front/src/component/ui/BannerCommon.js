@@ -5,7 +5,7 @@ const PagePoint = styled.div`
     background: rgba(0, 0, 0, 0.2);
     display: inline-flex;
     align-content: center;
-    padding: 13px 15px;
+    /* padding: 13px 15px; */
     align-items: center;
     /* width: 150px; */
     border-radius: 1em;
@@ -19,7 +19,7 @@ const PagePoint = styled.div`
 const BannerPoint = ({ className, children}) =>{
     return(
         <PagePoint className={className}>
-            {/* {children} */}
+            {children}
         </PagePoint>
     )
 }
