@@ -14,6 +14,8 @@ const loginState = async(id) =>{
     return await db.query(sql , [id])
 }
 
+
+
 // Login Token 생성
 router.post('/login', async (req, res) => {
     const { user_id, user_password } = req.body;

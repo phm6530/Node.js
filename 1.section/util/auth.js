@@ -25,7 +25,7 @@ const createToken = (id)=>{
     try{
         return jwt.sign({ id: id }, process.env.JWT_SECRET, 
             {
-                expiresIn: '5h' // 토큰 유효시간 설정
+                expiresIn: '12h' // 토큰 유효시간 설정
             });
     }
     catch(error){

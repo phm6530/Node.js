@@ -1,5 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const fs = require('fs');
+const path = require('path');
 
 const util = require('util');
 const { NotFoundError } = require('../util/error'); //에러 인스턴스 
@@ -7,6 +10,7 @@ const { NotFoundError } = require('../util/error'); //에러 인스턴스
 const db = require('../util/config'); //DB 연결
 db.query = util.promisify(db.query); //DB 프로미스 생성
 
+router.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 router.get('/', async(req,res,next)=>{
     // const limit = 10;
@@ -66,7 +70,9 @@ router.post('/add' , async(req, res , next)=>{
 router.post('/edit' , async(req, res , next)=>{
     try{
         const { key } = req.body;
-        const sql = 'select * from project where project_key = ?';
+        const sql = `select * from project as a inner join 
+        project_description as b on a.project_key = b.project_key where a.project_key =?
+        `;
         const response = await db.query(sql , [key]);
         res.status(200).json(response[0]);
 
@@ -113,17 +119,93 @@ router.delete('/delete/:key' , async(req, res , next)=>{
             delete from project where project_key = '${param}'
         `
         const response = await db.query(sql);
-        console.log(response);
         res.status(200).json({message : 'success'});
     }
     catch(error){
         const err = new NotFoundError(error.message);
         next(err);
-    }
-        
-
-        
+    }   
 });
 
+
+
+const storage = multer.diskStorage({
+    
+    destination: (req, file, cb) => {
+        const key = req.params.key;
+
+        const uploadPath = path.join(__dirname, `uploads/${key}/`); // 안전한 경로 구성
+        if (!fs.existsSync(uploadPath)) { // 폴더가 존재하지 않는 경우
+            fs.mkdirSync(uploadPath, { recursive: true }); // 폴더 생성
+        }
+
+        cb(null, uploadPath);
+    },
+    filename: (req, file, cb) => {
+        const key = req.params.key;
+        
+        const date = new Date();
+        const dateString = date.toISOString().replace(/:/g, '').replace(/-/g, '').replace('T', '').replace(/\..+/, '');
+        
+        // 파일의 원본 이름에서 확장자 추출
+        const ext = path.extname(file.originalname);
+        // 새 파일명 구성 (원하는 형식으로 파일명 변경 가능)
+        const newFilename = `${key}_${dateString}${ext}`; // 예시: 'newFileName_20230315123000.jpg'
+        file.url = `${key}/${newFilename}`;
+        cb(null, newFilename);
+    }
+});
+
+const upload = multer({storage: storage});
+
+router.post('/imgUploader/:key' , upload.single('img'), async(req, res , next )=>{
+    const {url} = req.file;
+    console.log('test :::: ',url);
+    try{
+        const imgUrl = `project/uploads/${url}`;
+        return res.json({message : 'success' , fileUrl : imgUrl });
+    }catch(error){
+        const err = new NotFoundError(error.message);
+        next(err);
+    }
+});
+
+
+
+router.post('/addproject' , async(req, res , next)=>{
+  
+    try{
+        const { key , ProjectDescription } = req.body;
+        console.log('reqData::::::::::::::: ' , ProjectDescription);
+        console.log(key);
+        const sql = `
+            select * from project as a inner join project_description as b on a.project_key = b.project_key where a.project_key = ?;
+        `
+        const result = await db.query(sql , [key]);
+        console.log(result);
+        if(result.length === 0){
+            console.log('인서트');
+            const sql = `
+                insert into project_description(project_key , description) value(?,?);
+            `
+            const result = await db.query(sql , [key , ProjectDescription]);
+            console.log(result);
+        }else{
+            console.log('업데이트');
+            const sql = `
+                update project_description set description = ? where project_key = ?;
+            `
+            const result = await db.query(sql , [ProjectDescription , key]);
+            console.log(result);
+        }
+
+
+        // // SELECT * FROM project AS a INNER JOIN project_description AS b ON a.project_key = b.project_key;
+        return res.status(200).json({message : 1});
+    }catch(error){
+        const err = new NotFoundError(error.message);
+        next(err);
+    }
+})
 
 module.exports = router;
