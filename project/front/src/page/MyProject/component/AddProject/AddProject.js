@@ -4,10 +4,11 @@ import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { InputStyle ,TextAreaStyle } from '../../../../component/ui/TextArea';
 
-
+// Quill 에디터
+import QuillEditor from './Detail/QuillEditor';
 
 import { useForm } from 'react-hook-form';
 import useAuthRedirect from '../../../../component/common/AuthCustum';
@@ -76,6 +77,8 @@ const ProjectSkillWrap = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     width: 80%;
+
+    
 `
 const CustumInputWrap = styled(InputStyle)`
     flex-grow: 1;
@@ -100,21 +103,24 @@ export default function AddProject(){
             description: ''
           }
     });
-    const ctx = useContext(DarkMode);
-    console.log(ctx);
+    // const ctx = useContext(DarkMode);
+    // console.log(ctx);
+    const [ PROJECT_KEY , SETPROJECT_KEY ] = useState(null);
+    const [ Params ] = useSearchParams();
+    // console.log('PROJECT_KEY ::::: ',PROJECT_KEY)
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const [ Params ] = useSearchParams();
     const Type = Params.get('type');
     const ProjectKey = Params.get('key');
 
-    useEffect(()=>{
 
+    useEffect(()=>{
         const fetching = async() =>{
+            SETPROJECT_KEY(ProjectKey); //기존 KEY
             return await projectEdit(ProjectKey);
         }
-
+        
         if(Type === 'edit'){
             fetching().then(res => {
                 reset({
@@ -126,11 +132,14 @@ export default function AddProject(){
                     skill: res.skill.split(','),
                     startDate : new Date(res.startProject),
                     endDate : new Date(res.endProject),
+                    projectDescription : res.projectDescription
                 })
                 
             }).catch(error => {
                 dispatch(alertThunk(error.message , 0))
             })
+        }else{
+            SETPROJECT_KEY(uuidv4());//신규 생성키
         }
 
     },[ProjectKey  , Type , dispatch , reset ]);
@@ -152,8 +161,7 @@ export default function AddProject(){
             if(Type === 'edit'){
                 setObj = data;
             }else{
-                setObj = { idx : uuidv4() , ...data };
-                
+                setObj = { idx : PROJECT_KEY , ...data };
             }
             await addProjectFetch(setObj , Type);
             
@@ -170,7 +178,7 @@ export default function AddProject(){
 
     return(
         <AdminProjectStyle>        
-            <SubTitle><span className='subText'>PROJECT - Add</span></SubTitle>
+            <SubTitle><span className='subText'>PROJECT - 썸네일</span></SubTitle>
 
             <FormStyle onSubmit={handleSubmit(onSubmitHandler)}>
                 
@@ -206,8 +214,6 @@ export default function AddProject(){
                         />
                 </InputWrap>
 
-          
-
                 <InputWrap>
                     <InputLabel>프로젝트 기술스택 </InputLabel>
                     <ProjectSkillWrap>
@@ -242,6 +248,9 @@ export default function AddProject(){
                     <CustumTextAreaStyle {...register('description')}></CustumTextAreaStyle>
                     {errors.description && <p className='errorMessage'>{errors.description.message}</p>}
                 </InputWrap>
+
+
+             
                 <ButtonWrap>
                     <Button.Submit>등록</Button.Submit>
                     <Button.Cancle
@@ -249,7 +258,15 @@ export default function AddProject(){
                     >취소</Button.Cancle>
                 </ButtonWrap>
             </FormStyle>
+            {PROJECT_KEY && (
+                
+                <QuillEditor 
+                    PROJECT_KEY={PROJECT_KEY}
+                />
 
+                )
+            }
+            
         </AdminProjectStyle>
     )
 }

@@ -4,7 +4,7 @@ import { useNavigate , useLocation } from 'react-router-dom';
 import alertThunk from '../../../store/alertTrunk';
 import styled from 'styled-components';
 import { FaMagnifyingGlass } from "react-icons/fa6";
-
+import { v4 as uuidv4 } from 'uuid';
 
 const Seach = styled.div`
     display: inline-flex;
@@ -103,7 +103,7 @@ export default function ProjectSeach(){
 
     return(
         <SeachArea>
-        <button onClick={()=>nav('/add')}className="addProjectBtn">+ Add Project</button>
+        <button onClick={()=>nav(`/add?key=${uuidv4()}`)}className="addProjectBtn">+ Add Project</button>
           <form onSubmit={seachProejct}>
             <PreViewButton>ALL</PreViewButton>
                 {/* <PreViewButton

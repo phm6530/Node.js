@@ -55,6 +55,7 @@ const projectEdit = async(key) =>{
             throw new Error( errorResult.message || '에러');
         }
         const result = await response.json();
+        console.log(result);
         return result;
     }
     catch(error){

@@ -52,6 +52,9 @@ const ProjectSkillWrap = styled.div`
     width: 100%;
     bottom: 0;
     padding: 0.5rem;
+        span{
+        text-shadow: 2px 5px 5px black;
+    }
 `
 
 
@@ -143,6 +146,7 @@ export default function ProjectItem(project){
 
                                 <ProjectButtonWrap>
                                     <Button.Type onClick={()=>projectView(project.project_url)}>VIEW</Button.Type>
+                                    <Button.Type onClick={()=>projectView(project.project_url)}>자세히보기</Button.Type>
                                 </ProjectButtonWrap>
                         </ContentsWrap>
             </ProjectFadeinStyle>

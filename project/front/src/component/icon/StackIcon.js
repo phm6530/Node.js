@@ -12,6 +12,7 @@ const IconStyle = styled.span`
     padding-right: 10px;
     padding-left: 5px;
     border-radius: 1em;
+ 
     color: #fff;
     margin: 0 2px;
     /* background: rgba(0,0,0,.2); */

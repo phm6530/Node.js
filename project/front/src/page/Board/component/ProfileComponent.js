@@ -84,7 +84,7 @@ const OnLine = styled.div`
 `
 export default function ProfileComponent(){
         const { login } = useSelector(state => state.authSlice);
-        console.log(login);
+        // console.log(login);
         
         return(
             <ProfileCard>

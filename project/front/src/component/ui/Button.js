@@ -6,6 +6,8 @@ const ButtonType = styled.button`
     color:#222;
     padding: 5px 10px;
     border-radius: 4em;
+    /* background: rgba(0,0,0,0.05); */
+    margin-right: 1rem;
 `
 
 
