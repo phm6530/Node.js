@@ -15,13 +15,12 @@ export async function tokenCheck(){
             }
         );
         const data = await response.json(); // 데이터를 JSON 형태로 파싱
-        console.log(data);
         if(!response.ok){
             console.log(data);
             return json({Auth : false , message : data.message})
         }   
         store.dispatch(authAction.complete());
-        
+        console.log('datat ::::',data)
         // data를 사용하거나 반환
         return data;
     }

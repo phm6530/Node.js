@@ -9,6 +9,10 @@
 /.pnp
 .pnp.js
 
+#업로드 이미지
+/page/uploads 
+
+
 # testing
 /coverage
 
@@ -170,4 +174,9 @@ dist
 # SvelteKit build / generate output
 .svelte-kit
 
+
+
 # End of https://www.toptal.com/developers/gitignore/api/node
+
+
+

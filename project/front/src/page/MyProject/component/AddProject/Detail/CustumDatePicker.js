@@ -10,6 +10,7 @@ const DatePickerStyle = styled(DatePicker)`
     padding: 5px 10px;
     border-radius: .5em;
     background: #fdfdfd;
+    font-size: 14px;
     border: 1px solid #00000014;
     color: #222;
     ${props => props.$error && `border: 1px solid #ffcece;`}

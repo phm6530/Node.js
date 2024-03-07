@@ -30,6 +30,7 @@ import Board from './page/Board/Board';
 // admin
 import Admin from './page/admin/Admin';
 
+import ProjectDetail from './page/MyProject/component/ProjectList/ProjectDetail';
 
 //Auth Util 권한 Check
 import { tokenCheck } from './util/auth';
@@ -41,6 +42,7 @@ import Test from './test';
 import ErrorRoot from './component/Errorpage/ErrorRoot';
 import Contact from './page/contact/Contact';
 import ProjectLayout from './page/MyProject/component/ProjectLayout';
+import ProjectList from './page/MyProject/component/ProjectList/ProjectList';
 
 
 
@@ -59,8 +61,20 @@ const router = createBrowserRouter([
           element :<ProjectLayout/>,
           children : [
             {
-              index : true, 
-              element : <MyProject/>
+              // index : true,
+              element : <MyProject/>,
+              children : [
+                  {
+                    index : true,
+                    element : <ProjectList/>,
+                  },
+                  {
+                    path : ':key',
+                    element : <ProjectDetail/> ,   
+                    // loader : ProjectDetailLoader
+                  }
+
+              ]
             },
             {
               path : 'add',

@@ -8,6 +8,7 @@ import { CiCalendar } from "react-icons/ci";
 
 import { Button } from '../../../../component/ui/Button';
 import ProjectItemHeader from './ProjectItemHeader/ProjectItemHeader';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -96,10 +97,12 @@ const ProjectButtonWrap = styled.div`
 `
 
 export default function ProjectItem(project){
-
+    // console.log('project : ',project);
     const projectView = (url) =>{
             window.open(url , '_blank');
     }
+
+    const navigate =  useNavigate();
 
     return(
         <>
@@ -146,7 +149,7 @@ export default function ProjectItem(project){
 
                                 <ProjectButtonWrap>
                                     <Button.Type onClick={()=>projectView(project.project_url)}>VIEW</Button.Type>
-                                    <Button.Type onClick={()=>projectView(project.project_url)}>자세히보기</Button.Type>
+                                    <Button.Type onClick={()=>navigate(`${project.project_key}`)}>자세히보기</Button.Type>
                                 </ProjectButtonWrap>
                         </ContentsWrap>
             </ProjectFadeinStyle>

@@ -1,9 +1,8 @@
 import ReactQuill  from 'react-quill';
 import 'quill/dist/quill.snow.css'; 
-import SubTitle from '../../../../../component/ui/Subtitle';
+// import SubTitle from '../../../../../component/ui/Subtitle';
 import styled from 'styled-components';
-import { Button } from '../../../../../component/ui/Button';
-import { useState , useMemo, useRef, } from 'react';
+import { useMemo, useRef, forwardRef} from 'react';
 import { useDispatch } from 'react-redux';
 import alertThunk from '../../../../../store/alertTrunk';
 
@@ -24,15 +23,12 @@ const ReactQuillStyle = styled(ReactQuill)`
     }
 `
 
-export default function QuillEditor({PROJECT_KEY}){
-    const [editorContent, setEditorContent] = useState('');
-    const handleEditorChange = (content) => {
-        setEditorContent(content);
-    };
 
+
+const  QuillEditor = forwardRef(({ PROJECT_KEY, ...props}, _ ) => {
+
+    console.log({...props});
     const quillRef = useRef();
-    
-    
     const dispatch = useDispatch();
     
     
@@ -57,29 +53,11 @@ export default function QuillEditor({PROJECT_KEY}){
 // useMemo를 사용하여 modules가 렌더링 시 에디터가 사라지는 버그를 방지
 
 // ReactQuill의 custom handler 내에서 이미지 업로드 처리
-function handleImageUpload() {
+const handleImageUpload = ()=>{
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
     input.setAttribute('accept', 'image/*');
-
-
-//파일 확장자 닷(.)으로 시작되는 파일 확장자
-//ex) .png, .jpg, .pdf, .hwp
-
-//audio 모든 타입의 오디오 파일이 허용됨.
-
-//video
-//모든 타입의 비디오 파일이 허용됨.
-
-//image
-
- 	
-//모든 타입의 이미지 파일이 허용됨.
-//
-//미디어 타입	 	
-//매개변수(parameter)를 가지지 않는 유효한 미디어 타입
     input.click();
-    
 
     input.addEventListener('change', async () => {
         const file = input.files[0];
@@ -109,27 +87,28 @@ function handleImageUpload() {
             dispatch(alertThunk(error.message, 0));
         }
     });
-}
-
-
+};
 
 const modules = useMemo(() => { 
+
+
     return {
       toolbar: {
         container: [
-          [{ header: [1, 2, 3, false] }], // 헤더크기
-          ["bold", "italic", "underline", "strike"], // 글자 스타일
+          [{ header: [1, 2, 3, false] }],
+          ["bold", "italic", "underline", "strike"],
           ["blockquote"], 
-          [{ list: "ordered" }, { list: "bullet" }], //리스트 스타일
-          [{ color: [] }, { background: [] }], // ccolor 색상
-          [{ align: [] }, "link", "image"], // 정렬 ,하이퍼링크 , 이미지
+          [{ list: "ordered" }, { list: "bullet" }],
+          [{ color: [] }, { background: [] }],
+          [{ align: [] }, "link", "image"],
         ],
         handlers : {
             'image' : handleImageUpload
         }
       },
     }
-  }, [])
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
 
   
 // fetchEditor1();
@@ -161,32 +140,31 @@ const modules = useMemo(() => {
 
 
 
-    const onSubmitHandler = async(e) =>{
-        e.preventDefault();
-        console.log(e);
-        const result = await fetchEditor(editorContent , PROJECT_KEY);
-        console.log(result);
-        // const editor = quillRef.current.getEditor();
+    // const onSubmitHandler = async(e) =>{
+    //     e.preventDefault();
+    //     console.log(e);
+    //     const result = await fetchEditor(editorContent , PROJECT_KEY);
+    //     console.log(result);
+    //     // const editor = quillRef.current.getEditor();
 
-        // const content = editor.getContents(); // 또는 editor.getText()
-        // console.log(content);
+    //     // const content = editor.getContents(); // 또는 editor.getText()
+    //     // console.log(content);
 
-        // const result = await fetchEditor(e);
-        // console.log(result);
-    }
+    //     // const result = await fetchEditor(e);
+    //     // console.log(result);
+    // }
 
     return(
         <EditorStyle>
-            <form onSubmit={(e)=>onSubmitHandler(e)}>
-                <SubTitle><span className='subText'>PROJECT - 내용</span></SubTitle>
+                {/* <SubTitle><span className='subText'>PROJECT - 내용</span></SubTitle> */}
                 <ReactQuillStyle
                     modules={modules}
-                    value={editorContent}
-                    onChange={handleEditorChange}
                     ref={quillRef}
+                    {...props}
                 />
-                <Button.Submit>등록하기</Button.Submit>
-            </form>
         </EditorStyle>
     )
-}
+})
+
+
+export default QuillEditor;

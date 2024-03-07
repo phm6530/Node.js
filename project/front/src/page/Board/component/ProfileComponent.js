@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 
 
 const ProfileCard = styled.div`
-    width: 20rem;
     border-radius: 1em;
     box-shadow: 50px 50px 55px rgba(0,0,0,0.1);
     margin-bottom: 3rem;
@@ -12,6 +11,8 @@ const ProfileCard = styled.div`
     margin-right: 2rem;
     height: 70vh;
     padding: 2rem;
+    width: 17rem;
+    flex-shrink: 0; 
     position: sticky;
     top: 100px;
     display: flex;
@@ -89,7 +90,7 @@ export default function ProfileComponent(){
         return(
             <ProfileCard>
                 <ProfilePicture  $isOnline={login}>
-                    <img src="./img/me.jpg" alt="IT'S ME" />
+                    <img src="/img/me.jpg" alt="IT'S ME" />
                 </ProfilePicture>
 
                 

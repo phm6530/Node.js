@@ -1,6 +1,6 @@
-import { useContext, useEffect } from 'react';
+import {  useEffect } from 'react';
 import styled , { css } from 'styled-components';
-import {DarkMode} from '../../context/DarkModeContext';
+
 import VideoCanvas from '../common/VideoCanvas';
 import { HeaderGird } from './Grid';
 import { useLocation } from 'react-router-dom';
@@ -62,7 +62,6 @@ const PathStyle = styled.div`
 `
 
 export default function DashBoard({ className , page ,children}) {
-    const ctx = useContext(DarkMode);
     const { pathname } = useLocation();
     
     useEffect(()=>{

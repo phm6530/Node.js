@@ -6,6 +6,7 @@ const commonStyle = css`
   border-radius: .5em;
   background: #fdfdfd;
   border: 1px solid #00000014;
+  font-size: 14px;
   color: #222;
   ${props => props.$error && `border: 1px solid #ffcece;`}
   &::placeholder{

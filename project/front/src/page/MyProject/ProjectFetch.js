@@ -16,8 +16,9 @@ const projectFetch = async() =>{
     }
 }
 
-// 생성
+// Insert or Update하기
 const addProjectFetch = async (formData , Type) =>{
+    console.log('formData :::::: ',formData);
     try{
         const response = await fetch(Type !== 'edit' ? 'http://localhost:8080/project/add' : `http://localhost:8080/project/editProject`,
             {
@@ -39,7 +40,7 @@ const addProjectFetch = async (formData , Type) =>{
 }
 
 
-// 수정
+// 초기 edit 매핑 
 const projectEdit = async(key) =>{
     console.log(key);
     try{
